@@ -1,0 +1,140 @@
+.nextArrow {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    z-index: 10;
+    cursor: pointer;
+    transform: translateY(-50%);
+    width: 50px;   /* Set custom width for the arrow container */
+    height: 50px;  /* Set custom height for the arrow container */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Optional: background for better visibility */
+    border-radius: 50%;  /* Optional: circular container for the arrow */
+}
+
+.nextArrow img {
+    width: 100%;  /* Adjust image size based on container */
+    height: auto;
+}
+@keyframes zoomEffect {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+@keyframes fadeInText {
+    0% {
+        opacity: 0;
+        transform: translateY(20px); /* Optional: Move from below */
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0); /* Move to normal position */
+    }
+}
+
+@keyframes zoomInText {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+/* Zoom-in button animation */
+/* Button styling */
+.button {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 30px;
+    font-size: 1.2em;
+    background-color: #5B67B6;  /* Default color */
+    color: #fff;
+    border: none;
+    border-radius: 23px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    z-index: 1;
+    animation: zoomInButton 4s ease-in-out 2s; /* Add zoom-in animation */
+}
+
+/* Hover effect for button */
+.button:hover {
+    background-color: #121212;  /* Change to black on hover */
+    transform: scale(1.1);  /* Slightly increase size on hover */
+}
+
+/* Zoom-in animation for the button */
+@keyframes zoomInButton {
+    0% {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Custom Previous Arrow */
+.prevArrow {
+    position: absolute;
+    top: 50%;
+    left: 20px;
+    z-index: 10;
+    cursor: pointer;
+    transform: translateY(-50%);
+    width: 50px;  /* Set custom width for the arrow container */
+    height: 50px; /* Set custom height for the arrow container */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Optional: background for better visibility */
+    border-radius: 50%;  /* Optional: circular container for the arrow */
+}
+
+.prevArrow img {
+    width: 100%;  /* Adjust image size based on container */
+    height: auto;
+}
+
+.slick-dots {
+    position: absolute;
+    bottom: 20px;
+    display: flex !important;
+    justify-content: center;
+    width: 100%;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.slick-dots li button::before {
+    font-size: 12px;
+    color: #fff; /* Change dot color */
+}
+
+.slick-dots li.slick-active button::before {
+    color: #000; /* Active dot color */
+}
+
+.slick-slide img {
+    margin: 0 auto;
+}
+
+.slick-thumb img {
+    width: 100px;
+    height: 60px;
+    object-fit: cover;
+}
