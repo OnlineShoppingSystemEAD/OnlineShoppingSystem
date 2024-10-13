@@ -86,6 +86,22 @@
         opacity: 1;
     }
 }
+/* Thumbnail Image Styling */
+.thumbnail {
+    margin-right: 10px; /* Adjust margin between thumbnails */
+}
+
+.thumbnail img {
+    width: 100px; /* Adjust to your desired size */
+    height: auto;
+    border-radius: 5px;
+    transition: transform 0.3s ease;
+}
+
+.thumbnail img:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+}
+
 
 /* Custom Previous Arrow */
 .prevArrow {
