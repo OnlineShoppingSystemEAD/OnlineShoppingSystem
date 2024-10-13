@@ -27,7 +27,7 @@ const Home = () => {
             src: "https://images.pexels.com/photos/1182825/pexels-photo-1182825.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
             mainText: "Shop the Latest Styles",
             subText: "Discover New Fashion Trends",
-            buttonText: "Browse Now",
+            buttonText: "Shop Now",
         },
     ];
 

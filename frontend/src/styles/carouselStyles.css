@@ -154,3 +154,103 @@
     height: 60px;
     object-fit: cover;
 }
+.carousel-image {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+}
+/* Main text styling */
+.main-text {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 3em;
+    font-weight: bold;
+    z-index: 1;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* Sub text styling */
+.sub-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 1.5em;
+    font-weight: lighter;
+    z-index: 1;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Button styling */
+.carousel-button {
+    position: absolute;
+    bottom: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    background-color: #5B67B6;
+    color: white;
+    border: none;
+    border-radius: 23px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+.carousel-button:hover {
+    background-color: #444;
+}
+
+/* Animation Effects */
+/* Fade-in and move up for main text */
+@keyframes fadeUp {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 20px); /* Start slightly below */
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, 0); /* Move to normal position */
+    }
+}
+
+/* Slide-in from right for sub text */
+@keyframes slideRight {
+    0% {
+        opacity: 0;
+        transform: translate(50%, -50%); /* Start off-screen to the right */
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%); /* Move to normal position */
+    }
+}
+
+/* Zoom-in effect for button */
+@keyframes zoomIn {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+}
+
+/* Applying animations */
+.effect-fadeUp {
+    animation: fadeUp 2s ease-in-out forwards;
+}
+
+.effect-slideRight {
+    animation: slideRight 3s ease-in-out forwards;
+}
+
+.effect-zoomIn {
+    animation: zoomIn 4s ease-in-out forwards;
+}
+
