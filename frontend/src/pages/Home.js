@@ -1,10 +1,7 @@
-import React, { useState } from 'react';
-import Slider from 'react-slick';
+import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import '../styles/carouselStyles.css'; // Ensure you import your CSS file here
-import rightArrow from '../images/right-arrow.png';
-import leftArrow from '../images/left-arrow.png';
 import TileGrid from "../components/TileGrid";
 import ProductOverview from "../components/ProductOverview";
 import Carousel from "../components/Carousel";
