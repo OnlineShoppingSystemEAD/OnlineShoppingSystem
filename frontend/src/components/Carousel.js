@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Slider from 'react-slick';
 import rightArrow from '../images/right-arrow.png';
 import leftArrow from '../images/left-arrow.png';
-import '../styles/carouselStyles.css'; // Import CSS for styling
+import '../styles/carouselStyles.css'; // Import your CSS
 
 const Carousel = ({ images }) => {
     const [nav1, setNav1] = useState(null);
@@ -55,26 +55,26 @@ const Carousel = ({ images }) => {
             {/* Main Slider */}
             <Slider {...settingsMain} asNavFor={nav2} ref={(slider1) => setNav1(slider1)}>
                 {images.map((image, index) => (
-                    <div key={index} style={{ position: 'relative' }}>
-                        <img src={image.src} alt={`Slide ${index + 1}`} style={{ width: '100%', height: '100vh', objectFit: 'cover' }} />
+                    <div key={index} className="slide">
+                        <img src={image.src} alt={`Slide ${index + 1}`} className="carousel-image" />
 
                         {/* Main Text */}
                         {image.mainText && (
-                            <div style={{ position: 'absolute', top: '40%', left: '50%', transform: 'translate(-50%, -50%)', color: '#fff', fontSize: '3em', fontWeight: 'bold', zIndex: 1 }}>
+                            <div className="main-text effect-fadeUp">
                                 {image.mainText}
                             </div>
                         )}
 
                         {/* Sub Text */}
                         {image.subText && (
-                            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: '#fff', fontSize: '1.5em', fontWeight: 'lighter', zIndex: 1 }}>
+                            <div className="sub-text effect-slideRight">
                                 {image.subText}
                             </div>
                         )}
 
                         {/* Conditionally Render Button */}
                         {image.mainText && (
-                            <button className="button" >
+                            <button className="carousel-button effect-zoomIn">
                                 {image.buttonText}
                             </button>
                         )}
