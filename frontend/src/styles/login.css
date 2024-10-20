@@ -1,0 +1,81 @@
+/* login.css */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+}
+.logo1 {
+    font-size: 2rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+}
+.logo2 {
+    margin-left: 10px;
+    font-size: 2rem;
+    font-family: 'Montserrat', sans-serif;
+}
+.inline {
+    display: flex;
+    align-items: center; /* Center vertically */
+}
+.admin-heading {
+    margin-top: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.login-form {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.input-field {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    width: 350px;
+    background-color:  #DDD;
+    border-radius: 15px !important;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+.sign-up-button ,
+.login-button {
+    padding: 10px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 23px;
+    background-color: #000;
+    color: #fff;
+    cursor: pointer;
+    margin: 10px;
+    width: 150px;
+}
+.forgot-password {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.forgot-password a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+}

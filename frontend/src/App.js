@@ -5,19 +5,30 @@ import Home from './pages/Home';
 import Shop from './pages/Shop';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import './index.css'; // or global.css depending on where you add the styles
+import './index.css';
+import Login from "./components/Login";
+import SignUp from "./components/SignUp";
+import Orders from "./components/Orders";
+import Categories from "./components/Categories";
+import Order from "./components/Order";
+import Category from "./components/Category";
 
 function App() {
-  return (
-    <Router>
-      <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/shop" element={<Shop />} />
-        {/* Other routes can be added here */}
-      </Routes>
-    </Router>
-  );
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/shop" element={<Shop />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<SignUp />} />
+                <Route path="/orders" element={<Orders />} />
+                <Route path="/categories" element={<Categories />} />
+                <Route path="/order/:id" element={<Order />} />
+                <Route path="/category/:id" element={<Category />} />
+            </Routes>
+        </Router>
+    );
 }
 
 export default App;
