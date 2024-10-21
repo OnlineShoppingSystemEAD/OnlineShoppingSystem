@@ -12,6 +12,7 @@ import Orders from "./components/Orders";
 import Categories from "./components/Categories";
 import Order from "./components/Order";
 import Category from "./components/Category";
+import Account from './pages/Account';
 
 function App() {
     return (
@@ -26,6 +27,7 @@ function App() {
                 <Route path="/categories" element={<Categories />} />
                 <Route path="/order/:id" element={<Order />} />
                 <Route path="/category/:id" element={<Category />} />
+                <Route path="/account" element={<Account/>} />
             </Routes>
         </Router>
     );

@@ -40,7 +40,7 @@ const Header = () => {
                     <div className="relative flex items-center">
                         <FontAwesomeIcon
                             icon={faSearch}
-                            className="text-gray-700 hover:text-purple-500 cursor-pointer"
+                            className={`cursor-pointer ${isSearchOpen ? 'text-purple-500' : 'text-gray-700'} hover:text-purple-500`}
                             onClick={toggleSearch}
                         />
                         {isSearchOpen && (
@@ -54,14 +54,20 @@ const Header = () => {
 
                     {/* Cart Icon */}
                     <span className="relative" onClick={openCart}>
-                        <FontAwesomeIcon icon={faShoppingCart} className="text-gray-700 hover:text-purple-500" />
+                        <FontAwesomeIcon
+                            icon={faShoppingCart}
+                            className="cursor-pointer text-gray-700 hover:text-purple-500"
+                        />
                         <span className="absolute -top-1 -right-1 bg-purple-500 text-white text-xs rounded-full w-4 h-4 text-center">3</span>
                     </span>
 
                     {/* Profile Icon */}
-                    <span className="cursor-pointer">
-                        <FontAwesomeIcon icon={faUser} className="text-gray-700 hover:text-purple-500" />
-                    </span>
+                    <Link to="/account">
+                        <FontAwesomeIcon
+                            icon={faUser}
+                            className={`cursor-pointer ${isActive('/account') ? 'text-purple-500' : 'text-gray-700'} hover:text-purple-500`}
+                        />
+                    </Link>
                 </div>
             </div>
 

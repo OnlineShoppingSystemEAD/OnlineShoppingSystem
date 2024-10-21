@@ -23,7 +23,7 @@ const CategoryGrid = () => {
     const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
     const [selectedCategory, setSelectedCategory] = useState(null);
 
-    const openModal = () => setModalOpen(true);
+    //const openModal = () => setModalOpen(true);
     const closeModal = () => setModalOpen(false);
     const openDeleteModal = (category) => {
         setSelectedCategory(category);
