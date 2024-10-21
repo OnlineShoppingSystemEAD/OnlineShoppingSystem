@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import '../../styles/orderDetails.css';
 import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
+import Footer from "../../components/User/Footer";
 
 const Order = () => {
     const location = useLocation();

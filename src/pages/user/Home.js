@@ -1,6 +1,6 @@
 import React from 'react';
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import Header from '../../components/User/Header';
+import Footer from '../../components/User/Footer';
 import '../../styles/carouselStyles.css';
 import TileGrid from "../../components/TileGrid";
 import ProductOverview from "../../components/ProductOverview";

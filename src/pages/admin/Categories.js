@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import '../../styles/categoryGrid.css';
 import Navbar from "../../components/Navbar";
-import Footer from "../../components/Footer";
+import Footer from "../../components/User/Footer";
 import CategoryModal from '../../components/CategoryModal';
 import DeleteConfirmationModal from '../../components/DeleteConfirmationModal';
 import { FaTrash } from "react-icons/fa";

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Header from '../../components/Header';
-import AccountDetails from '../../components/AccountDetails';
-import Payment from '../../components/Payment';
-import Ongoing from '../../components/Ongoing';
-import Completed from '../../components/Completed';
+import Header from '../../components/User/Header';
+import AccountDetails from '../../components/User/Account/AccountDetails';
+import Payment from '../../components/User/Account/Payment';
+import Ongoing from '../../components/User/Account/Ongoing';
+import Completed from '../../components/User/Account/Completed';
 
 const Account = () => {
   const [activeTab, setActiveTab] = useState('general');
