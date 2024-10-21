@@ -1,6 +1,6 @@
 // Login.js
 import React, { useState } from 'react';
-import '../styles/login.css';
+import '../../styles/login.css';
 import {useNavigate} from "react-router-dom"; // Create a CSS file for custom styles
 
 const Login = () => {

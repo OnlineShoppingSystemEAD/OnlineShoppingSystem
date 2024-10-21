@@ -1,5 +1,5 @@
-/* signup.css */
-.signup-container {
+/* login.css */
+.login-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -7,7 +7,6 @@
     height: 100vh;
     background-color: #f4f4f4;
 }
-
 .logo1 {
     font-size: 2rem;
     font-family: 'Montserrat', sans-serif;
@@ -22,13 +21,13 @@
     display: flex;
     align-items: center; /* Center vertically */
 }
-
 .admin-heading {
     margin-top: 10px;
     font-size: 1.5rem;
+    font-weight: bold;
 }
 
-.signup-form {
+.login-form {
     margin-top: 20px;
     display: flex;
     flex-direction: column;
@@ -43,8 +42,9 @@
     padding: 10px;
     font-size: 1rem;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 350px;
+    width: 350px !important;
+    background-color:  #DDD;
+    border-radius: 15px !important;
 }
 
 .toggle-password {
@@ -53,9 +53,10 @@
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;
+    margin-right: 5px;
 }
-
-.signup-button {
+.sign-up-button ,
+.login-button {
     padding: 10px;
     font-size: 1rem;
     border: none;
@@ -63,19 +64,19 @@
     background-color: #000;
     color: #fff;
     cursor: pointer;
-    margin-top: 10px;
+    margin: 10px;
+    width: 150px;
 }
-
-.login-link {
+.forgot-password {
     margin-top: 15px;
     text-align: center;
 }
 
-.login-link a {
+.forgot-password a {
     color: #007bff;
     text-decoration: none;
 }
 
-.login-link a:hover {
+.forgot-password a:hover {
     text-decoration: underline;
 }

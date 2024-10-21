@@ -1,18 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import About from './pages/About';
-import Home from './pages/Home';
-import Shop from './pages/Shop';
+import About from './pages/user/About';
+import Home from './pages/user/Home';
+import Shop from './pages/user/Shop';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './index.css';
-import Login from "./components/Login";
-import SignUp from "./components/SignUp";
-import Orders from "./components/Orders";
-import Categories from "./components/Categories";
-import Order from "./components/Order";
-import Category from "./components/Category";
-import Account from './pages/Account';
+import Login from "./pages/login/Login";
+import SignUp from "./pages/login/SignUp";
+import Orders from "./pages/admin/Orders";
+import Categories from "./pages/admin/Categories";
+import Order from "./pages/admin/Order";
+import Category from "./pages/admin/Category";
+import Account from './pages/admin/Account';
 
 function App() {
     return (

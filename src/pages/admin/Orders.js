@@ -1,8 +1,8 @@
 // Orders.js
 import React, { useState } from "react";
-import Navbar from "./Navbar";
-import Footer from "./Footer";
-import "../styles/orderlist.css";
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
+import "../../styles/orderlist.css";
 import {useNavigate} from "react-router-dom";
 
 const Orders = () => {

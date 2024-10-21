@@ -1,6 +1,6 @@
 // SignUp.js
 import React, { useState } from 'react';
-import '../styles/signup.css'; // Create a CSS file for custom styles
+import '../../styles/signup.css'; // Create a CSS file for custom styles
 
 const SignUp = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -50,7 +50,7 @@ const SignUp = () => {
                 </div>
                 <button type="submit" className="signup-button">Sign Up</button>
                 <div className="login-link">
-                    <p>Already have an account? <a href="/login">Log In</a></p>
+                    <p>Already have an account? <a href="/src/pages/login/Login">Log In</a></p>
                 </div>
             </form>
         </div>

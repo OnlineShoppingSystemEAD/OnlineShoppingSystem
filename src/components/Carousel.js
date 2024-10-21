@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Slider from 'react-slick';
-import rightArrow from '../images/right-arrow.png';
-import leftArrow from '../images/left-arrow.png';
+import rightArrow from '../assets/right-arrow.png';
+import leftArrow from '../assets/left-arrow.png';
 import '../styles/carouselStyles.css'; // Import your CSS
 
 const Carousel = ({ images }) => {

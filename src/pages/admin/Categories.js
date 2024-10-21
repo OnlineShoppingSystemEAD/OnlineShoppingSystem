@@ -1,10 +1,10 @@
 // CategoryGrid.js
 import React, { useState } from 'react';
-import '../styles/categoryGrid.css';
-import Navbar from "./Navbar";
-import Footer from "./Footer";
-import CategoryModal from './CategoryModal';
-import DeleteConfirmationModal from './DeleteConfirmationModal';
+import '../../styles/categoryGrid.css';
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
+import CategoryModal from '../../components/CategoryModal';
+import DeleteConfirmationModal from '../../components/DeleteConfirmationModal';
 import { FaTrash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 

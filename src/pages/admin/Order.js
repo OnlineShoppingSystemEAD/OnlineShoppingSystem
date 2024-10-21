@@ -1,9 +1,9 @@
 // OrderDetails.js
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import '../styles/orderDetails.css';
-import Navbar from "./Navbar";
-import Footer from "./Footer";
+import '../../styles/orderDetails.css';
+import Navbar from "../../components/Navbar";
+import Footer from "../../components/Footer";
 
 const Order = () => {
     const location = useLocation();
