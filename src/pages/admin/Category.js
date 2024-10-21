@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import '../../styles/productList.css';
-import Navbar from "../../components/Navbar";
-import Footer from "../../components/User/Footer";
+import Navbar from "../../components/admin/Navbar";
+import Footer from "../../components/user/Footer";
 
 const Category = () => {
     const location = useLocation();

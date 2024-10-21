@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Header from '../../components/User/Header';
-import AccountDetails from '../../components/User/Account/AccountDetails';
-import Payment from '../../components/User/Account/Payment';
-import Ongoing from '../../components/User/Account/Ongoing';
-import Completed from '../../components/User/Account/Completed';
+import Header from '../../components/user/Header';
+import AccountDetails from '../../components/user/Account/AccountDetails';
+import Payment from '../../components/user/Account/Payment';
+import Ongoing from '../../components/user/Account/Ongoing';
+import Completed from '../../components/user/Account/Completed';
 
 const Account = () => {
   const [activeTab, setActiveTab] = useState('general');
@@ -31,7 +31,7 @@ const Account = () => {
 
       {/* Account Page Content */}
       <div className="container mx-auto py-8">
-        {/* User Profile Section */}
+        {/* user Profile Section */}
         <div className="flex flex-col items-center">
           <img
             className="w-24 h-24 rounded-full"

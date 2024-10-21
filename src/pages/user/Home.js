@@ -1,10 +1,10 @@
 import React from 'react';
-import Header from '../../components/User/Header';
-import Footer from '../../components/User/Footer';
+import Header from '../../components/user/Header';
+import Footer from '../../components/user/Footer';
 import '../../styles/carouselStyles.css';
-import TileGrid from "../../components/TileGrid";
-import ProductOverview from "../../components/ProductOverview";
-import Carousel from "../../components/Carousel";
+import TileGrid from "../../components/user/Home/TileGrid";
+import ProductOverview from "../../components/user/Shop/ProductOverview";
+import Carousel from "../../components/user/Home/Carousel";
 
 const Home = () => {
     const carouselImages = [
