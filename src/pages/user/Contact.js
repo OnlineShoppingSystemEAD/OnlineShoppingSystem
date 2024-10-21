@@ -1,7 +1,7 @@
 import React from "react";
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
-import ContactSection from "../../components/ContactSection";
+import Header from "../../components/user/Header";
+import Footer from "../../components/user/Footer";
+import ContactSection from "../../components/user/Contact/ContactSection";
 
 const Contact = () => {
   return (

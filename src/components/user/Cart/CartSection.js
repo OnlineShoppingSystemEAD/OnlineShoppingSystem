@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import blue from "../assets/blue-shirt.png"; // Import your local image
-import black from "../assets/black-shirt.png"; // Import John Doe's image if needed
+import blue from "../../../assets/blue-shirt.png"; // Import your local image
+import black from "../../../assets/black-shirt.png"; // Import John Doe's image if needed
 
 const CartSection = () => {
   const [quantities, setQuantities] = useState({ john: 1, jane: 1 }); // State to hold quantities

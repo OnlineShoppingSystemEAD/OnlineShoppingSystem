@@ -13,6 +13,8 @@ import Orders from "./pages/admin/Orders";
 import Categories from "./pages/admin/Categories";
 import Order from "./pages/admin/Order";
 import Category from "./pages/admin/Category";
+import Contact from "./pages/user/Contact";
+import Cart from "./pages/user/Cart";
 
 
 function App() {
@@ -29,6 +31,8 @@ function App() {
                 <Route path="/order/:id" element={<Order />} />
                 <Route path="/category/:id" element={<Category />} />
                 <Route path="/account" element={<Account/>} />
+                <Route path="/cart" element={<Cart/>} />
+                <Route path="/contact" element={<Contact/>} />
             </Routes>
         </Router>
     );

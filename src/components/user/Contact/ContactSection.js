@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Trends from "../assets/Trends.png";
+import Trends from "../../../assets/Trends.png";
 import { MdLocationPin, MdLocalPhone, MdLocalPostOffice } from "react-icons/md";
 
 const ContactSection = () => {
