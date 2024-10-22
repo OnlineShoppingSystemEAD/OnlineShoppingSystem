@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>productmanagement</artifactId>
+	<artifactId>product-management</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>product-management</name>
-	<description>product-management</description>
+	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -39,7 +39,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>mssql-jdbc</artifactId>
