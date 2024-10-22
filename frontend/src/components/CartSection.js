@@ -47,7 +47,7 @@ const CartSection = () => {
       <div>
         <div className="flex justify-between  mt-20 h-[25cm]">
           <div className="m-10 ml-44 mb-[6.5cm] h-[13cm] rounded-xl ">
-            <table className="w-[20cm] h-[10cm] border border-collapse border-gray-400  mt-0">
+            <table className="w-[20cm] h-[10cm] border border-collapse border-gray-300  mt-0">
               <thead>
                 <tr>
                   <th className="p-2 border-b border-gray-400">PRODUCT</th>
@@ -139,7 +139,7 @@ const CartSection = () => {
                 </tr>
               </tbody>
             </table>
-            <div className="border border-gray-500 h-[3cm] w-[20cm]">
+            <div className="border border-gray-300 h-[3cm] w-[20cm]">
               <div className="flex items-center justify-between mt-8 ml-8 mr-8 space-x-8">
                 <input
                   type="text"
@@ -155,61 +155,58 @@ const CartSection = () => {
               </div>
             </div>
           </div>
-          <div className=" border border-gray-300 w-[15cm] h-[20cm] mr-[4cm] rounded-xl p-5 mt-9 ">
+          <div className=" border border-gray-300 w-[12cm] h-[20cm] mr-[4cm] rounded-xl p-5 mt-9 ">
             <h2 className="mt-5 ml-10">CART TOTALS</h2>
             <div className="flex">
               <h3 className="m-2 ml-10 text-lg text-gray-600">Subtotals:</h3>
               <div className="m-2 text-lg text-gray-600 ml-14">$6266</div>
             </div>
             <hr></hr>
-            <div className="flex h-[100px] w-[]">
-              <h3 className="w-auto m-2 mt-6 ml-10 text-lg text-gray-600">
-                Shipping:
-              </h3>
+            <div className="  h-[auto]">
+              <div className="flex items-start m-2 mt-6 ml-10">
+                <h3 className="text-lg text-gray-600">Shipping: </h3>
+                <p className="ml-2 text-lg text-gray-600">
+                  There are no shipping methods available. Please double check
+                  your address, or contact us if you need any help.
+                </p>
+              </div>
+
               <div>
-                <div className="flex flex-col items-center h-[400px] ml-10 text-[125%] bg p-6 pr-12">
-                  <div className="">
-                    <p className="text-lg text-gray-600">
-                      There are no shipping methods available. Please double
-                      check your address, or contact us if you need any help.
-                    </p>
-                  </div>
-                  <div className="">
-                    <p className="m-2 ml-10 text-lg text-gray-600">
-                      CALCULATE SHIPPING
-                    </p>
-                    <select
-                      value={selectedCountry}
-                      onChange={handleCountryChange}
-                      className="p-2 border border-gray-300 rounded-md "
-                    >
-                      <option value="">-- Choose a Country --</option>
-                      {countries.map((country, index) => (
-                        <option key={index} value={country}>
-                          {country}
-                        </option>
-                      ))}
-                    </select>
-                    {/* Text Box for State */}
-                    <input
-                      type="text"
-                      value={state}
-                      onChange={handleStateChange}
-                      placeholder="Enter State"
-                      className="w-full p-2 mt-4 text-lg text-gray-600 border border-gray-300 rounded-md"
-                    />
-                    {/* Text Box for Zip Code */}
-                    <input
-                      type="text"
-                      value={zipcode}
-                      onChange={handleZipcodeChange}
-                      placeholder="Enter Zip Code"
-                      className="w-full p-2 mt-4 border border-gray-300 rounded-md"
-                    />
-                    <button className="w-auto px-6 py-2 mt-5 text-lg font-semibold text-gray-600 transition duration-300 ease-in-out bg-gray-200 rounded-full shadow hover:bg-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
-                      Update Total
-                    </button>
-                  </div>
+                <div className="flex-col items-center h-[400px] ml-10 text-[120%] bg p-6 pr-1">
+                  <p className="m-2 ml-10 text-lg text-gray-600">
+                    CALCULATE SHIPPING
+                  </p>
+                  <select
+                    value={selectedCountry}
+                    onChange={handleCountryChange}
+                    className="p-2 border border-gray-300 rounded-md "
+                  >
+                    <option value="">-- Choose a Country --</option>
+                    {countries.map((country, index) => (
+                      <option key={index} value={country}>
+                        {country}
+                      </option>
+                    ))}
+                  </select>
+                  {/* Text Box for State */}
+                  <input
+                    type="text"
+                    value={state}
+                    onChange={handleStateChange}
+                    placeholder="Enter State"
+                    className="w-full p-2 mt-4 text-lg text-gray-600 border border-gray-300 rounded-md"
+                  />
+                  {/* Text Box for Zip Code */}
+                  <input
+                    type="text"
+                    value={zipcode}
+                    onChange={handleZipcodeChange}
+                    placeholder="Enter Zip Code"
+                    className="w-full p-2 mt-4 border border-gray-300 rounded-md"
+                  />
+                  <button className="w-auto px-6 py-2 mt-5 text-lg font-semibold text-gray-600 transition duration-300 ease-in-out bg-gray-200 rounded-full shadow hover:bg-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+                    Update Total
+                  </button>
                   <div className="mt-8">
                     <div className="flex mr-10">
                       <h3 className="m-0 text-lg text-gray-600">Subtotals:</h3>
