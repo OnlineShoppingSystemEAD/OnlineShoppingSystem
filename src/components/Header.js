@@ -65,7 +65,7 @@ const Header = () => {
           </Link>
         </nav>
         <Link to="/signUp">
-          <button className=" m-2  w-[2cm] text-lg font-semibold text-white transition duration-300 ease-in-out bg-blue-700 shadow rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
+          <button className=" m-2 p-1 pl-5 pr-5 w-[auto] text-lg font-semibold text-white transition duration-300 ease-in-out bg-black shadow rounded-full hover:bg-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75">
             Sign in
           </button>
         </Link>
