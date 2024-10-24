@@ -15,7 +15,7 @@ import Category from "./pages/admin/Category";
 import Account from "./pages/admin/Account";
 import Cart from "./pages/user/Cart";
 import Contact from "./pages/user/Contact";
-import Signin from "./pages/login/SignUp";
+import Checkout from "./pages/user/Checkout";
 
 function App() {
   return (
@@ -33,6 +33,7 @@ function App() {
         <Route path="/account" element={<Account />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
       </Routes>
     </Router>
   );
