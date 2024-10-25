@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import blue from "../assets/blue-shirt.png";
-import black from "../assets/black-shirt.png";
+import blue from "../../../assets/blue-shirt.png";
+import black from "../../../assets/black-shirt.png";
 
 const CartSection = () => {
   const [quantities, setQuantities] = useState({ p01: 1, p02: 1 });

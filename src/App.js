@@ -12,11 +12,11 @@ import Orders from "./pages/admin/Orders";
 import Categories from "./pages/admin/Categories";
 import Order from "./pages/admin/Order";
 import Category from "./pages/admin/Category";
-import Account from "./pages/admin/Account";
+import Account from "./pages/user/Account";
 import Cart from "./pages/user/Cart";
 import Contact from "./pages/user/Contact";
 import Checkout from "./pages/user/Checkout";
-import Cart from "./pages/user/Cart";
+
 
 
 function App() {

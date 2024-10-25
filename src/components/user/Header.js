@@ -6,7 +6,7 @@ import {
   faSearch,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
-import CartSidebar from "./CartSidebar";
+import CartSidebar from "../user/Cart/CartSidebar";
 
 const Header = () => {
   const [isCartOpen, setCartOpen] = useState(false);
