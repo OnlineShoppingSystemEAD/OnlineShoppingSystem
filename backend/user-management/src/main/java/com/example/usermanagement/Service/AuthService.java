@@ -1,9 +1,9 @@
 package com.example.usermanagement.Service;
 
+import com.example.usermanagement.Dto.ChangePasswordReq;
 import com.example.usermanagement.Dto.ReqRes;
 import com.example.usermanagement.Entity.OurUsers;
 import com.example.usermanagement.Repository.OurUserRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,14 +13,17 @@ import java.util.HashMap;
 
 @Service
 public class AuthService {
-    @Autowired
-    private OurUserRepo ourUserRepo;
-    @Autowired
-    private JWTUtils jwtUtils;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final OurUserRepo ourUserRepo;
+    private final JWTUtils jwtUtils;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+
+    public AuthService(OurUserRepo ourUserRepo, JWTUtils jwtUtils, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
+        this.ourUserRepo = ourUserRepo;
+        this.jwtUtils = jwtUtils;
+        this.passwordEncoder = passwordEncoder;
+        this.authenticationManager = authenticationManager;
+    }
 
     public ReqRes signUp(ReqRes registrationRequest){
         ReqRes resp = new ReqRes();
@@ -77,5 +80,59 @@ public class AuthService {
         }
         response.setStatusCode(500);
         return response;
+    }
+
+    // changePassword method
+    public ReqRes changePassword(Integer id , ChangePasswordReq changePasswordRequest){
+        ReqRes response = new ReqRes();
+        try {
+            OurUsers ourUsers = ourUserRepo.findById(id).orElseThrow();
+            if (passwordEncoder.matches(changePasswordRequest.getCurrentPassword(), ourUsers.getPassword())) {
+                ourUsers.setPassword(passwordEncoder.encode(changePasswordRequest.getNewPassword()));
+                ourUserRepo.save(ourUsers);
+                response.setStatusCode(200);
+                response.setMessage("Password Changed Successfully");
+            }else {
+                response.setStatusCode(500);
+                response.setMessage("Current Password is Incorrect");
+            }
+        }catch (Exception e){
+            response.setStatusCode(500);
+            response.setError(e.getMessage());
+        }
+        return response;
+    }
+
+    public ReqRes forgotPassword(ReqRes forgotPasswordReq) {
+        ReqRes response = new ReqRes();
+        try {
+            OurUsers ourUsers = ourUserRepo.findByEmail(forgotPasswordReq.getEmail()).orElseThrow();
+            if (ourUsers != null) {
+                response.setStatusCode(200);
+                //write code here to send email functionality ...
+                response.setMessage("Password Reset Link Sent to Email");
+            }else {
+                response.setStatusCode(500);
+                response.setMessage("Email Not Found");
+            }
+        }catch (Exception e){
+            response.setStatusCode(500);
+            response.setError(e.getMessage());
+        }
+        return response;
+    }
+
+    public ReqRes forgotPasswordVerify(String verificationCode, String email){
+        ReqRes response = new ReqRes();
+        try {
+            //write code here to verify the verification code
+            response.setStatusCode(200);
+            response.setMessage("Verification Code Verified");
+        }catch (Exception e){
+            response.setStatusCode(500);
+            response.setError(e.getMessage());
+        }
+        return response;
+
     }
 }

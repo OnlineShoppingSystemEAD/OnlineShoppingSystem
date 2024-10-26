@@ -2,6 +2,7 @@ package com.example.usermanagement.Entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
 
 @Data
 @Entity
@@ -11,6 +12,7 @@ public class UserProfile {
     @Id
     private Integer id;
 
+    @Getter
     @Column(nullable = false)
     private String postalNumber;
 
@@ -26,7 +28,11 @@ public class UserProfile {
     @Column(nullable = false)
     private String addressPart3;
 
+    @Column(nullable = true)
+    private String profilePicture;
+
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private OurUsers user;
+
 }

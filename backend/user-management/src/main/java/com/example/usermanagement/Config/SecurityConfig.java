@@ -1,7 +1,6 @@
 package com.example.usermanagement.Config;
 
 import com.example.usermanagement.Service.OurUserDetailsService;
-import com.example.usermanagement.Dto.ReqRes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -54,7 +53,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(10);
     }
 
     @Bean
