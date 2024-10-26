@@ -2,6 +2,7 @@ package com.example.usermanagement.Dto;
 
 
 import com.example.usermanagement.Entity.OurUsers;
+import com.example.usermanagement.Entity.UserProfile;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
@@ -22,5 +23,5 @@ public class ReqRes {
     private String role;
     private String password;
     private OurUsers ourUsers;
-
+    private UserProfile userProfile;
 }
