@@ -151,6 +151,8 @@ public class AuthService {
         try {
             OurUsers ourUsers = ourUserRepo.findByEmail(reqRes.getEmail()).orElseThrow();
             if (ourUsers.getVerificationCode().equals(reqRes.getVerificationCode())) {
+                //delete the verification code
+                ourUsers.setVerificationCode(null);
                 ourUsers.setPassword(passwordEncoder.encode(reqRes.getNewPassword()));
                 ourUserRepo.save(ourUsers);
                 response.setStatusCode(200);

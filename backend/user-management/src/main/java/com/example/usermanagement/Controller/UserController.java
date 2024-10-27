@@ -62,7 +62,6 @@ public class UserController {
     public ResponseEntity<ReqRes> changePassword(@PathVariable Integer id, @RequestBody ChangePasswordReq changePasswordReq) {
         ReqRes resp = authService.changePassword(id, changePasswordReq);
         return ResponseEntity.status(resp.getStatusCode()).body(resp);
-
     }
 
     @PostMapping("/forgot-password")
@@ -81,7 +80,6 @@ public class UserController {
     public ResponseEntity<ReqRes> sendEmail(@RequestBody ReqRes reqRes){
         emailSenderService.sendEmail("janithravisankax@gmail.com", "hi", "hello");
         return ResponseEntity.ok(reqRes);
-
     }
 
 }
