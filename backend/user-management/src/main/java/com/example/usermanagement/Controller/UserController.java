@@ -4,7 +4,6 @@ import com.example.usermanagement.Dto.ChangePasswordReq;
 import com.example.usermanagement.Dto.ReqRes;
 import com.example.usermanagement.Entity.UserProfile;
 import com.example.usermanagement.Service.AuthService;
-import com.example.usermanagement.Service.EmailSenderService;
 import com.example.usermanagement.Service.OurUserDetailsService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +18,7 @@ public class UserController {
 
     private final AuthService authService;
 
-//    private final EmailSenderService emailSenderService;
-
-    public UserController(AuthService authService, OurUserDetailsService ourUserDetailsService, EmailSenderService emailSenderService) {
+    public UserController(AuthService authService, OurUserDetailsService ourUserDetailsService) {
         this.authService = authService;
         this.ourUserDetailsService = ourUserDetailsService;
 
@@ -51,13 +48,15 @@ public class UserController {
     }
 
     /**
-     * Endpoint to create a new user profile.
+     * Endpoint to create a user profile.
      *
      * @param userProfile the request body containing user profile details:
-     *                    - name: the user's name
-     *                    - email: the user's email address
-     *                    - role: the user's role
-     * @return ResponseEntity containing the creation user profile response
+     *                    - postalNumber: the user's postal number
+     *                    - phoneNumber: the user's phone number
+     *                    - addressPart1: the first part of the user's address
+     *                    - addressPart2: the second part of the user's address
+     *                    - addressPart3: the third part of the user's address
+     * @return ResponseEntity containing the create user profile response
      */
     @PostMapping
     public ResponseEntity<ReqRes> createUserProfile(@RequestBody UserProfile userProfile) {

@@ -21,8 +21,11 @@ This project is a User Management Service built with Java and Spring Boot. It pr
 - **Method:** `POST`
 - **Description:** Creates a new user profile.
 - **Request Body:**
-  - `name`: the user's name
-  - `email`: the user's email address
+  - `postalNumber`: the user's postal number
+  - `phoneNumber`: the user's phone number
+  - `addressPart1`: the first part of the user's address
+  - `addressPart2`: the second part of the user's address
+  - `addressPart3`: the third part of the user's address
 - **Response:** `ReqRes`
 
 ### Update User Profile by ID
