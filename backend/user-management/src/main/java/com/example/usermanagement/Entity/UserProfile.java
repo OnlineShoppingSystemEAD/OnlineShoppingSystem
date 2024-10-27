@@ -31,6 +31,8 @@ public class UserProfile {
     @Column(nullable = true)
     private String profilePicture;
 
+
+
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private OurUsers user;

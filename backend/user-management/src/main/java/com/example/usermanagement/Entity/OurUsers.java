@@ -20,6 +20,8 @@ public class OurUsers implements UserDetails {
     private String email;
     private String password;
     private String role;
+    private String verificationCode;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role));

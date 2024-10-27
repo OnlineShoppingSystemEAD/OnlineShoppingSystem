@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import java.util.Random;
 
 import java.util.HashMap;
 
@@ -17,12 +18,20 @@ public class AuthService {
     private final JWTUtils jwtUtils;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final EmailSenderService emailSenderService;
 
-    public AuthService(OurUserRepo ourUserRepo, JWTUtils jwtUtils, PasswordEncoder passwordEncoder, AuthenticationManager authenticationManager) {
+    public AuthService(
+            OurUserRepo ourUserRepo,
+            JWTUtils jwtUtils,
+            PasswordEncoder passwordEncoder,
+            AuthenticationManager authenticationManager,
+            EmailSenderService emailSenderService
+            ) {
         this.ourUserRepo = ourUserRepo;
         this.jwtUtils = jwtUtils;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
+        this.emailSenderService = emailSenderService;
     }
 
     public ReqRes signUp(ReqRes registrationRequest){
@@ -103,31 +112,53 @@ public class AuthService {
         return response;
     }
 
+
     public ReqRes forgotPassword(ReqRes forgotPasswordReq) {
         ReqRes response = new ReqRes();
         try {
             OurUsers ourUsers = ourUserRepo.findByEmail(forgotPasswordReq.getEmail()).orElseThrow();
             if (ourUsers != null) {
+                // Generate a random verification code
+                String verificationCode = generateVerificationCode();
+
+                // Save the verification code in the OurUsers entity
+                ourUsers.setVerificationCode(verificationCode);
+                ourUserRepo.save(ourUsers);
+
+                // Send the verification code to the user's email
+                emailSenderService.sendEmail(ourUsers.getEmail(), "Password Reset Code", "Your Password Reset Code is: " + verificationCode);
                 response.setStatusCode(200);
-                //write code here to send email functionality ...
-                response.setMessage("Password Reset Link Sent to Email");
-            }else {
+                response.setMessage("Password Reset Code Sent to Email");
+            } else {
                 response.setStatusCode(500);
                 response.setMessage("Email Not Found");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             response.setStatusCode(500);
             response.setError(e.getMessage());
         }
         return response;
     }
 
-    public ReqRes forgotPasswordVerify(String verificationCode, String email){
+    private String generateVerificationCode() {
+        Random random = new Random();
+        int code = 100000 + random.nextInt(900000); // Generate a 6-digit random number
+        return String.valueOf(code);
+    }
+
+    public ReqRes forgotPasswordVerify(ReqRes reqRes) {
         ReqRes response = new ReqRes();
         try {
-            //write code here to verify the verification code
-            response.setStatusCode(200);
-            response.setMessage("Verification Code Verified");
+            OurUsers ourUsers = ourUserRepo.findByEmail(reqRes.getEmail()).orElseThrow();
+            if (ourUsers.getVerificationCode().equals(reqRes.getVerificationCode())) {
+                ourUsers.setPassword(passwordEncoder.encode(reqRes.getNewPassword()));
+                ourUserRepo.save(ourUsers);
+                response.setStatusCode(200);
+                response.setMessage("Password Reset Successfully");
+            } else {
+                response.setStatusCode(401);
+                response.setMessage("Verification Code is Incorrect");
+            }
         }catch (Exception e){
             response.setStatusCode(500);
             response.setError(e.getMessage());
