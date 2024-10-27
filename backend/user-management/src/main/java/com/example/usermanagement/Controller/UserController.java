@@ -58,21 +58,18 @@ public class UserController {
         return ResponseEntity.status(resp.getStatusCode()).build();
     }
 
-    @PostMapping("/{id}/change-password")
+    @PostMapping("/{id}/reset-password")
     public ResponseEntity<ReqRes> changePassword(@PathVariable Integer id, @RequestBody ChangePasswordReq changePasswordReq) {
         ReqRes resp = authService.changePassword(id, changePasswordReq);
         return ResponseEntity.status(resp.getStatusCode()).body(resp);
-
     }
 
-    //this method not implemented yet
     @PostMapping("/forgot-password")
     public ResponseEntity<ReqRes> forgotPassword(@RequestBody ReqRes forgotPasswordReq){
         ReqRes resp = authService.forgotPassword(forgotPasswordReq);
         return ResponseEntity.status(resp.getStatusCode()).body(resp);
     }
 
-    //this method not implemented yet
     @PostMapping("/forgot-password/verify")
     public ResponseEntity<ReqRes> forgotPasswordVerify(@RequestBody ReqRes reqRes) {
         ReqRes resp = authService.forgotPasswordVerify(reqRes);
@@ -83,6 +80,12 @@ public class UserController {
     public ResponseEntity<ReqRes> sendEmail(@RequestBody ReqRes reqRes){
         emailSenderService.sendEmail("janithravisankax@gmail.com", "hi", "hello");
         return ResponseEntity.ok(reqRes);
-
     }
+
+    @PostMapping("verify-email")
+    public ResponseEntity<ReqRes> verifyEmail(@RequestBody ReqRes reqRes){
+        ReqRes resp = authService.verifyEmail(reqRes);
+        return ResponseEntity.status(resp.getStatusCode()).body(resp);
+    }
+
 }
