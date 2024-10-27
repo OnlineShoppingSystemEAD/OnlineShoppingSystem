@@ -156,7 +156,7 @@ public class AuthService {
                 response.setStatusCode(200);
                 response.setMessage("Password Reset Successfully");
             } else {
-                response.setStatusCode(500);
+                response.setStatusCode(401);
                 response.setMessage("Verification Code is Incorrect");
             }
         }catch (Exception e){
