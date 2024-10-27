@@ -11,7 +11,6 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ReqRes {
-
     private int statusCode;
     private String error;
     private String message;
@@ -24,4 +23,6 @@ public class ReqRes {
     private String password;
     private OurUsers ourUsers;
     private UserProfile userProfile;
+    private String verificationCode;
+    private String newPassword;
 }

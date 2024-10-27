@@ -21,15 +21,13 @@ public class OurUserDetailsService implements UserDetailsService {
 
     private final OurUserRepo ourUserRepo;
     private final UserProfileRepo userProfileRepo;
-//    private final PasswordEncoder passwordEncoder;
-
 
 
     @Autowired
     public OurUserDetailsService(OurUserRepo ourUserRepo, UserProfileRepo userProfileRepo) {
         this.ourUserRepo = ourUserRepo;
         this.userProfileRepo = userProfileRepo;
-//        this.passwordEncoder = passwordEncoder;
+
     }
 
 
@@ -82,18 +80,7 @@ public class OurUserDetailsService implements UserDetailsService {
     }
 
     public ReqRes updateUserProfile(Integer id, UserProfile userProfileDetails) {
-//        Optional<UserProfile> userProfileOptional = userProfileRepo.findById(id);
-//        if (userProfileOptional.isPresent()) {
-//            UserProfile userProfile = userProfileOptional.get();
-//            userProfile.setPostalNumber(userProfileDetails.getPostalNumber());
-//            userProfile.setPhoneNumber(userProfileDetails.getPhoneNumber());
-//            userProfile.setAddressPart1(userProfileDetails.getAddressPart1());
-//            userProfile.setAddressPart2(userProfileDetails.getAddressPart2());
-//            userProfile.setAddressPart3(userProfileDetails.getAddressPart3());
-//            return userProfileRepo.save(userProfile);
-//        } else {
-//            return null;
-//        }
+
         ReqRes resp = new ReqRes();
         try {
             Optional<UserProfile> userProfileOptional = userProfileRepo.findById(id);
@@ -120,12 +107,7 @@ public class OurUserDetailsService implements UserDetailsService {
     }
 
     public ReqRes deleteUserProfile(Integer id) {
-//        if (userProfileRepo.existsById(id)) {
-//            userProfileRepo.deleteById(id);
-//            return true;
-//        } else {
-//            return false;
-//        }
+
         ReqRes resp = new ReqRes();
         try {
             if (userProfileRepo.existsById(id)) {
