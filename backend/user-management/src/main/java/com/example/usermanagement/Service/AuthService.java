@@ -41,8 +41,18 @@ public class AuthService {
             ourUsers.setEmail(registrationRequest.getEmail());
             ourUsers.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
             ourUsers.setRole(registrationRequest.getRole());
+
+
+            // Generate a random verification code
+            String verificationCode = generateVerificationCode();
+            ourUsers.setVerificationCode(verificationCode);
+
             OurUsers ourUserResult = ourUserRepo.save(ourUsers);
+
             if (ourUserResult != null && ourUserResult.getId()>0) {
+                // Send the verification code to the user's email
+                emailSenderService.sendEmail(ourUsers.getEmail(), "Email Verification Code", "Your verification code is: " + verificationCode);
+
                 resp.setOurUsers(ourUserResult);
                 resp.setMessage("User Saved Successfully");
                 resp.setStatusCode(200);
@@ -169,4 +179,26 @@ public class AuthService {
 
     }
 
+    public ReqRes verifyEmail(ReqRes reqRes) {
+        ReqRes response = new ReqRes();
+        try {
+            OurUsers ourUsers = ourUserRepo.findByEmail(reqRes.getEmail()).orElseThrow();
+            if (ourUsers.getVerificationCode().equals(reqRes.getVerificationCode())) {
+                ourUsers.setVerificationCode(null);
+                ourUsers.setIsVerified(true);
+                ourUserRepo.save(ourUsers);
+                response.setStatusCode(200);
+                response.setMessage("Email Verified Successfully");
+            } else {
+                System.out.println(ourUsers.getVerificationCode());
+                System.out.println(reqRes.getVerificationCode());
+                response.setStatusCode(401);
+                response.setMessage("Verification Code is Incorrect");
+            }
+        }catch (Exception e){
+            response.setStatusCode(500);
+            response.setError(e.getMessage());
+        }
+        return response;
+    }
 }

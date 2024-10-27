@@ -21,6 +21,7 @@ public class OurUsers implements UserDetails {
     private String password;
     private String role;
     private String verificationCode;
+    private Boolean isVerified;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

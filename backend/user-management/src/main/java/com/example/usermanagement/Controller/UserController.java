@@ -82,4 +82,10 @@ public class UserController {
         return ResponseEntity.ok(reqRes);
     }
 
+    @PostMapping("verify-email")
+    public ResponseEntity<ReqRes> verifyEmail(@RequestBody ReqRes reqRes){
+        ReqRes resp = authService.verifyEmail(reqRes);
+        return ResponseEntity.status(resp.getStatusCode()).body(resp);
+    }
+
 }

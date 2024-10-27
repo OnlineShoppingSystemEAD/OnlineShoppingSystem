@@ -12,7 +12,6 @@ public class UserProfile {
     @Id
     private Integer id;
 
-    @Getter
     @Column(nullable = false)
     private String postalNumber;
 
@@ -30,6 +29,8 @@ public class UserProfile {
 
     @Column(nullable = true)
     private String profilePicture;
+
+
 
 
 
