@@ -40,7 +40,8 @@ public class AuthService {
             OurUsers ourUsers = new OurUsers();
             ourUsers.setEmail(registrationRequest.getEmail());
             ourUsers.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-            ourUsers.setRole(registrationRequest.getRole());
+//            ourUsers.setRole(registrationRequest.getRole());
+            ourUsers.setRole("USER");
 
 
             // Generate a random verification code
