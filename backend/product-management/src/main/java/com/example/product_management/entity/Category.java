@@ -21,7 +21,7 @@ public class Category {
     @Column(length = 255)
     private String description;
 
-    // Constructors
+
     public Category() {}
 
     public Category(String name, String description) {
