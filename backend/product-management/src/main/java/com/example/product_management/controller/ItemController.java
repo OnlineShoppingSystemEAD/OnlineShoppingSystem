@@ -7,10 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.data.domain.Page;
 import com.example.product_management.service.ItemService;
 import com.example.product_management.model.Item;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/items")
@@ -18,13 +17,6 @@ public class ItemController {
 
     @Autowired
     private ItemService itemService;
-
-    // Get limited items
-    @GetMapping
-    public ResponseEntity<List<Item>> getLimitesItems(@RequestParam(defaultValue = "16") int limit) {
-        List<Item> items = itemService.getLimitedItems(limit);
-        return items.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(items);
-    }
 
     // Get specific items
     @GetMapping("/{id}")
@@ -34,7 +26,17 @@ public class ItemController {
 
     // Get items by category
     @GetMapping("/{categoryId}")
-    public List<Item> getItemsByCategoryId(@PathVariable String categoryId) {
-        return itemService.getItemsByCategory(categoryId);
+    public ResponseEntity<Page<Item>> getItemsByCategory(@PathVariable String categoryId,
+            @RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "16") int pageSize) {
+        Page<Item> items = itemService.getItemsByCategory(categoryId, pageNo, pageSize);
+        return ResponseEntity.ok(items);
+    }
+
+    // Get Items
+    @GetMapping
+    public ResponseEntity<Page<Item>> getItems(@RequestParam(defaultValue = "0") int pageNo,
+            @RequestParam(defaultValue = "16") int pageSize) {
+        Page<Item> items = itemService.getItems(pageNo, pageSize);
+        return ResponseEntity.ok(items);
     }
 }

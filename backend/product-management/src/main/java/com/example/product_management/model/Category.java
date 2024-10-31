@@ -1,4 +1,4 @@
-package com.example.product_management.entity;
+package com.example.product_management.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,8 +21,8 @@ public class Category {
     @Column(length = 255)
     private String description;
 
-
-    public Category() {}
+    public Category() {
+    }
 
     public Category(String name, String description) {
         this.name = name;
