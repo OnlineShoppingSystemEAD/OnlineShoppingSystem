@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    private AuthService authService;
+    private final AuthService authService;
+
+    public AuthController(AuthService authService) {
+        this.authService = authService;
+    }
 
     /**
      * Endpoint for user signup.
@@ -20,7 +23,6 @@ public class AuthController {
      * @param signUpRequest the request body containing user signup details:
      *                      - email: the user's email address
      *                      - password: the user's password
-     *                      - role: the user's role
      * @return ResponseEntity containing the signup response
      */
     @PostMapping("/signup")

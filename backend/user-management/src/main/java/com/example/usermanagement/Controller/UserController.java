@@ -21,7 +21,6 @@ public class UserController {
     public UserController(AuthService authService, OurUserDetailsService ourUserDetailsService) {
         this.authService = authService;
         this.ourUserDetailsService = ourUserDetailsService;
-
     }
 
     /**
