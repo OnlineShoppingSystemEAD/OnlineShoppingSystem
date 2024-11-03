@@ -2,7 +2,6 @@ package com.example.usermanagement.Entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
 
 @Data
 @Entity
@@ -38,4 +37,24 @@ public class UserProfile {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private OurUsers user;
 
+    public void setName(String testUser) {
+    }
+
+    public void setEmail(String mail) {
+    }
+
+    public void setAddress(String s) {
+    }
+
+    public byte getName() {
+        return 0;
+    }
+
+    public short getEmail() {
+        return 0;
+    }
+
+    public short getAddress() {
+        return 0;
+    }
 }
