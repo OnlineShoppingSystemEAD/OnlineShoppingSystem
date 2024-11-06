@@ -139,7 +139,7 @@ public class UserControllerTest {
         ReqRes reqRes = new ReqRes();
         reqRes.setEmail("test@example.com");
 
-        ResponseEntity<ReqRes> result = userController.sendEmail(reqRes);
+        ResponseEntity<ReqRes> result = userController.send(reqRes);
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
         verify(emailSenderService, times(1)).sendEmail("janithravisankax@gmail.com", "hi", "hello");

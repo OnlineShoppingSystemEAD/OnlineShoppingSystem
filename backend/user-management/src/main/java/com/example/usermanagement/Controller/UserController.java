@@ -159,4 +159,8 @@ public class UserController {
     }
 
 
+    public ResponseEntity<ReqRes> send(ReqRes reqRes) {
+
+        return null;
+    }
 }
