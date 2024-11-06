@@ -158,4 +158,8 @@ public class UserController {
         return ResponseEntity.status(resp.getStatusCode()).body(resp);
     }
 
+    public ResponseEntity<ReqRes> send(ReqRes reqRes) {
+
+        return null;
+    }
 }
