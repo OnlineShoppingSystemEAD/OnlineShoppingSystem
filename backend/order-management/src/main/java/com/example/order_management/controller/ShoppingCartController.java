@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.order.management.service.ShoppingCartService;
-import com.example.order.management.model.ShoppingCart;
+import com.example.order.management.model.ShoppingCartItem;
 
 @RestController
 @RequestMapping("/api/shoppingCart")
@@ -17,19 +17,30 @@ public class ShoppingCartController {
     @Autowired
     ShoppingCartService shoppingCartService;
 
-    // Get Shopping Cart by User Id
+    // Get Shopping Cart Items by User Id
     @GetMapping("/{userId}")
-    public ResponseEntity<ShoppingCart> getShoppingCartByUserId(@PathVariable String userId) {
+    public ResponseEntity<List<ShoppingCartItem>> getShoppingCartByUserId(@PathVariable int userId) {
         return shoppingCartService.getShoppingCartByUserId(userId).map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // Update the Shopping Cart
+    // Update the Shopping Cart Items
     @PutMapping("/{id}")
-    public ResponseEntity<ShoppingCart> updateShoppingCart(@PathVariable String id,
-            @RequestBody ShoppingCart shoppingCartDetails) {
-        return ResponseEntity.ok(shoppingCartService.updateShoppingCart(id, shoppingCartDetails));
+    public ResponseEntity<ShoppingCartItem> updateShoppingCart(@PathVariable int id,
+            @RequestBody ShoppingCartItem shoppingCartItemDetails) {
+        return ResponseEntity.ok(shoppingCartService.updateShoppingCart(id,
+                shoppingCartItemDetails));
     }
 
     // Delete Item from the Shopping Cart
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteItemFromtheShoppingCart(@PathVariable int id) {
+        shoppingCartService.deleteItemFromtheShoppingCart(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping
+    public ShoppingCartItem createShoppingCartItem(@RequestBody ShoppingCartItem shoppingCartItem) {
+        return shoppingCartService.createShoppingCartItem(shoppingCartItem);
+    }
 }

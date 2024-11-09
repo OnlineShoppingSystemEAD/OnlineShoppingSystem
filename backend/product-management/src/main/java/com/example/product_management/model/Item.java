@@ -10,19 +10,19 @@ public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private int id;
 
     private String name;
     private String description;
     private float price;
     private int quantity;
     // private Object image;
-    private String categoryId;
+    private int categoryId;
 
     public Item() {
     }
 
-    public Item(String name, String description, float price, int quantity, String categoryId) {
+    public Item(String name, String description, float price, int quantity, int categoryId) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -32,11 +32,11 @@ public class Item {
     }
 
     // Getters and Setters
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -72,11 +72,11 @@ public class Item {
         this.quantity = quantity;
     }
 
-    public String getCategoryId() {
+    public int getCategoryId() {
         return categoryId;
     }
 
-    public void setCategoryId(String categoryId) {
+    public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
     }
 }

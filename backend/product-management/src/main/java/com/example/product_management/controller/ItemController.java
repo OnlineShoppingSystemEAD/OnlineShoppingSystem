@@ -25,7 +25,7 @@ public class ItemController {
     }
 
     // Get items by category
-    @GetMapping("/{categoryId}")
+    @GetMapping("/category/{categoryId}")
     public ResponseEntity<Page<Item>> getItemsByCategory(@PathVariable String categoryId,
             @RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "16") int pageSize) {
         Page<Item> items = itemService.getItemsByCategory(categoryId, pageNo, pageSize);

@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface ItemRepository extends JpaRepository<Item, String> {
-    @Query(nativeQuery = true, value = "SELECT * FROM Item WHERE categoryId=:categoryId")
-    List<Item> findByCategoryId(@Param("categoryId") String categoryId);
+    @Query(nativeQuery = true, value = "SELECT * FROM items WHERE categoryId=:categoryId")
+    List<Item> findByCategoryId(@Param("categoryId") int categoryId);
 
 }
