@@ -1,4 +1,4 @@
-package main.java.com.example.order_management.controller;
+package com.example.order_management.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.example.order.management.service.ShoppingCartService;
-import com.example.order.management.model.ShoppingCartItem;
+import com.example.order_management.service.ShoppingCartService;
+import com.example.order_management.model.ShoppingCartItem;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/shoppingCart")
@@ -20,7 +21,9 @@ public class ShoppingCartController {
     // Get Shopping Cart Items by User Id
     @GetMapping("/{userId}")
     public ResponseEntity<List<ShoppingCartItem>> getShoppingCartByUserId(@PathVariable int userId) {
-        return shoppingCartService.getShoppingCartByUserId(userId).map(ResponseEntity::ok)
+        return shoppingCartService.getShoppingCartByUserId(userId)
+                .filter(list -> !list.isEmpty()) // Ensures the list is not empty
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
