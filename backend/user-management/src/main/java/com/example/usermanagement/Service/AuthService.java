@@ -202,4 +202,25 @@ public class AuthService {
         }
         return response;
     }
+
+    //create method for verify token
+    public ReqRes verifyToken(ReqRes verifyTokenRequest){
+        ReqRes response = new ReqRes();
+        try {
+            String ourEmail = jwtUtils.extractUsername(verifyTokenRequest.getToken());
+            OurUsers users = ourUserRepo.findByEmail(ourEmail).orElseThrow();
+            if (jwtUtils.isTokenValid(verifyTokenRequest.getToken(), users)) {
+                response.setStatusCode(200);
+                response.setMessage("Token is Valid");
+            } else {
+                response.setStatusCode(401);
+                response.setMessage("Token is Invalid");
+            }
+        }catch (Exception e){
+            response.setStatusCode(500);
+            response.setError(e.getMessage());
+        }
+        System.out.println(response);
+        return response;
+    }
 }
