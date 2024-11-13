@@ -1,14 +1,13 @@
-package com.example.usermanagement;
+package com.paymentmanagement.paymentmanagement;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class UserManagementApplication {
+public class PaymentManagementApplication {
 
 	public static void main(String[] args) {
-
-		SpringApplication.run(UserManagementApplication.class, args);
+		SpringApplication.run(PaymentManagementApplication.class, args);
 	}
 
 }
