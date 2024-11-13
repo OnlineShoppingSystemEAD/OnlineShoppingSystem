@@ -20,7 +20,7 @@ public class ItemController {
 
     // Get specific items
     @GetMapping("/{id}")
-    public ResponseEntity<Item> getItembyId(@PathVariable String id) {
+    public ResponseEntity<Item> getItembyId(@PathVariable int id) {
         return itemService.getItembyId(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 

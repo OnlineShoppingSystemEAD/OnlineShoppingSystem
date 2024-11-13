@@ -1,17 +1,8 @@
-package com.example.product_management.model;
+package com.example.order_management.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+public class ItemDetailsDto {
 
-@Entity
-public class Item {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     private String name;
     private String description;
     private float price;
@@ -19,10 +10,11 @@ public class Item {
     // private Object image;
     private int categoryId;
 
-    public Item() {
+    public ItemDetailsDto() {
     }
 
-    public Item(String name, String description, float price, int quantity, int categoryId) {
+    public ItemDetailsDto(int id, String name, String description, float price, int quantity, int categoryId) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;

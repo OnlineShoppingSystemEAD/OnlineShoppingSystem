@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.order_management.service.ShoppingCartService;
 import com.example.order_management.model.ShoppingCartItem;
+import com.example.order_management.dto.ShoppingCartItemDto;
 import java.util.List;
 
 @RestController
@@ -20,7 +21,7 @@ public class ShoppingCartController {
 
     // Get Shopping Cart Items by User Id
     @GetMapping("/{userId}")
-    public ResponseEntity<List<ShoppingCartItem>> getShoppingCartByUserId(@PathVariable int userId) {
+    public ResponseEntity<List<ShoppingCartItemDto>> getShoppingCartByUserId(@PathVariable int userId) {
         return shoppingCartService.getShoppingCartByUserId(userId)
                 .filter(list -> !list.isEmpty()) // Ensures the list is not empty
                 .map(ResponseEntity::ok)

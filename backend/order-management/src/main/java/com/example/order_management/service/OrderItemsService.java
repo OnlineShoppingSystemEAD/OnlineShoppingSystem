@@ -14,4 +14,6 @@ public class OrderItemsService {
     public OrderItems createOrderItem(OrderItems orderItems) {
         return orderItemRepository.save(orderItems);
     }
+
+    // Get shopping cart items
 }
