@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.order_management.model.OrderItems;
+
 import com.example.order_management.repository.OrderItemsRepository;
 
 @Service
@@ -15,5 +16,4 @@ public class OrderItemsService {
         return orderItemRepository.save(orderItems);
     }
 
-    // Get shopping cart items
 }

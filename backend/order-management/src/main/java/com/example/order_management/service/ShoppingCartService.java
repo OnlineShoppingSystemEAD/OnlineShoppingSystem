@@ -17,7 +17,7 @@ public class ShoppingCartService {
     @Autowired
     private ShoppingCartRepository shoppingCartRepository;
 
-    // Get Shopping Cart Items
+    // Get Shopping Cart Items for viewing
     public Optional<List<ShoppingCartItemDto>> getShoppingCartByUserId(int userId) {
         List<ShoppingCartItem> items = shoppingCartRepository.findByUserId(userId);
 
@@ -32,6 +32,14 @@ public class ShoppingCartService {
         }).collect(Collectors.toList());
 
         return itemDTOs.isEmpty() ? Optional.empty() : Optional.of(itemDTOs);
+    }
+
+    // Get Shopping Cart Items to create order items
+    public List<ShoppingCartItemDto> getShoppingCartItemsForOrderItems(int userId) {
+        List<ShoppingCartItem> items = shoppingCartRepository.findByUserId(userId);
+        return items.stream()
+                .map(item -> new ShoppingCartItemDto(item.getItemId(), item.getQuantity()))
+                .collect(Collectors.toList());
     }
 
     // Updating shopping cart quantity

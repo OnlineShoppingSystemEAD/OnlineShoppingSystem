@@ -16,6 +16,11 @@ public class ShoppingCartItemDto {
         this.itemQuantity = itemQuantity;
     }
 
+    public ShoppingCartItemDto(int id, int itemQuantity) {
+        this.id = id;
+        this.itemQuantity = itemQuantity;
+    }
+
     public String getItemName() {
         return this.itemName;
     }

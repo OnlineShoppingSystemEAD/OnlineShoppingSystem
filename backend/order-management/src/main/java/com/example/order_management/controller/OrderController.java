@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.order_management.model.Orders;
@@ -17,7 +18,7 @@ public class OrderController {
     OrderService orderService;
 
     @PostMapping
-    public Orders createOrder(@RequestBody Orders order) {
-        return orderService.createOrder(order);
+    public Orders createOrder(@RequestBody Orders order, @RequestParam int userId) {
+        return orderService.createOrder(userId, order);
     }
 }

@@ -19,7 +19,7 @@ public class ShoppingCartController {
     @Autowired
     ShoppingCartService shoppingCartService;
 
-    // Get Shopping Cart Items by User Id
+    // Get Shopping Cart Items by User Id for viewing
     @GetMapping("/{userId}")
     public ResponseEntity<List<ShoppingCartItemDto>> getShoppingCartByUserId(@PathVariable int userId) {
         return shoppingCartService.getShoppingCartByUserId(userId)
