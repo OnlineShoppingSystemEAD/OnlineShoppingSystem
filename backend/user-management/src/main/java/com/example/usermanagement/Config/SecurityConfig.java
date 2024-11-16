@@ -22,16 +22,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private OurUserDetailsService ourUserDetailsService;
-    @Autowired
-    private JWTAuthFllter jwtAuthFllter;
+    private final OurUserDetailsService ourUserDetailsService;
+    private final JWTAuthFllter jwtAuthFllter;
+
+    public SecurityConfig(OurUserDetailsService ourUserDetailsService, JWTAuthFllter jwtAuthFllter) {
+        this.ourUserDetailsService = ourUserDetailsService;
+        this.jwtAuthFllter = jwtAuthFllter;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
-                .authorizeHttpRequests(request -> request.requestMatchers("/auth/**", "/public/**").permitAll()
+                .authorizeHttpRequests(request -> request.requestMatchers("/*","/auth/**", "/public/**", "/users/forgot-password", "users/forgot-password/verify", "users/verify-email").permitAll()
                         .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
                         .requestMatchers("/user/**").hasAnyAuthority("USER")
                         .requestMatchers("/adminuser/**").hasAnyAuthority("USER", "ADMIN")

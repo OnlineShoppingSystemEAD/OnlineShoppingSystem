@@ -19,11 +19,14 @@ import java.io.IOException;
 
 @Component
 public class JWTAuthFllter extends OncePerRequestFilter {
-    @Autowired
-    private JWTUtils jwtUtils;
+    private final JWTUtils jwtUtils;
 
-    @Autowired
-    private OurUserDetailsService ourUserDetailsService;
+    private final OurUserDetailsService ourUserDetailsService;
+
+    public JWTAuthFllter(JWTUtils jwtUtils, OurUserDetailsService ourUserDetailsService) {
+        this.jwtUtils = jwtUtils;
+        this.ourUserDetailsService = ourUserDetailsService;
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

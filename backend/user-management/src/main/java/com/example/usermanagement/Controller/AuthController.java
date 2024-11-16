@@ -31,6 +31,7 @@ public class AuthController {
     }
 
 
+
     /**
      * Endpoint for user signIn.
      *
@@ -55,6 +56,12 @@ public class AuthController {
     @PostMapping("/token/refresh")
     public ResponseEntity<ReqRes> refreshToken(@RequestBody ReqRes refreshTokenRequest){
         return ResponseEntity.ok(authService.refreshToken(refreshTokenRequest));
+    }
+
+    @PostMapping("/verify-token")
+    public ResponseEntity<ReqRes> verifyToken(@RequestBody ReqRes verifyTokenRequest){
+        System.out.println("verify token");
+        return ResponseEntity.ok(authService.verifyToken(verifyTokenRequest));
     }
 
 
