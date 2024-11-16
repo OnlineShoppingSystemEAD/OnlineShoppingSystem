@@ -29,4 +29,30 @@ public class ItemService {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         return itemRepository.findAll(pageable);
     }
+
+    // ITEM MANAGEMENT BY ADMIN
+    
+    // Add a new item to a category
+    public Item addItemToCategory(Item item) {
+        // You can add custom logic here to associate the item with a category
+        return itemRepository.save(item);
+    }
+
+    // Update an existing item
+    public Optional<Item> updateItem(int id, Item item) {
+        if (itemRepository.existsById(id)) {
+            item.setId(id);  // Ensure the item's ID stays the same
+            return Optional.of(itemRepository.save(item));
+        }
+        return Optional.empty();
+    }
+
+    // Delete an item from a category
+    public boolean deleteItem(int id) {
+        if (itemRepository.existsById(id)) {
+            itemRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }
