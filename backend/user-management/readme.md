@@ -1,90 +1,315 @@
-# User Management Service
 
-This project is a User Management Service built with Java and Spring Boot. It provides various endpoints to manage user profiles, including creating, updating, deleting, and managing user authentication.
+# User Management Application
+
+This is a Spring Boot application for managing user profiles, authentication, and authorization.
 
 ## Prerequisites
 
 - Java 11 or higher
-- Maven
-- Spring Boot
+- Maven 3.6.0 or higher
+- Spring Boot 2.5.4 or higher
 
-## Endpoints
+## Getting Started
 
-### Get User Profile by ID
-- **URL:** `/users/{id}`
+### Clone the repository
+
+```sh
+git clone https://github.com/your-repo/user-management.git
+cd user-management
+```
+
+### Build the project
+
+```sh
+mvn clean install
+```
+
+### Run the application
+
+```sh
+mvn spring-boot:run
+```
+
+## API Endpoints
+
+### Authentication
+
+#### Sign Up
+
+- **URL:** `/auth/signup`
+- **Method:** `POST`
+- **Request Body:**
+  ```json
+  {
+    "email": "user@example.com",
+    "password": "password123"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "statusCode": 200,
+    "message": "User signed up successfully",
+    "data": {
+      "userId": 1,
+      "email": "user@example.com"
+    }
+  }
+  ```
+
+#### Sign In
+
+- **URL:** `/auth/signIn`
+- **Method:** `POST`
+- **Request Body:**
+  ```json
+  {
+    "email": "user@example.com",
+    "password": "password123"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "statusCode": 200,
+    "message": "User signed in successfully",
+    "data": {
+      "token": "jwt-token",
+      "refreshToken": "refresh-token"
+    }
+  }
+  ```
+
+#### Refresh Token
+
+- **URL:** `/auth/token/refresh`
+- **Method:** `POST`
+- **Request Body:**
+  ```json
+  {
+    "refreshToken": "refresh-token"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "statusCode": 200,
+    "message": "Token refreshed successfully",
+    "data": {
+      "token": "new-jwt-token"
+    }
+  }
+  ```
+
+### User Management
+
+#### Get All User Profiles
+
+- **URL:** `/users`
 - **Method:** `GET`
-- **Description:** Retrieves the user profile by ID.
-- **Response:** `ReqRes`
+- **Response:**
+  ```json
+  [
+    {
+      "userId": 1,
+      "email": "user1@example.com",
+      "postalNumber": "12345",
+      "phoneNumber": "123-456-7890",
+      "addressPart1": "123 Main St",
+      "addressPart2": "Apt 4B",
+      "addressPart3": "Springfield"
+    },
+    {
+      "userId": 2,
+      "email": "user2@example.com",
+      "postalNumber": "67890",
+      "phoneNumber": "098-765-4321",
+      "addressPart1": "456 Elm St",
+      "addressPart2": "Suite 5A",
+      "addressPart3": "Shelbyville"
+    }
+  ]
+  ```
 
-### Create User Profile
+#### Get User Profile by ID
+
+- **URL:** `/users/{id}/profile`
+- **Method:** `GET`
+- **Response:**
+  ```json
+  {
+    "statusCode": 200,
+    "message": "User profile retrieved successfully",
+    "data": {
+      "userId": 1,
+      "email": "user@example.com",
+      "postalNumber": "12345",
+      "phoneNumber": "123-456-7890",
+      "addressPart1": "123 Main St",
+      "addressPart2": "Apt 4B",
+      "addressPart3": "Springfield"
+    }
+  }
+  ```
+
+#### Create User Profile
+
 - **URL:** `/users`
 - **Method:** `POST`
-- **Description:** Creates a new user profile.
 - **Request Body:**
-  - `postalNumber`: the user's postal number
-  - `phoneNumber`: the user's phone number
-  - `addressPart1`: the first part of the user's address
-  - `addressPart2`: the second part of the user's address
-  - `addressPart3`: the third part of the user's address
-- **Response:** `ReqRes`
+  ```json
+  {
+    "postalNumber": "12345",
+    "phoneNumber": "123-456-7890",
+    "addressPart1": "123 Main St",
+    "addressPart2": "Apt 4B",
+    "addressPart3": "Springfield"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "statusCode": 201,
+    "message": "User profile created successfully",
+    "data": {
+      "userId": 1,
+      "email": "user@example.com",
+      "postalNumber": "12345",
+      "phoneNumber": "123-456-7890",
+      "addressPart1": "123 Main St",
+      "addressPart2": "Apt 4B",
+      "addressPart3": "Springfield"
+    }
+  }
+  ```
 
-### Update User Profile by ID
+#### Update User Profile by ID
+
 - **URL:** `/users/{id}/profile`
 - **Method:** `PUT`
-- **Description:** Updates a user profile by ID.
 - **Request Body:**
-  - `postalNumber`: the user's postal number
-  - `phoneNumber`: the user's phone number
-  - `addressPart1`: the first part of the user's address
-  - `addressPart2`: the second part of the user's address
-  - `addressPart3`: the third part of the user's address
-- **Response:** `ReqRes`
+  ```json
+  {
+    "postalNumber": "67890",
+    "phoneNumber": "098-765-4321",
+    "addressPart1": "456 Elm St",
+    "addressPart2": "Suite 5A",
+    "addressPart3": "Shelbyville"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "statusCode": 200,
+    "message": "User profile updated successfully",
+    "data": {
+      "userId": 1,
+      "email": "user@example.com",
+      "postalNumber": "67890",
+      "phoneNumber": "098-765-4321",
+      "addressPart1": "456 Elm St",
+      "addressPart2": "Suite 5A",
+      "addressPart3": "Shelbyville"
+    }
+  }
+  ```
 
-### Delete User Profile by ID
+#### Delete User Profile by ID
+
 - **URL:** `/users/{id}/profile`
 - **Method:** `DELETE`
-- **Description:** Deletes a user profile by ID.
-- **Response:** `ReqRes`
+- **Response:**
+  ```json
+  {
+    "statusCode": 200,
+    "message": "User profile deleted successfully"
+  }
+  ```
 
-### Change User Password
+#### Change Password
+
 - **URL:** `/users/{id}/password`
 - **Method:** `PUT`
-- **Description:** Changes a user's password.
 - **Request Body:**
-  - `oldPassword`: the user's current password
-  - `newPassword`: the user's new password
-- **Response:** `ReqRes`
+  ```json
+  {
+    "oldPassword": "old-password",
+    "newPassword": "new-password"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "statusCode": 200,
+    "message": "Password changed successfully"
+  }
+  ```
 
-### Forgot Password
+#### Forgot Password
+
 - **URL:** `/users/forgot-password`
 - **Method:** `POST`
-- **Description:** Initiates the forgot password process.
 - **Request Body:**
-  - `email`: the user's email address
-- **Response:** `ReqRes`
+  ```json
+  {
+    "email": "user@example.com"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "statusCode": 200,
+    "message": "Forgot password process initiated"
+  }
+  ```
 
-### Verify Forgot Password
+#### Verify Forgot Password
+
 - **URL:** `/users/forgot-password/verify`
 - **Method:** `POST`
-- **Description:** Verifies the forgot password process.
 - **Request Body:**
-  - `email`: the user's email address
-  - `verificationCode`: the verification code sent to the user's email
-  - `newPassword`: the user's new password
-- **Response:** `ReqRes`
+  ```json
+  {
+    "email": "user@example.com",
+    "verificationCode": "123456",
+    "newPassword": "new-password"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "statusCode": 200,
+    "message": "Forgot password process verified"
+  }
+  ```
 
-### Verify Email
+#### Verify Email
+
 - **URL:** `/users/verify-email`
 - **Method:** `POST`
-- **Description:** Verifies the user's email.
 - **Request Body:**
-  - `email`: the user's email address
-  - `verificationCode`: the verification code sent to the user's email
-- **Response:** `ReqRes`
+  ```json
+  {
+    "email": "user@example.com",
+    "verificationCode": "123456"
+  }
+  ```
+- **Response:**
+  ```json
+  {
+    "statusCode": 200,
+    "message": "Email verified successfully"
+  }
+  ```
 
-## Running the Application
+## Running Tests
 
-To run the application, use the following command:
+To run all the tests, use the following command:
 
-```bash
-mvn spring-boot:run
+```sh
+mvn test
+```
+
+## License
+
+This project is licensed under the MIT License.
