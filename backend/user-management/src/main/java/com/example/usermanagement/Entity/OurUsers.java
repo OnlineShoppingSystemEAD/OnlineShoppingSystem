@@ -8,7 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-@Data
+@Data   // Generates all getters, setters, toString, equals, hashCode, and a constructor for required fields.
 @Entity
 @Table(name = "ourusers")
 public class OurUsers implements UserDetails {
