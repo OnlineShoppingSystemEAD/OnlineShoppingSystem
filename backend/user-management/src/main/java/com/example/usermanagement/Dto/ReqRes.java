@@ -20,6 +20,7 @@ public class ReqRes {
     private String name;
     private String email;
     private String role;
+    private Integer userId;
     private String password;
     private OurUsers ourUsers;
     private UserProfile userProfile;

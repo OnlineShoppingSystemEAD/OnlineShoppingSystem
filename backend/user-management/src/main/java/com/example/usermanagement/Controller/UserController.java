@@ -5,6 +5,7 @@ import com.example.usermanagement.Dto.ReqRes;
 import com.example.usermanagement.Entity.UserProfile;
 import com.example.usermanagement.Service.AuthService;
 import com.example.usermanagement.Service.OurUserDetailsService;
+import jakarta.ws.rs.QueryParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,8 +41,12 @@ public class UserController {
      * @return ResponseEntity containing the user profile response
      */
     @GetMapping("/{id}/profile")
-    public ResponseEntity<ReqRes> getUserProfileById(@PathVariable Integer id) {
+    public ResponseEntity<ReqRes> getUserProfileById(@PathVariable Integer id, @RequestParam Integer userId, @RequestParam String role) {
         ReqRes resp = ourUserDetailsService.getUserProfileById(id);
+
+        System.out.println("userId: " + userId);
+        System.out.println("role: " + role);
+
         return ResponseEntity.status(resp.getStatusCode()).body(resp);
 
     }
