@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8082
 
 eureka:
   client:
@@ -9,6 +9,20 @@ eureka:
 spring:
   application:
     name: API-GATEWAY
+  cloud:
+    gateway:
+      globalcors:
+        corsCofiguration:
+          [/**]:
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+            allowedHeaders:
+              - "*"
+
 
 
 jwt:
