@@ -45,18 +45,28 @@ public class AuthFlowNoServerIT {
     @Test
     public void testSignUp_WithValidData_Returns200() throws Exception {
         ReqRes reqRes = new ReqRes();
+        String testUserEmail = "testemail@gmail.com";
+
         reqRes.setName("Test User");
-        reqRes.setEmail("testemail@gmail.com");
+        reqRes.setEmail(testUserEmail);
         reqRes.setPassword("Password123!");
         reqRes.setRole("USER");
         reqRes.setVerificationCode(String.valueOf(new Random().nextInt(900000) + 100000));
 
         // Make POST request to the signup endpoint
-        ResponseEntity<Map> response = restTemplate.postForEntity("/auth/signup", reqRes, Map.class);
+        // results in data format error. TODO: Fix this later
         // ResponseEntity<ReqRes> response = restTemplate.postForEntity("/auth/signup", reqRes, ReqRes.class);
-
+        ResponseEntity<Map> response = restTemplate.postForEntity("/auth/signup", reqRes, Map.class);
         Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+//        Assertions.assertEquals("User registered successfully", response.getBody().get("message"));
 
+        // Check if the user was saved in the database
+        OurUsers savedUser = ourUserRepo.findByEmail(testUserEmail).orElse(null);
+        Assertions.assertNotNull(savedUser);
+        Assertions.assertEquals(testUserEmail, savedUser.getEmail());
+
+        // Clean up test data
+        ourUserRepo.delete(savedUser);
     }
 
 //    @BeforeEach
