@@ -212,11 +212,13 @@ public class AuthService {
             if (jwtUtils.isTokenValid(verifyTokenRequest.getToken(), users)) {
                 response.setStatusCode(200);
                 response.setMessage("Token is Valid");
+                response.setUserId(users.getId());
+                response.setRole(users.getRole());
             } else {
                 response.setStatusCode(401);
                 response.setMessage("Token is Invalid");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             response.setStatusCode(500);
             response.setError(e.getMessage());
         }
