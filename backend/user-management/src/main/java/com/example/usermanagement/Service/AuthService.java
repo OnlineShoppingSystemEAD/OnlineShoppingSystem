@@ -71,9 +71,18 @@ public class AuthService {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signinRequest.getEmail(),signinRequest.getPassword()));
             var user = ourUserRepo.findByEmail(signinRequest.getEmail()).orElseThrow();
+
+            HashMap<String, Object> claims = new HashMap<>();
+
+            // add
+            claims.put("userId", user.getId());
+            claims.put("role", user.getRole());
             System.out.println("USER IS: "+ user);
-            var jwt = jwtUtils.generateToken(user);
-            var refreshToken = jwtUtils.generateRefreshToken(new HashMap<>(), user);
+            var jwt = jwtUtils.generateToken(claims, user);
+
+
+
+            var refreshToken = jwtUtils.generateRefreshToken(claims, user);
             response.setStatusCode(200);
             response.setToken(jwt);
             response.setRefreshToken(refreshToken);
@@ -90,8 +99,14 @@ public class AuthService {
         ReqRes response = new ReqRes();
         String ourEmail = jwtUtils.extractUsername(refreshTokenReqiest.getToken());
         OurUsers users = ourUserRepo.findByEmail(ourEmail).orElseThrow();
+        HashMap<String, Object> claims = new HashMap<>();
+
+        // add
+        claims.put("userId", users.getId());
+        claims.put("role", users.getRole());
+
         if (jwtUtils.isTokenValid(refreshTokenReqiest.getToken(), users)) {
-            var jwt = jwtUtils.generateToken(users);
+            var jwt = jwtUtils.generateToken(claims, users);
             response.setStatusCode(200);
             response.setToken(jwt);
             response.setRefreshToken(refreshTokenReqiest.getToken());

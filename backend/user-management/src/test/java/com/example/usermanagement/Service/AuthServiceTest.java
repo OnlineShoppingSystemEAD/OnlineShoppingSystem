@@ -79,7 +79,7 @@ public class AuthServiceTest {
     public void testSignIn() {
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(null);
         when(ourUserRepo.findByEmail(request.getEmail())).thenReturn(Optional.of(mockUser));
-        when(jwtUtils.generateToken(mockUser)).thenReturn("mockJwtToken");
+        when(jwtUtils.generateToken(claims, mockUser)).thenReturn("mockJwtToken");
         when(jwtUtils.generateRefreshToken(any(), eq(mockUser))).thenReturn("mockRefreshToken");
 
         ReqRes result = authService.signIn(request);
@@ -96,7 +96,7 @@ public class AuthServiceTest {
         when(jwtUtils.extractUsername(anyString())).thenReturn("test@example.com");
         when(ourUserRepo.findByEmail(anyString())).thenReturn(Optional.of(mockUser));
         when(jwtUtils.isTokenValid(anyString(), any(OurUsers.class))).thenReturn(true);
-        when(jwtUtils.generateToken(any(OurUsers.class))).thenReturn("newJwtToken");
+        when(jwtUtils.generateToken(claims, any(OurUsers.class))).thenReturn("newJwtToken");
 
         ReqRes result = authService.refreshToken(request);
 

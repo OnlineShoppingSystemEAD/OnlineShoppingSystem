@@ -43,7 +43,7 @@ public class JWTUtilsTest {
 
     @Test
     void testGenerateToken() {
-        String token = jwtUtils.generateToken(userDetails);
+        String token = jwtUtils.generateToken(claims, userDetails);
 
         assertNotNull(token);
 
@@ -71,7 +71,7 @@ public class JWTUtilsTest {
 
     @Test
     void testExtractUsername() {
-        String token = jwtUtils.generateToken(userDetails);
+        String token = jwtUtils.generateToken(claims, userDetails);
         String username = jwtUtils.extractUsername(token);
 
         assertEquals("testUser", username);
@@ -79,7 +79,7 @@ public class JWTUtilsTest {
 
     @Test
     void testIsTokenValid() {
-        String token = jwtUtils.generateToken(userDetails);
+        String token = jwtUtils.generateToken(claims, userDetails);
         assertTrue(jwtUtils.isTokenValid(token, userDetails));
 
         UserDetails differentUser = mock(UserDetails.class);
@@ -89,7 +89,7 @@ public class JWTUtilsTest {
 
     @Test
     void testIsTokenExpired() {
-        String token = jwtUtils.generateToken(userDetails);
+        String token = jwtUtils.generateToken(claims, userDetails);
 
         assertFalse(jwtUtils.isTokenExpired(token));
 
