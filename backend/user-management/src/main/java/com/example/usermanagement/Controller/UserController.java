@@ -62,7 +62,7 @@ public class UserController {
      *                    - addressPart3: the third part of the user's address
      * @return ResponseEntity containing the create user profile response
      */
-    @PostMapping
+    @PostMapping("/profile")
     public ResponseEntity<ReqRes> createUserProfile(@RequestBody UserProfile userProfile) {
         ReqRes resp = ourUserDetailsService.createUserProfile(userProfile);
         return ResponseEntity.status(resp.getStatusCode()).body(resp);

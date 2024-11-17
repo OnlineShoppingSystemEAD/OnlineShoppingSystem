@@ -11,50 +11,54 @@ public class UserProfile {
     @Id
     private Integer id;
 
-    @Column(nullable = false)
-    private String postalNumber;
+    @Column(nullable = true)
+    private String firstName;
 
-    @Column(nullable = false)
-    private String phoneNumber;
+    @Column(nullable = true)
+    private String lastName;
 
-    @Column(nullable = false)
-    private String addressPart1;
+    @Column(nullable = true)
+    private String email;
 
-    @Column(nullable = false)
-    private String addressPart2;
+    @Column(nullable = true)
+    private String postalCode;
 
-    @Column(nullable = false)
-    private String addressPart3;
+    @Column(nullable = true)
+    private String contactNumber;
+
+    @Column(nullable = true)
+    private String houseNumber;
+
+    @Column(nullable = true)
+    private String addressLine1;
+
+    @Column(nullable = true)
+    private String addressLine2;
 
     @Column(nullable = true)
     private String profilePicture;
-
-
-
 
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private OurUsers user;
 
-    public void setName(String testUser) {
-    }
+//    public void setName(String testUser) {
+//    }
+//
+//    public void setEmail(String mail) {
+//    }
+//
+//    public void setAddress(String s) {
+//    }
+//
+//
+//    public byte getName() {
+//        return 0;
+//    }
+//
+//    public short getAddress() {
+//        return 0;
+//    }
 
-    public void setEmail(String mail) {
-    }
-
-    public void setAddress(String s) {
-    }
-
-    public byte getName() {
-        return 0;
-    }
-
-    public short getEmail() {
-        return 0;
-    }
-
-    public short getAddress() {
-        return 0;
-    }
 }

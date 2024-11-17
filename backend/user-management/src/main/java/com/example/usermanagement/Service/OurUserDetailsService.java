@@ -86,11 +86,15 @@ public class OurUserDetailsService implements UserDetailsService {
             Optional<UserProfile> userProfileOptional = userProfileRepo.findById(id);
             if (userProfileOptional.isPresent()) {
                 UserProfile userProfile = userProfileOptional.get();
-                userProfile.setPostalNumber(userProfileDetails.getPostalNumber());
-                userProfile.setPhoneNumber(userProfileDetails.getPhoneNumber());
-                userProfile.setAddressPart1(userProfileDetails.getAddressPart1());
-                userProfile.setAddressPart2(userProfileDetails.getAddressPart2());
-                userProfile.setAddressPart3(userProfileDetails.getAddressPart3());
+                userProfile.setPostalCode(userProfileDetails.getPostalCode());
+                userProfile.setContactNumber(userProfileDetails.getContactNumber());
+                userProfile.setAddressLine1(userProfileDetails.getAddressLine1());
+                userProfile.setAddressLine2(userProfileDetails.getAddressLine2());
+                userProfile.setHouseNumber(userProfileDetails.getHouseNumber());
+                userProfile.setProfilePicture(userProfileDetails.getProfilePicture());
+                userProfile.setFirstName(userProfileDetails.getFirstName());
+                userProfile.setLastName(userProfileDetails.getLastName());
+                userProfile.setEmail(userProfileDetails.getEmail());
                 UserProfile userProfileResult = userProfileRepo.save(userProfile);
                 resp.setStatusCode(200);
                 resp.setMessage("User Profile Updated Successfully");
