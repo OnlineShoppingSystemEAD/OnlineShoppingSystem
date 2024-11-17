@@ -52,14 +52,20 @@ public class UserController {
     }
 
     /**
-     * Endpoint to create a user profile.
+     * Endpoint to create a new user profile.
      *
      * @param userProfile the request body containing user profile details:
-     *                    - postalNumber: the user's postal number
-     *                    - phoneNumber: the user's phone number
-     *                    - addressPart1: the first part of the user's address
-     *                    - addressPart2: the second part of the user's address
-     *                    - addressPart3: the third part of the user's address
+     *                    - id: the ID of the user profile
+     *                    - firstName: the user's first name
+     *                    - lastName: the user's last name
+     *                    - email: the user's email address
+     *                    - postalCode: the user's postal code
+     *                    - contactNumber: the user's contact number
+     *                    - houseNumber: the user's house number
+     *                    - addressLine1: the first line of the user's address
+     *                    - addressLine2: the second line of the user's address
+     *                    - profilePicture: the URL of the user's profile picture
+     *                    - user: the associated user details
      * @return ResponseEntity containing the create user profile response
      */
     @PostMapping("/profile")
@@ -70,15 +76,21 @@ public class UserController {
 
 
     /**
-     * Endpoint to update a user profile by ID.
+     * Endpoint to update a user profile.
      *
-     * @param id the ID of the user
+     * @param id the ID of the user profile to update
      * @param userProfileDetails the request body containing updated user profile details:
-     *                           - postalNumber: the user's postal number
-     *                           - phoneNumber: the user's phone number
-     *                           - addressPart1: the first part of the user's address
-     *                           - addressPart2: the second part of the user's address
-     *                           - addressPart3: the third part of the user's address
+     *                           - id: the ID of the user profile
+     *                           - firstName: the user's first name
+     *                           - lastName: the user's last name
+     *                           - email: the user's email address
+     *                           - postalCode: the user's postal code
+     *                           - contactNumber: the user's contact number
+     *                           - houseNumber: the user's house number
+     *                           - addressLine1: the first line of the user's address
+     *                           - addressLine2: the second line of the user's address
+     *                           - profilePicture: the URL of the user's profile picture
+     *                           - user: the associated user details
      * @return ResponseEntity containing the update user profile response
      */
     @PutMapping("/{id}/profile")
