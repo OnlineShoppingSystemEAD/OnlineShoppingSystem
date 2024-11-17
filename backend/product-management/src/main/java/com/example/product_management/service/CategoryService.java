@@ -1,8 +1,9 @@
 package com.example.product_management.service;
 
 import com.example.product_management.dto.CategoryDTO;
-import com.example.product_management.entity.Category;
-import com.example.product_management.repo.CategoryRepository;
+import com.example.product_management.model.Category;
+import com.example.product_management.repository.CategoryRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
