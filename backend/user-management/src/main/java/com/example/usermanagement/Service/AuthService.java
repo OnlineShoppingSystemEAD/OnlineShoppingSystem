@@ -2,10 +2,13 @@ package com.example.usermanagement.Service;
 
 import com.example.usermanagement.Dto.ChangePasswordReq;
 import com.example.usermanagement.Dto.ReqRes;
+import com.example.usermanagement.Dto.SignInResponse;
 import com.example.usermanagement.Entity.OurUsers;
 import com.example.usermanagement.Repository.OurUserRepo;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Random;
@@ -65,39 +68,59 @@ public class AuthService {
         return resp;
     }
 
-    public ReqRes signIn(ReqRes signinRequest){
+
+    public ReqRes signIn(ReqRes signinRequest) {
         ReqRes response = new ReqRes();
 
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(signinRequest.getEmail(),signinRequest.getPassword()));
-            var user = ourUserRepo.findByEmail(signinRequest.getEmail()).orElseThrow();
+            // Authenticate user
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(signinRequest.getEmail(), signinRequest.getPassword())
+            );
 
+            // Fetch user details
+            var user = ourUserRepo.findByEmail(signinRequest.getEmail())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + signinRequest.getEmail()));
+
+            // Add claims for token generation
             HashMap<String, Object> claims = new HashMap<>();
-
-            // add
             claims.put("userId", user.getId());
             claims.put("role", user.getRole());
-            System.out.println("USER IS: "+ user);
+
+            // Generate tokens
             var jwt = jwtUtils.generateToken(claims, user);
-
-
-
             var refreshToken = jwtUtils.generateRefreshToken(claims, user);
+
+            // Set response fields
             response.setStatusCode(200);
+            response.setMessage("Successfully Signed In");
             response.setToken(jwt);
             response.setRefreshToken(refreshToken);
             response.setExpirationTime("24Hr");
-            response.setMessage("Successfully Signed In");
-        }catch (Exception e){
+
+            // Set user-specific details in ReqRes object
+            response.setUserId(user.getId());
+            response.setEmail(user.getEmail());
+            response.setRole(user.getRole());
+
+        } catch (BadCredentialsException ex) {
+            response.setStatusCode(401);
+            response.setMessage("Invalid email or password");
+        } catch (Exception e) {
+            e.printStackTrace();
             response.setStatusCode(500);
             response.setError(e.getMessage());
         }
+
         return response;
     }
+
+
 
     public ReqRes refreshToken(ReqRes refreshTokenReqiest){
         ReqRes response = new ReqRes();
         String ourEmail = jwtUtils.extractUsername(refreshTokenReqiest.getToken());
+        System.out.println("refresh token:" + refreshTokenReqiest.getToken());
         OurUsers users = ourUserRepo.findByEmail(ourEmail).orElseThrow();
         HashMap<String, Object> claims = new HashMap<>();
 
