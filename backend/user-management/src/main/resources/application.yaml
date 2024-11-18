@@ -1,6 +1,19 @@
 spring:
   application:
     name: USER-MANAGEMENT-SERVICE
+  cloud:
+    gateway:
+      globalcors:
+        corsCofiguration:
+          [ /** ]:
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+            allowedHeaders:
+              - "*"
   datasource:
     url: jdbc:mysql://ead2.ch0mg0sywvjb.ap-south-1.rds.amazonaws.com/ead2
     username: admin
