@@ -68,9 +68,9 @@ public class UserController {
      *                    - user: the associated user details
      * @return ResponseEntity containing the create user profile response
      */
-    @PostMapping("/profile")
-    public ResponseEntity<ReqRes> createUserProfile(@RequestBody UserProfile userProfile) {
-        ReqRes resp = ourUserDetailsService.createUserProfile(userProfile);
+    @PostMapping("/{id}/profile")
+    public ResponseEntity<ReqRes> createUserProfile(@PathVariable Integer id,@RequestBody UserProfile userProfile) {
+        ReqRes resp = ourUserDetailsService.createUserProfile(id, userProfile);
         return ResponseEntity.status(resp.getStatusCode()).body(resp);
     }
 

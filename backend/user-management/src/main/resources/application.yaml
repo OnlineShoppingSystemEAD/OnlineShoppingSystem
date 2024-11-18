@@ -2,13 +2,15 @@ spring:
   application:
     name: USER-MANAGEMENT-SERVICE
   datasource:
-    url: jdbc:mysql://janith.ch0mg0sywvjb.ap-south-1.rds.amazonaws.com:3306/ead
-    username: root
+    url: jdbc:mysql://ead2.ch0mg0sywvjb.ap-south-1.rds.amazonaws.com/ead2
+    username: admin
     password: wIvsa9-dykjon-suxcuq
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
+#        ddl-auto: create
+
     show-sql: true
   mail:
     host: smtp.gmail.com
