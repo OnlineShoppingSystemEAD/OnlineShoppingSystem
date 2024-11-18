@@ -26,5 +26,4 @@ public class ReqRes {
     private UserProfile userProfile;
     private String verificationCode;
     private String newPassword;
-    private SignInResponse signInResponse;
 }

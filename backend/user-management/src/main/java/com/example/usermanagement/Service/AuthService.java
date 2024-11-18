@@ -2,7 +2,6 @@ package com.example.usermanagement.Service;
 
 import com.example.usermanagement.Dto.ChangePasswordReq;
 import com.example.usermanagement.Dto.ReqRes;
-import com.example.usermanagement.Dto.SignInResponse;
 import com.example.usermanagement.Entity.OurUsers;
 import com.example.usermanagement.Repository.OurUserRepo;
 import org.springframework.security.authentication.AuthenticationManager;
