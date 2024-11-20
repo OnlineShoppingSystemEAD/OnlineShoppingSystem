@@ -85,6 +85,7 @@ public class AuthService {
             HashMap<String, Object> claims = new HashMap<>();
             claims.put("userId", user.getId());
             claims.put("role", user.getRole());
+            claims.put("accStatus", user.getIsVerified() ? "Verified" : "Not Verified");
 
             // Generate tokens
             var jwt = jwtUtils.generateToken(claims, user);
@@ -126,6 +127,7 @@ public class AuthService {
         // add
         claims.put("userId", users.getId());
         claims.put("role", users.getRole());
+        claims.put("accStatus", users.getIsVerified() ? "Verified" : "Not Verified");
 
         if (jwtUtils.isTokenValid(refreshTokenReqiest.getToken(), users)) {
             var jwt = jwtUtils.generateToken(claims, users);
@@ -251,6 +253,7 @@ public class AuthService {
                 response.setMessage("Token is Valid");
                 response.setUserId(users.getId());
                 response.setRole(users.getRole());
+                response.setAccStatus(users.getIsVerified() ? "Verified" : "Not Verified");
             } else {
                 response.setStatusCode(401);
                 response.setMessage("Token is Invalid");

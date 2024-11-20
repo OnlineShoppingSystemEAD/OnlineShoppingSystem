@@ -5,6 +5,7 @@ public  class TokenVerificationResponse {
     private String message;
     private String userId;
     private String role;
+    private String accStatus;
 
     // Getters and setters
     public int getStatusCode() {
@@ -37,5 +38,13 @@ public  class TokenVerificationResponse {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public String getAccStatus() {
+        return accStatus;
+    }
+
+    public void setAccStatus(String accStatus) {
+        this.accStatus = accStatus;
     }
 }

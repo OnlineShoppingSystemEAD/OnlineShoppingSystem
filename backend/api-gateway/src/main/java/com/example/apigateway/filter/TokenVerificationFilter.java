@@ -72,6 +72,7 @@ public class TokenVerificationFilter extends AbstractGatewayFilterFactory<TokenV
                             URI modifiedUri = UriComponentsBuilder.fromUri(originalUri)
                                     .queryParam("userId", response.getUserId())
                                     .queryParam("role", response.getRole())
+                                    .queryParam("accStatus", response.getAccStatus())
                                     .build(true)
                                     .toUri();
 
