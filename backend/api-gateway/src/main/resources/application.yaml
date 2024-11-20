@@ -22,7 +22,7 @@ spring:
               - DELETE
             allowedHeaders:
               - "*"
-            allowCredentials: true
+#            allowCredentials: true
 
 
 
