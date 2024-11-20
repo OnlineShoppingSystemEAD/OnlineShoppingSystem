@@ -19,6 +19,9 @@ import Checkout from "./pages/user/Checkout";
 import PrivateRoute from "./components/PrivateRoute";
 import userService from "./api/services/UserService";
 import NotFound from "./pages/NotFound";
+import EmailVerification from "./pages/login/EmailVerification";
+import ResetPassword from "./pages/login/ResetPassword";
+import ForgotPassword from "./pages/login/ForgotPassword";
 
 
 
@@ -61,6 +64,9 @@ function App() {
               <Route path="/contact" element={<Contact />} />
               <Route path="/" element={<Home />} />
               <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
+              <Route path="/emailVerification" element={<EmailVerification />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password" element={<ResetPassword />} />
 
               {/* Protected User Routes */}
               <Route
