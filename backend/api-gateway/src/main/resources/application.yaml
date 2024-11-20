@@ -9,19 +9,7 @@ eureka:
 spring:
   application:
     name: API-GATEWAY
-  cloud:
-    gateway:
-      globalcors:
-        corsCofiguration:
-          [/**]:
-            allowedOrigins: "*"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-            allowedHeaders:
-              - "*"
+
 
 
 
