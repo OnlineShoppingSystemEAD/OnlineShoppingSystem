@@ -332,13 +332,17 @@ const userService = {
      */
     verifyEmail: async (reqRes) => {
         try {
-            const response = await axios.post(`${API_BASE_URL}/users/verify-email`, reqRes, {
-                headers: getDefaultHeaders(),
-            });
+            const response = await axios.post(
+                `${API_BASE_URL}/users/verify-email`, // Endpoint
+                reqRes, // Ensure the payload matches the backend's expected structure
+                {
+                    headers: getDefaultHeaders(), // Include any required headers
+                }
+            );
             return response.data;
         } catch (error) {
-            console.error("Error in email verification:", error);
-            throw error;
+            console.error("Error in email verification:", error.response?.data || error.message);
+            throw error.response?.data || new Error("Email verification failed");
         }
     },
 };

@@ -31,6 +31,8 @@ const Login = () => {
             // Decode the token to get the user's role
             const decodedToken = jwtDecode(response.token);
             console.log("Decoded Token:", decodedToken);
+            localStorage.setItem("token", response.token);
+            localStorage.setItem("decodedToken", JSON.stringify(decodedToken));
 
             // Navigate based on the user's role
             if (decodedToken.role === "ADMIN") {
