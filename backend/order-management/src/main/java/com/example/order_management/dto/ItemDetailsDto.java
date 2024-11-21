@@ -76,7 +76,7 @@ public class ItemDetailsDto {
         this.imageURL = imageURL;
     }
 
-    public String getImageURL(String imageURL){
+    public String getImageURL(){
         return this.imageURL;
     }
     
