@@ -1,47 +1,81 @@
 package com.example.product_management.controller;
 
-import com.example.product_management.dto.CategoryDTO;
-import com.example.product_management.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.data.domain.Page;
+import com.example.product_management.service.ItemService;
+import com.example.product_management.model.Item;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/categories")
-public class CategoryController {
+@RequestMapping("/api/items")
+public class ItemController {
 
     @Autowired
-    private CategoryService categoryService;
+    private ItemService itemService;
 
-    @GetMapping
-    public ResponseEntity<List<CategoryDTO>> getAllCategories() {
-        return ResponseEntity.ok(categoryService.getAllCategories());
-    }
-
+    // Get specific items
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable int id) {
-        CategoryDTO category = categoryService.getCategoryById(id);
-        return category != null ? ResponseEntity.ok(category) : ResponseEntity.notFound().build();
+    public ResponseEntity<Item> getItembyId(@PathVariable int id) {
+        return itemService.getItembyId(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping
-    public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO) {
-        CategoryDTO createdCategory = categoryService.createCategory(categoryDTO);
-        return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
+    // Get items by category
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<Page<Item>> getItemsByCategory(@PathVariable String categoryId,
+            @RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "16") int pageSize) {
+        Page<Item> items = itemService.getItemsByCategory(categoryId, pageNo, pageSize);
+        return ResponseEntity.ok(items);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable int id, @RequestBody CategoryDTO categoryDTO) {
-        CategoryDTO updatedCategory = categoryService.updateCategory(id, categoryDTO);
-        return ResponseEntity.ok(updatedCategory);
+    // Get Items
+    @GetMapping
+    public ResponseEntity<Page<Item>> getItems(@RequestParam(defaultValue = "0") int pageNo,
+            @RequestParam(defaultValue = "16") int pageSize) {
+        Page<Item> items = itemService.getItems(pageNo, pageSize);
+        return ResponseEntity.ok(items);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable int id) {
-        categoryService.deleteCategory(id);
-        return ResponseEntity.noContent().build();
+    // ITEM MANAGEMENT BY ADMIN
+
+    // Add a new item to a category
+    @PostMapping("/add")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Item> addItem(@RequestBody Item item) {
+        // Assuming the 'categoryId' is set in the Item object
+        Item savedItem = itemService.addItemToCategory(item);
+        return ResponseEntity.ok(savedItem);
+    }
+
+    // Update an existing item in a category
+    @PutMapping("/update/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Item> updateItem(@PathVariable int id, @RequestBody Item item) {
+        Optional<Item> updatedItem = itemService.updateItem(id, item);
+        return updatedItem.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // Delete an item from a category
+    @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteItem(@PathVariable int id) {
+        boolean isDeleted = itemService.deleteItem(id);
+        if (isDeleted) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+
     }
 }
