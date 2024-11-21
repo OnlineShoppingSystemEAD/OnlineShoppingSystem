@@ -16,18 +16,18 @@ public class Item {
     private String description;
     private float price;
     private int quantity;
-    // private Object image;
+    private String imageURL;
     private int categoryId;
 
     public Item() {
     }
 
-    public Item(String name, String description, float price, int quantity, int categoryId) {
+    public Item(String name, String description, float price, int quantity, String imageURL, int categoryId) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.quantity = quantity;
-        // this.image = image;
+        this.imageURL = imageURL;
         this.categoryId = categoryId;
     }
 
@@ -78,6 +78,14 @@ public class Item {
 
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
+    }
+
+    public void setImageURL(String imageURL){
+        this.imageURL = imageURL;
+    }
+
+    public String getImageURL(){
+        return this.imageURL;
     }
 
 }
