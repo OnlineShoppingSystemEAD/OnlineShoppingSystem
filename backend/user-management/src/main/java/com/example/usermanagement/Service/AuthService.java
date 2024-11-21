@@ -3,7 +3,9 @@ package com.example.usermanagement.Service;
 import com.example.usermanagement.Dto.ChangePasswordReq;
 import com.example.usermanagement.Dto.ReqRes;
 import com.example.usermanagement.Entity.OurUsers;
+import com.example.usermanagement.Entity.UserProfile;
 import com.example.usermanagement.Repository.OurUserRepo;
+import com.example.usermanagement.Repository.UserProfileRepo;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,25 +23,30 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final EmailSenderService emailSenderService;
+    private final UserProfileRepo userProfileRepo;
 
     public AuthService(
             OurUserRepo ourUserRepo,
             JWTUtils jwtUtils,
             PasswordEncoder passwordEncoder,
             AuthenticationManager authenticationManager,
-            EmailSenderService emailSenderService
+            EmailSenderService emailSenderService,
+            UserProfileRepo userProfileRepo
             ) {
         this.ourUserRepo = ourUserRepo;
         this.jwtUtils = jwtUtils;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.emailSenderService = emailSenderService;
+        this.userProfileRepo = userProfileRepo;
     }
 
     public ReqRes signUp(ReqRes registrationRequest){
         ReqRes resp = new ReqRes();
         try {
             OurUsers ourUsers = new OurUsers();
+            UserProfile userProfile = new UserProfile();
+
             ourUsers.setEmail(registrationRequest.getEmail());
             ourUsers.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
 //            ourUsers.setRole(registrationRequest.getRole());
@@ -51,6 +58,11 @@ public class AuthService {
             ourUsers.setVerificationCode(verificationCode);
 
             OurUsers ourUserResult = ourUserRepo.save(ourUsers);
+
+
+            //save to the profile
+            userProfile.setUser(ourUsers);
+            userProfileRepo.save(userProfile);
 
             if (ourUserResult != null && ourUserResult.getId()>0) {
                 // Send the verification code to the user's email
@@ -174,6 +186,9 @@ public class AuthService {
                 // Save the verification code in the OurUsers entity
                 ourUsers.setVerificationCode(verificationCode);
                 ourUserRepo.save(ourUsers);
+
+
+
 
                 // Send the verification code to the user's email
                 emailSenderService.sendEmail(ourUsers.getEmail(), "Password Reset Code", "Your Password Reset Code is: " + verificationCode);
