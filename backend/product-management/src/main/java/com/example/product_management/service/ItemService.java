@@ -29,7 +29,7 @@ public class ItemService {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         return itemRepository.findAll(pageable);
     }
-
+  
     // ITEM MANAGEMENT BY ADMIN
 
     // Add a new item to a category
@@ -55,4 +55,5 @@ public class ItemService {
         }
         return false;
     }
+
 }

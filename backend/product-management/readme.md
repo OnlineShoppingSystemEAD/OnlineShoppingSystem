@@ -1,0 +1,53 @@
+## API End Points
+
+### Getting number of items to display
+
+- **URL:** `/api/items/`
+- **Method:** `GET`
+- **Request Body:**
+  ```json
+  {
+    "pageNo": 1,
+    "pageSize": 16
+  }
+  ```
+
+  ### Get a specific item
+
+- **URL:** `/api/items/{id}`
+- **Method:** `GET`
+- **Request Body:**
+  ```json
+  {
+    "itemId": 1,
+  }
+  ```
+
+  - **Response Body:**
+  ```json
+  {
+    "itemId": 1,
+    "name": "T-shirt",
+    "description": "Lorem-ipsum",
+    "price":40.65,
+    "quantity":5,
+    "categoryId":2
+  }
+  ```
+
+   ### Get set of items by category
+
+- **URL:** `/api/items/category/{categoryId}`
+- **Method:** `GET`
+- **Request Body:**
+  ```json
+  {
+    "categoryId": 2,
+    "pageNo": 1,
+    "pageSize":16
+  }
+  ```
+
+
+
+  
