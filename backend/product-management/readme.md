@@ -19,7 +19,7 @@
 - **Request Body:**
   ```json
   {
-    "itemId": 1,
+    "itemId": 1
   }
   ```
 
