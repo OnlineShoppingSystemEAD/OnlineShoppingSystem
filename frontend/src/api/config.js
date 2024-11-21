@@ -1,5 +1,9 @@
 // Base URL for the API
-export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL ;
+export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+
+if (!API_BASE_URL) {
+    console.error("API_BASE_URL is not defined. Check your .env file.");
+}
 // Uses environment variable if set, otherwise defaults to localhost
 
 /**
