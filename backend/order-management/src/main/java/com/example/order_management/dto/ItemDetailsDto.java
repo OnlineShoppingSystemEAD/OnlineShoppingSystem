@@ -7,7 +7,7 @@ public class ItemDetailsDto {
     private String description;
     private float price;
     private int quantity;
-    // private Object image;
+    private String imageURL;
     private int categoryId;
 
     public ItemDetailsDto() {
