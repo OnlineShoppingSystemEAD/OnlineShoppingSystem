@@ -66,7 +66,7 @@ public class ShoppingCartService {
     public ItemDetailsDto getItem(int itemId) {
         RestTemplate restTemplate = new RestTemplate();
         ItemDetailsDto responseItemDetails = restTemplate.getForObject(
-                "http://localhost:8080/api/items/{itemId}", ItemDetailsDto.class, itemId);
+                "http://localhost:8083/api/items/{itemId}", ItemDetailsDto.class, itemId);
         return responseItemDetails;
     }
 }
