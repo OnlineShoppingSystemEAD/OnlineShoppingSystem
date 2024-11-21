@@ -28,6 +28,7 @@ public class ShoppingCartService {
             dto.setItemQuantity(itemDetails.getQuantity());
             dto.setItemName(itemDetails.getName());
             dto.setItemPrice(itemDetails.getPrice());
+            dto.setImageURL(itemDetails.getImageURL());
             return dto;
         }).collect(Collectors.toList());
 
