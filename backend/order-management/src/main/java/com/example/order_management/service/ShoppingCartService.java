@@ -17,6 +17,9 @@ public class ShoppingCartService {
     @Autowired
     private ShoppingCartRepository shoppingCartRepository;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
     // Get Shopping Cart Items for viewing
     public Optional<List<ShoppingCartItemDto>> getShoppingCartByUserId(int userId) {
         List<ShoppingCartItem> items = shoppingCartRepository.findByUserId(userId);
@@ -63,10 +66,16 @@ public class ShoppingCartService {
     }
 
     // Get Item Details
+//    public ItemDetailsDto getItem(int itemId) {
+//        RestTemplate restTemplate = new RestTemplate();
+//        ItemDetailsDto responseItemDetails = restTemplate.getForObject(
+//                "http://localhost:8083/api/items/{itemId}", ItemDetailsDto.class, itemId);
+//        return responseItemDetails;
+//    }
+
     public ItemDetailsDto getItem(int itemId) {
-        RestTemplate restTemplate = new RestTemplate();
         ItemDetailsDto responseItemDetails = restTemplate.getForObject(
-                "http://localhost:8083/api/items/{itemId}", ItemDetailsDto.class, itemId);
+                "lb://PRODUCT-MANAGEMENT-SERVICE/api/items/{itemId}", ItemDetailsDto.class, itemId);
         return responseItemDetails;
     }
 }
