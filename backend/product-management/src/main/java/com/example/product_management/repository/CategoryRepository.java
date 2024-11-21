@@ -8,4 +8,3 @@ import com.example.product_management.model.Category;
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
 }
-

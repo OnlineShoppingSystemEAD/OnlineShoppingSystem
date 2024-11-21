@@ -10,4 +10,4 @@ class ProductManagementApplicationTests {
 	public void contextLoads() {
 	}
 
-}  
+}
