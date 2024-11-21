@@ -29,7 +29,7 @@ public class GatewayConfig {
                         .filters(f -> f.filter(loggingFilter.apply(new LoggingFilter.Config()))
                                        .filter(tokenVerificationFilter.apply(new TokenVerificationFilter.Config())))
                         .uri("lb://PRODUCT-MANAGEMENT-SERVICE"))
-                .route("ORDER-MANAGEMENT-SERVICE", r -> r.path("/orders/**")
+                .route("ORDER-MANAGEMENT-SERVICE", r -> r.path("/api/order/**", "/api/orderItems/**", "/api/shoppingCart/**")
                         .filters(f -> f.filter(loggingFilter.apply(new LoggingFilter.Config()))
                                        .filter(tokenVerificationFilter.apply(new TokenVerificationFilter.Config())))
                         .uri("lb://ORDER-MANAGEMENT-SERVICE"))
