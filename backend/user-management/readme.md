@@ -323,6 +323,12 @@ To view the test report, use the following command:
 mvn allure:serve
 ```
 
+To save the allure report in docx, make sure to install *allure-docx* & run the allure-docx:
+```shell
+pip install allure-docx
+allure-docx /path/to/allure-results results.docx # path to allure-results folder is usually target/allure-results
+```
+
 
 ### Test Coverage
 
