@@ -31,6 +31,7 @@ const userService = {
      * @returns {Promise<Object>} - SignIn response
      */
     signIn: async (signInRequest) => {
+        console.log(API_BASE_URL)
         try {
             const response = await axios.post(
                 `${API_BASE_URL}/auth/signIn`,
