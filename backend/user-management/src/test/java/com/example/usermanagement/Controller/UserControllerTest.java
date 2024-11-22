@@ -7,6 +7,7 @@ import com.example.usermanagement.Service.AuthService;
 import com.example.usermanagement.Service.EmailSenderService;
 import com.example.usermanagement.Service.OurUserDetailsService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -65,11 +66,13 @@ public class UserControllerTest {
         verify(ourUserDetailsService, times(1)).getAllUserProfiles();
     }
 
+
     @Test
     public void testGetUserProfileById() {
+        Integer id = 1;
         when(ourUserDetailsService.getUserProfileById(1)).thenReturn(mockResponse);
 
-        ResponseEntity<ReqRes> result = userController.getUserProfileById(1);
+        ResponseEntity<ReqRes> result = userController.getUserProfileById(1, 1, "USER");
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertEquals(mockResponse, result.getBody());
@@ -77,9 +80,9 @@ public class UserControllerTest {
 
     @Test
     public void testCreateUserProfile() {
-        when(ourUserDetailsService.createUserProfile(mockProfile)).thenReturn(mockResponse);
+        when(ourUserDetailsService.createUserProfile(1, mockProfile)).thenReturn(mockResponse);
 
-        ResponseEntity<ReqRes> result = userController.createUserProfile(mockProfile);
+        ResponseEntity<ReqRes> result = userController.createUserProfile(1, mockProfile);
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertEquals(mockResponse, result.getBody());
@@ -139,7 +142,7 @@ public class UserControllerTest {
         ReqRes reqRes = new ReqRes();
         reqRes.setEmail("test@example.com");
 
-        ResponseEntity<ReqRes> result = userController.send(reqRes);
+        ResponseEntity<ReqRes> result = userController.verifyEmail(reqRes);
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
         verify(emailSenderService, times(1)).sendEmail("janithravisankax@gmail.com", "hi", "hello");

@@ -96,7 +96,7 @@ public class OurUserDetailsServiceTest {
 
         when(userProfileRepo.save(profile)).thenReturn(profile);
 
-        ReqRes response = ourUserDetailsService.createUserProfile(profile);
+        ReqRes response = ourUserDetailsService.createUserProfile(profile.getId(), profile);
 
         assertEquals(200, response.getStatusCode());
         assertEquals("User Profile Saved Successfully", response.getMessage());
@@ -108,7 +108,7 @@ public class OurUserDetailsServiceTest {
         UserProfile profile = new UserProfile();
         profile.setId(1);
         UserProfile updatedProfile = new UserProfile();
-        updatedProfile.setPostalNumber("12345");
+        updatedProfile.setPostalCode("12345");
 
         when(userProfileRepo.findById(1)).thenReturn(Optional.of(profile));
         when(userProfileRepo.save(profile)).thenReturn(profile);
@@ -118,13 +118,13 @@ public class OurUserDetailsServiceTest {
         assertEquals(200, response.getStatusCode());
         assertEquals("User Profile Updated Successfully", response.getMessage());
         assertEquals(updatedProfile, response.getUserProfile());
-        assertEquals("12345", updatedProfile.getPostalNumber());
+        assertEquals("12345", updatedProfile.getPostalCode());
     }
 
     @Test
     void updateUserProfileNotFound() {
         UserProfile profile = new UserProfile();
-        profile.setPostalNumber("12345");
+        profile.setPostalCode("12345");
 
         when(userProfileRepo.findById(1)).thenReturn(Optional.empty());
 

@@ -43,6 +43,7 @@ public class JWTUtilsTest {
 
     @Test
     void testGenerateToken() {
+        HashMap<String, Object> claims = new HashMap<>();
         String token = jwtUtils.generateToken(claims, userDetails);
 
         assertNotNull(token);
@@ -71,6 +72,8 @@ public class JWTUtilsTest {
 
     @Test
     void testExtractUsername() {
+        HashMap<String, Object> claims = new HashMap<>();
+
         String token = jwtUtils.generateToken(claims, userDetails);
         String username = jwtUtils.extractUsername(token);
 
@@ -79,6 +82,8 @@ public class JWTUtilsTest {
 
     @Test
     void testIsTokenValid() {
+        HashMap<String, Object> claims = new HashMap<>();
+
         String token = jwtUtils.generateToken(claims, userDetails);
         assertTrue(jwtUtils.isTokenValid(token, userDetails));
 
@@ -89,6 +94,8 @@ public class JWTUtilsTest {
 
     @Test
     void testIsTokenExpired() {
+        HashMap<String, Object> claims = new HashMap<>();
+
         String token = jwtUtils.generateToken(claims, userDetails);
 
         assertFalse(jwtUtils.isTokenExpired(token));

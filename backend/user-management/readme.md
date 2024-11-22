@@ -307,8 +307,31 @@ mvn spring-boot:run
 To run all the tests, use the following command:
 
 ```sh
-mvn test
+mvn clean test
 ```
+### Test Report
+
+To generate a test report, use the following command:
+
+```sh
+mvn allure:report
+```
+
+To view the test report, use the following command:
+
+```sh
+mvn allure:serve
+```
+
+
+### Test Coverage
+
+To generate a test coverage report, use the following command:
+
+```sh
+mvn jacoco:report
+```
+
 
 ## License
 
