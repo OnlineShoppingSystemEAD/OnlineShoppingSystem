@@ -25,9 +25,14 @@ public class UserProfileRepoTest {
     public void setUp() {
 
         testUserProfile = new UserProfile();
-        testUserProfile.setName("Test User");
+        testUserProfile.setFirstName("Test");
+        testUserProfile.setLastName("User");
         testUserProfile.setEmail("testuser@example.com");
-        testUserProfile.setAddress("123 Test St");
+        testUserProfile.setHouseNumber("123");
+        testUserProfile.setAddressLine1("Test St");
+        testUserProfile.setAddressLine2("Test city");
+        testUserProfile.setPostalCode("12345");
+
 
         userProfileRepo.save(testUserProfile);
     }
@@ -38,24 +43,27 @@ public class UserProfileRepoTest {
         Optional<UserProfile> foundProfile = userProfileRepo.findById(testUserProfile.getId());
 
         assertTrue(foundProfile.isPresent(), "User profile should be found");
-        assertEquals(testUserProfile.getName(), foundProfile.get().getName());
+        assertEquals(testUserProfile.getFirstName(), foundProfile.get().getFirstName());
         assertEquals(testUserProfile.getEmail(), foundProfile.get().getEmail());
-        assertEquals(testUserProfile.getAddress(), foundProfile.get().getAddress());
+        assertEquals(testUserProfile.getHouseNumber(), foundProfile.get().getHouseNumber());
+        assertEquals(testUserProfile.getAddressLine1(), foundProfile.get().getAddressLine1());
+        assertEquals(testUserProfile.getAddressLine2(), foundProfile.get().getAddressLine2());
+        assertEquals(testUserProfile.getPostalCode(), foundProfile.get().getPostalCode());
     }
 
     @Test
     public void testSave_Profile() {
 
         UserProfile newProfile = new UserProfile();
-        newProfile.setName("New User");
+        newProfile.setFirstName("New User");
         newProfile.setEmail("newuser@example.com");
-        newProfile.setAddress("456 New St");
+        newProfile.setAddressLine1("456 New St");
 
         UserProfile savedProfile = userProfileRepo.save(newProfile);
 
-        assertEquals("New User", savedProfile.getName());
+        assertEquals("New User", savedProfile.getFirstName());
         assertEquals("newuser@example.com", savedProfile.getEmail());
-        assertEquals("456 New St", savedProfile.getAddress());
+        assertEquals("456 New St", savedProfile.getAddressLine1());
     }
 
     @Test

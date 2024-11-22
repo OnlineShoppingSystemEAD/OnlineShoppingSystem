@@ -13,6 +13,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -77,6 +79,7 @@ public class AuthServiceTest {
 
     @Test
     public void testSignIn() {
+        HashMap<String, Object> claims = new HashMap<>();
         when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(null);
         when(ourUserRepo.findByEmail(request.getEmail())).thenReturn(Optional.of(mockUser));
         when(jwtUtils.generateToken(claims, mockUser)).thenReturn("mockJwtToken");
@@ -92,6 +95,7 @@ public class AuthServiceTest {
 
     @Test
     public void testRefreshToken() {
+        HashMap<String, Object> claims = new HashMap<>();
         request.setToken("mockRefreshToken");
         when(jwtUtils.extractUsername(anyString())).thenReturn("test@example.com");
         when(ourUserRepo.findByEmail(anyString())).thenReturn(Optional.of(mockUser));
