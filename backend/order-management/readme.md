@@ -74,21 +74,6 @@
 
 - **URL:** `http://localhost:8080/api/items/{itemId}`
 
-
-### Order Items Endpoints
-
-### Create a New Order Item
-
-- **URL:** `/api/orderItems`
-- **Method:** `POST`
-- **Request Body:**
-  ```json
-  {
-  "itemId": 101,
-  "orderId": 202,
-  "quantity": 3,
-  "price": 150.00
-  }
   ```
 
  ### Order Endpoints
@@ -100,8 +85,20 @@
 - **Request Body:**
   ```json
   {
-  "id": 201,
-  "totalAmount": 150.75
+  "userId": 10,
+  "shippingAddress": "Lorem-ipsum",
+  "totalAmount":150.54
   }
   ```
- 
+
+ - **Response Body:**
+ ```json
+  {
+  "id": 201,
+  "userId": 10,
+  "status": PENDING,
+  "shippingAddress": "Lorem-ipsum",
+  "totalAmount":150.54,
+  "paymentId": 0
+  }
+  ```
