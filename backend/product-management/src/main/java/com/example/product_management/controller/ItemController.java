@@ -1,4 +1,4 @@
-package com.example.product_management.Controller;
+package com.example.product_management.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

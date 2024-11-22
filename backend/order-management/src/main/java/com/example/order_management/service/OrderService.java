@@ -30,8 +30,26 @@ public class OrderService {
             orderItem.setItemId(cartItem.getId());
             orderItem.setQuantity(cartItem.getItemQuantity());
             orderItemService.createOrderItem(orderItem);
+
+            deleteItemFromtheShoppingCart(cartItem.getId());
+
         }
+        // Send a request to the payment-management
         return newOrder;
+    }
+
+    // Update Payment Id and Status after payment
+    public Orders updateOrderStatus(int orderId, Orders order) {
+        Orders orderDetails = orderRespository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+        orderDetails.setPaymentId(order.getPaymentById());
+        orderDetails.setStatus(Orders.Status.PAID);
+        return orderRespository.save(orderDetails);
+    }
+
+    // Delete item from the shopping cart after creating the orderItem
+    public void deleteItemFromtheShoppingCart(int id) {
+        shoppingCartService.deleteItemFromtheShoppingCart(id);
     }
 
 }
