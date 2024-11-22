@@ -18,6 +18,7 @@
     width: 100%;  /* Adjust image size based on container */
     height: auto;
 }
+
 @keyframes zoomEffect {
     0% {
         transform: scale(1);
@@ -29,6 +30,7 @@
         transform: scale(1);
     }
 }
+
 @keyframes fadeInText {
     0% {
         opacity: 0;
@@ -50,6 +52,7 @@
         transform: scale(1);
     }
 }
+
 /* Zoom-in button animation */
 /* Button styling */
 .button {
@@ -86,6 +89,7 @@
         opacity: 1;
     }
 }
+
 /* Thumbnail Image Styling */
 .thumbnail {
     margin-right: 10px; /* Adjust margin between thumbnails */
@@ -101,7 +105,6 @@
 .thumbnail img:hover {
     transform: scale(1.05); /* Slight zoom on hover */
 }
-
 
 /* Custom Previous Arrow */
 .prevArrow {
@@ -154,11 +157,13 @@
     height: 60px;
     object-fit: cover;
 }
+
 .carousel-image {
     width: 100%;
     height: 100vh;
     object-fit: cover;
 }
+
 /* Main text styling */
 .main-text {
     position: absolute;
@@ -170,6 +175,7 @@
     font-weight: bold;
     z-index: 1;
     font-family: 'Montserrat', sans-serif;
+    padding-bottom: 10px; /* Add spacing below the main text */
 }
 
 /* Sub text styling */
@@ -183,6 +189,7 @@
     font-weight: lighter;
     z-index: 1;
     font-family: 'Poppins', sans-serif;
+    padding-top: 5px; /* Add spacing above the subtext */
 }
 
 /* Button styling */
@@ -200,57 +207,73 @@
     font-size: 1em;
     transition: background-color 0.3s ease;
 }
+
 .carousel-button:hover {
     background-color: #444;
 }
 
-/* Animation Effects */
-/* Fade-in and move up for main text */
-@keyframes fadeUp {
-    0% {
-        opacity: 0;
-        transform: translate(-50%, 20px); /* Start slightly below */
-    }
-    100% {
-        opacity: 1;
-        transform: translate(-50%, 0); /* Move to normal position */
-    }
-}
+/* Responsive styles for different screen sizes */
 
-/* Slide-in from right for sub text */
-@keyframes slideRight {
-    0% {
-        opacity: 0;
-        transform: translate(50%, -50%); /* Start off-screen to the right */
+/* For smaller screens like tablets */
+@media screen and (max-width: 768px) {
+    .carousel-image {
+        height: 70vh; /* Reduce the height of the main images */
     }
-    100% {
-        opacity: 1;
-        transform: translate(-50%, -50%); /* Move to normal position */
-    }
-}
 
-/* Zoom-in effect for button */
-@keyframes zoomIn {
-    0% {
-        opacity: 0;
-        transform: translateX(-50%) scale(0.8);
+    .main-text {
+        font-size: 2em; /* Reduce the main text size */
     }
-    100% {
-        opacity: 1;
-        transform: translateX(-50%) scale(1);
+
+    .sub-text {
+        font-size: 1em; /* Reduce the subtext size */
+    }
+
+    .carousel-button {
+        font-size: 0.9em; /* Adjust button size */
+        padding: 8px 16px;
+    }
+
+    .nextArrow,
+    .prevArrow {
+        width: 40px; /* Reduce arrow container size */
+        height: 40px;
+    }
+
+    .slick-dots li button::before {
+        font-size: 10px; /* Reduce dot size */
     }
 }
 
-/* Applying animations */
-.effect-fadeUp {
-    animation: fadeUp 2s ease-in-out forwards;
-}
+/* For even smaller screens like phones */
+@media screen and (max-width: 480px) {
+    .carousel-image {
+        height: 50vh; /* Further reduce image height */
+    }
 
-.effect-slideRight {
-    animation: slideRight 3s ease-in-out forwards;
-}
+    .main-text {
+        font-size: 1.5em; /* Smaller main text */
+    }
 
-.effect-zoomIn {
-    animation: zoomIn 4s ease-in-out forwards;
-}
+    .sub-text {
+        font-size: 0.8em; /* Smaller subtext */
+    }
 
+    .carousel-button {
+        font-size: 0.8em; /* Smaller button */
+        padding: 6px 12px;
+    }
+
+    .nextArrow,
+    .prevArrow {
+        width: 30px; /* Even smaller arrow size */
+        height: 30px;
+    }
+
+    .slick-dots li button::before {
+        font-size: 8px; /* Smaller dots */
+    }
+
+    .thumbnail img {
+        width: 80px; /* Reduce thumbnail size */
+    }
+}

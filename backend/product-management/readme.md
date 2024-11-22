@@ -19,7 +19,7 @@
 - **Request Body:**
   ```json
   {
-    "itemId": 1,
+    "itemId": 1
   }
   ```
 
@@ -47,7 +47,45 @@
     "pageSize":16
   }
   ```
+### Create a new item by admin
 
+- **URL:** `/api/admin/items`
+- **Method:** `POST`
+- **Request Body:**
+  ```json
+  {
+  "name": "T-shirt",
+  "description": "Lorem-ipsum",
+  "price": 40.65,
+  "quantity": 5,
+  "categoryId": 2
+  }
+  ```
 
+### Update an existing item by admin
+
+- **URL:** `/api/admin/items/{id}`
+- **Method:** `PUT`
+- **Request Body:**
+  ```json
+  {
+  "name": "Updated T-shirt",
+  "description": "Updated description",
+  "price": 45.00,
+  "quantity": 10,
+  "categoryId": 2
+  }
+  ```
+### Delete an existing item by admin
+
+- **URL:** `/api/admin/items/{id}`
+- **Method:** `DELETE`
+- **Response Body:**
+  ```json
+  {
+  "message": "Item deleted successfully."
+  }
+  ```
+  
 
   

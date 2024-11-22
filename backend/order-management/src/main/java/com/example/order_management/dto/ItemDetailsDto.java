@@ -7,19 +7,19 @@ public class ItemDetailsDto {
     private String description;
     private float price;
     private int quantity;
-    // private Object image;
+    private String imageURL;
     private int categoryId;
 
     public ItemDetailsDto() {
     }
 
-    public ItemDetailsDto(int id, String name, String description, float price, int quantity, int categoryId) {
+    public ItemDetailsDto(int id, String name, String description, float price, int quantity,String imageURL, int categoryId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.quantity = quantity;
-        // this.image = image;
+        this.imageURL = imageURL;
         this.categoryId = categoryId;
     }
 
@@ -71,5 +71,14 @@ public class ItemDetailsDto {
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
     }
+    
+    public void setImageURL(String imageURL){
+        this.imageURL = imageURL;
+    }
+
+    public String getImageURL(){
+        return this.imageURL;
+    }
+    
 
 }
