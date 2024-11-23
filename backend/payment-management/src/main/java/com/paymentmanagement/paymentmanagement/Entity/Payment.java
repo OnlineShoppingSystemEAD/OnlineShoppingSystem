@@ -2,6 +2,7 @@ package com.paymentmanagement.paymentmanagement.Entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -12,10 +13,10 @@ public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long paymentId;
+    private int id;
 
     @Column(nullable = false)
-    private String orderId;
+    private int orderId;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal amount;
