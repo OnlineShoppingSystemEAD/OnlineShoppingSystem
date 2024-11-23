@@ -1,10 +1,14 @@
 package com.example.order_management.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+
+import com.example.order_management.dto.PaymentRequest;
+import com.example.order_management.dto.PaymentResponse;
 import com.example.order_management.dto.ShoppingCartItemDto;
 import com.example.order_management.model.Orders;
 import com.example.order_management.repository.OrderRespository;
@@ -40,6 +44,14 @@ public class OrderService {
 
         }
         // Send a request to the payment-management
+        PaymentRequest paymentRequest = new PaymentRequest(order.getId(), order.getTotalAmount());
+        PaymentResponse paymentResponse = sendPaymentRequest(paymentRequest);
+
+        if (paymentResponse != null && paymentResponse.getPaymentId() != 0) {
+            // Update order status to PAID
+            order.setPaymentId(paymentResponse.getPaymentId());
+            updateOrderStatus(order.getId(), order);
+        }
 
         return newOrder;
     }
@@ -56,6 +68,17 @@ public class OrderService {
     // Delete item from the shopping cart after creating the orderItem
     public void deleteItemFromtheShoppingCart(int id) {
         shoppingCartService.deleteItemFromtheShoppingCart(id);
+    }
+
+    public PaymentResponse sendPaymentRequest(PaymentRequest paymentRequest) {
+        String url = "http://your-api-url/payment"; // Replace with actual URL
+
+        // Send POST request
+        ResponseEntity<PaymentResponse> responseEntity = restTemplate.postForEntity(url, paymentRequest,
+                PaymentResponse.class);
+
+        // Return the response body
+        return responseEntity.getBody();
     }
 
 }
