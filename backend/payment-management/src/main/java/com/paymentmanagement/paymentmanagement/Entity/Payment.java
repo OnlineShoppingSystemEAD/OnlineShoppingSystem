@@ -33,6 +33,9 @@ public class Payment {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
+    public void setPaymentId(String paymentId) {
+    }
+
     public enum Status {
         PENDING,
         CONFIRMED,

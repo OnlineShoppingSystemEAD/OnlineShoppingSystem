@@ -1,5 +1,7 @@
 package com.paymentmanagement.paymentmanagement.Controller;
 
+import com.paymentmanagement.paymentmanagement.Dto.PaymentRequest;
+import com.paymentmanagement.paymentmanagement.Dto.PaymentResponse;
 import com.paymentmanagement.paymentmanagement.Entity.Payment;
 import com.paymentmanagement.paymentmanagement.Service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,23 +20,28 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
+    // Endpoint to list all payments
     @GetMapping
     public List<Payment> listAllPayments() {
+
         return paymentService.getAllPayments();
     }
 
+    // Endpoint to process a new payment
     @PostMapping
-    public ResponseEntity<Payment> createPayment(@RequestBody Payment payment) {
-        Payment createdPayment = paymentService.createPayment(payment);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdPayment);
+    public ResponseEntity<PaymentResponse> processPayment(@RequestBody PaymentRequest paymentRequest) {
+        PaymentResponse response = paymentService.processPayment(paymentRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    // Endpoint to retrieve a payment by its ID
     @GetMapping("/{paymentId}")
     public ResponseEntity<Payment> getPaymentById(@PathVariable Long paymentId) {
         Optional<Payment> payment = paymentService.getPaymentById(paymentId);
         return payment.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
+    // Endpoint to update payment details
     @PutMapping("/{paymentId}")
     public ResponseEntity<Payment> updatePayment(@PathVariable Long paymentId, @RequestBody Payment updatedPayment) {
         try {
@@ -45,6 +52,7 @@ public class PaymentController {
         }
     }
 
+    // Endpoint to delete a payment
     @DeleteMapping("/{paymentId}")
     public ResponseEntity<Void> deletePayment(@PathVariable Long paymentId) {
         paymentService.deletePayment(paymentId);
