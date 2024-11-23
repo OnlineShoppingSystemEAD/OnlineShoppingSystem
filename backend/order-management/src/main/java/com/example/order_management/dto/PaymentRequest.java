@@ -10,4 +10,23 @@ public class PaymentRequest {
         this.amount = amount;
     }
 
+    public PaymentRequest() {
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public int getOrderId() {
+        return this.orderId;
+    }
+
+    public double getaAmount() {
+        return this.amount;
+    }
+
 }

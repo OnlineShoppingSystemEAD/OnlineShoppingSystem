@@ -69,7 +69,7 @@ public class Orders {
         return this.totalAmount;
     }
 
-    public int getPaymentById() {
+    public int getPaymentId() {
         return this.paymentId;
     }
 

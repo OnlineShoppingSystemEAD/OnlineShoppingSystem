@@ -44,7 +44,7 @@ public class OrderService {
 
         }
         // Send a request to the payment-management
-        PaymentRequest paymentRequest = new PaymentRequest(order.getId(), order.getTotalAmount());
+        PaymentRequest paymentRequest = new PaymentRequest();
         PaymentResponse paymentResponse = sendPaymentRequest(paymentRequest);
 
         if (paymentResponse != null && paymentResponse.getPaymentId() != 0) {
@@ -60,7 +60,7 @@ public class OrderService {
     public Orders updateOrderStatus(int orderId, Orders order) {
         Orders orderDetails = orderRespository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
-        orderDetails.setPaymentId(order.getPaymentById());
+        orderDetails.setPaymentId(order.getPaymentId());
         orderDetails.setStatus(Orders.Status.PAID);
         return orderRespository.save(orderDetails);
     }
@@ -71,7 +71,7 @@ public class OrderService {
     }
 
     public PaymentResponse sendPaymentRequest(PaymentRequest paymentRequest) {
-        String url = "lib://lb://PAYMENT-MANAGEMENT-SERVICE/payments"; // Replace with actual URL
+        String url = "lb://PAYMENT-MANAGEMENT-SERVICE/payments"; // Replace with actual URL
 
         // Send POST request
         ResponseEntity<PaymentResponse> responseEntity = restTemplate.postForEntity(url, paymentRequest,
