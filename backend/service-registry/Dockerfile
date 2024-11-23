@@ -12,6 +12,6 @@ COPY src ./src
 
 RUN ./mvnw package -DskipTests
 
-EXPOSE 8081
+EXPOSE 8761
 
-CMD ["java", "-jar", "target/user-management-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "target/service-registry-0.0.1-SNAPSHOT.jar"]
