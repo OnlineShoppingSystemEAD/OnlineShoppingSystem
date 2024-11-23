@@ -59,6 +59,7 @@ public class PaymentController {
         return ResponseEntity.noContent().build();
     }
 
+    // Endpoint to confirm a payment
     @PostMapping("/{paymentId}/confirm")
     public ResponseEntity<?> confirmPayment(
             @PathVariable Long paymentId,
