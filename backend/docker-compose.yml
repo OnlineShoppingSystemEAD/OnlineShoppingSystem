@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  order-management:
+    build: ./order-management
+    ports:
+      - "8084:8084"
+  
+  product-management:
+    build: ./product-management
+    ports:
+      - "8082:8082"
+  
+  payment-management:
+    build: ./payment-management
+    ports:
+      - "8085:8085"
+  
+  service-registry:
+    build: ./service-registry
+    ports:
+      - "8761:8761"
+  
+  user-management:
+    build: ./user-management
+    ports:
+      - "8081:8081"
+  
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:8080"
