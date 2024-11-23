@@ -2,6 +2,8 @@ package com.example.order_management.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
 import java.util.List;
 import com.example.order_management.dto.ShoppingCartItemDto;
 import com.example.order_management.model.Orders;
@@ -18,6 +20,9 @@ public class OrderService {
 
     @Autowired
     private OrderItemsService orderItemService;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     public Orders createOrder(int userId, Orders order) {
         Orders newOrder = orderRespository.save(order);

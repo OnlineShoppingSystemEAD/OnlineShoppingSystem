@@ -25,7 +25,8 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}")
-    public ResponseEntity<Orders> updateOrderStatus(@PathVariable int orderId, @RequestBody Orders order) {
+    public ResponseEntity<Orders> updateOrderStatus(@PathVariable @RequestParam int orderId,
+            @RequestBody Orders order) {
         return ResponseEntity.ok(orderService.updateOrderStatus(orderId, order));
     }
 }

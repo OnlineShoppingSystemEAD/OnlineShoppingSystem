@@ -1,5 +1,7 @@
 package com.example.order_management.model;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -17,12 +19,12 @@ public class Orders {
     private String shippingAddress;
     @Enumerated(EnumType.STRING)
     private Status status;
-    private float totalAmount;
+    private BigDecimal totalAmount;
 
     public Orders() {
     }
 
-    public Orders(int userId, String shippingAddress, float totalAmount, Status status) {
+    public Orders(int userId, String shippingAddress, BigDecimal totalAmount, Status status) {
         this.userId = userId;
         this.status = Orders.Status.PENDING;
         this.shippingAddress = shippingAddress;
@@ -61,11 +63,11 @@ public class Orders {
         return this.shippingAddress;
     }
 
-    public void setTotalAmount(float totalAmount) {
+    public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
     }
 
-    public float getTotalAmount() {
+    public BigDecimal getTotalAmount() {
         return this.totalAmount;
     }
 
