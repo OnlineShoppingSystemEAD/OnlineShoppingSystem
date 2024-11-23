@@ -71,7 +71,7 @@ public class OrderService {
     }
 
     public PaymentResponse sendPaymentRequest(PaymentRequest paymentRequest) {
-        String url = "http://your-api-url/payment"; // Replace with actual URL
+        String url = "lib://lb://PAYMENT-MANAGEMENT-SERVICE/payments"; // Replace with actual URL
 
         // Send POST request
         ResponseEntity<PaymentResponse> responseEntity = restTemplate.postForEntity(url, paymentRequest,
