@@ -1,13 +1,16 @@
 package com.paymentmanagement.paymentmanagement.Dto;
 
-public class PaymentResponse {
-    private String orderId;
-    private Long paymentId;
-    private double totalAmount;
+import lombok.Data;
 
-    public PaymentResponse(String orderId, Long paymentId, double totalAmount) {
+@Data
+public class PaymentResponse {
+    private int orderId;
+    private int paymentId;
+    private double amount;
+
+    public PaymentResponse(int orderId, int paymentId, double amount) {
         this.orderId = orderId;
         this.paymentId = paymentId;
-        this.totalAmount = totalAmount;
+        this.amount = amount;
     }
 }
