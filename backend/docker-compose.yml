@@ -1,9 +1,3 @@
-networks:
-  public-network:
-    driver: bridge
-  private-network:
-    driver: bridge
-
 services:
   service-registry:
     build:
@@ -16,6 +10,7 @@ services:
       - public-network
     environment:
       - EUREKA_SERVER_URL=http://service-registry:8761/eureka
+      - SPRING_PROFILES_ACTIVE=docker
 
   api-gateway:
     build:
@@ -28,6 +23,7 @@ services:
       - private-network
     environment:
       - EUREKA_SERVER_URL=http://service-registry:8761/eureka
+      - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - service-registry
 
@@ -39,6 +35,7 @@ services:
       - private-network
     environment:
       - EUREKA_SERVER_URL=http://service-registry:8761/eureka
+      - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - service-registry
 
@@ -50,6 +47,7 @@ services:
       - private-network
     environment:
       - EUREKA_SERVER_URL=http://service-registry:8761/eureka
+      - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - service-registry
 
@@ -61,6 +59,7 @@ services:
       - private-network
     environment:
       - EUREKA_SERVER_URL=http://service-registry:8761/eureka
+      - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - service-registry
 
@@ -72,5 +71,12 @@ services:
       - private-network
     environment:
       - EUREKA_SERVER_URL=http://service-registry:8761/eureka
+      - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       - service-registry
+
+networks:
+  private-network:
+    driver: bridge
+  public-network:
+    driver: bridge
