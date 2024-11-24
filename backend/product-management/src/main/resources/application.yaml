@@ -22,8 +22,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    #        ddl-auto: create
-
     show-sql: true
   mail:
     host: smtp.gmail.com
@@ -40,9 +38,7 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka/
-#  instance:
-#    hostname: localhost
-
+#     defaultZone: http://service-registry:8761/eureka/
+         defaultZone: http://localhost:8761/eureka/
 server:
   port: 8083

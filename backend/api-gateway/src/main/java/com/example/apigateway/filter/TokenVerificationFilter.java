@@ -22,6 +22,8 @@ public class TokenVerificationFilter extends AbstractGatewayFilterFactory<TokenV
     private WebClient.Builder webClientBuilder;
 
     // Endpoint for verifying the token
+
+//  private final String VERIFY_TOKEN = "http://user-management-service:8081/auth/verify-token";
     private final String VERIFY_TOKEN = "http://localhost:8081/auth/verify-token";
 
     private static final List<String> EXCLUDED_PATHS = List.of(

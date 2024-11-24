@@ -1,32 +1,76 @@
-version: '3.8'
+networks:
+  public-network:
+    driver: bridge
+  private-network:
+    driver: bridge
 
 services:
-  order-management:
-    build: ./order-management
-    ports:
-      - "8084:8084"
-  
-  product-management:
-    build: ./product-management
-    ports:
-      - "8082:8082"
-  
-  payment-management:
-    build: ./payment-management
-    ports:
-      - "8085:8085"
-  
   service-registry:
-    build: ./service-registry
+    build:
+      context: ./service-registry
+    container_name: service-registry
     ports:
       - "8761:8761"
-  
-  user-management:
-    build: ./user-management
-    ports:
-      - "8081:8081"
-  
+    networks:
+      - private-network
+      - public-network
+    environment:
+      - EUREKA_SERVER_URL=http://service-registry:8761/eureka
+
   api-gateway:
-    build: ./api-gateway
+    build:
+      context: ./api-gateway
+    container_name: api-gateway
     ports:
       - "8080:8080"
+    networks:
+      - public-network
+      - private-network
+    environment:
+      - EUREKA_SERVER_URL=http://service-registry:8761/eureka
+    depends_on:
+      - service-registry
+
+  user-management-service:
+    build:
+      context: ./user-management
+    container_name: user-management-service
+    networks:
+      - private-network
+    environment:
+      - EUREKA_SERVER_URL=http://service-registry:8761/eureka
+    depends_on:
+      - service-registry
+
+  product-management-service:
+    build:
+      context: ./product-management
+    container_name: product-management-service
+    networks:
+      - private-network
+    environment:
+      - EUREKA_SERVER_URL=http://service-registry:8761/eureka
+    depends_on:
+      - service-registry
+
+  order-management-service:
+    build:
+      context: ./order-management
+    container_name: order-management-service
+    networks:
+      - private-network
+    environment:
+      - EUREKA_SERVER_URL=http://service-registry:8761/eureka
+    depends_on:
+      - service-registry
+
+  payment-management-service:
+    build:
+      context: ./payment-management
+    container_name: payment-management-service
+    networks:
+      - private-network
+    environment:
+      - EUREKA_SERVER_URL=http://service-registry:8761/eureka
+    depends_on:
+      - service-registry

@@ -30,6 +30,36 @@ mvn clean install
 mvn spring-boot:run
 ```
 
+### Run the application with Docker
+
+To run the application using Docker, follow these steps:
+
+1. **Build the Docker image**
+
+  ```sh
+  docker build -t user-management .
+  ```
+
+2. **Run the Docker container**
+
+  ```sh
+  docker run -p 8081:8081 user-management
+  ```
+
+3. **Stop the Docker container**
+
+  To stop the running container, use the following command:
+
+  ```sh
+  docker stop <container_id>
+  ```
+
+  Replace `<container_id>` with the actual container ID, which you can find using:
+
+  ```sh
+  docker ps
+  ```
+
 ## API Endpoints
 
 ### Authentication
