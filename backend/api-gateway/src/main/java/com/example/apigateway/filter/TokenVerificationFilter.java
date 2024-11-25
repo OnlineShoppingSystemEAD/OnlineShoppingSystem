@@ -2,6 +2,7 @@ package com.example.apigateway.filter;
 
 import com.example.apigateway.Dto.TokenVerificationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
@@ -22,9 +23,8 @@ public class TokenVerificationFilter extends AbstractGatewayFilterFactory<TokenV
     private WebClient.Builder webClientBuilder;
 
     // Endpoint for verifying the token
-
-//  private final String VERIFY_TOKEN = "http://user-management-service:8081/auth/verify-token";
-    private final String VERIFY_TOKEN = "http://localhost:8081/auth/verify-token";
+    @Value("${token.verification.url}")
+    private String VERIFY_TOKEN;
 
     private static final List<String> EXCLUDED_PATHS = List.of(
             "/auth/.*", "/public/.*", "/users/forgot-password",
