@@ -40,6 +40,11 @@ public class GatewayConfig {
                         .filters(f -> f.filter(loggingFilter.apply(new LoggingFilter.Config()))
                                        .filter(tokenVerificationFilter.apply(new TokenVerificationFilter.Config())))
                         .uri("lb://USER-MANAGEMENT-SERVICE"))
+                //route for the payment management service
+                .route("PAYMENT-MANAGEMENT-SERVICE", r -> r.path("/payments/**")
+                        .filters(f -> f.filter(loggingFilter.apply(new LoggingFilter.Config()))
+                                       .filter(tokenVerificationFilter.apply(new TokenVerificationFilter.Config())))
+                        .uri("lb://PAYMENT-MANAGEMENT-SERVICE"))
                 .build();
     }
 

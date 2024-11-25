@@ -1,11 +1,14 @@
 package com.example.product_management.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "items")
 public class Item {
 
     @Id
@@ -14,15 +17,16 @@ public class Item {
 
     private String name;
     private String description;
-    private float price;
+    private double price;
     private int quantity;
     private String imageURL;
+    @Column(name = "CATEGORYID")
     private int categoryId;
 
     public Item() {
     }
 
-    public Item(String name, String description, float price, int quantity, String imageURL, int categoryId) {
+    public Item(String name, String description, double price, int quantity, String imageURL, int categoryId) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -56,11 +60,11 @@ public class Item {
         this.description = description;
     }
 
-    public float getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(float price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
@@ -80,11 +84,11 @@ public class Item {
         this.categoryId = categoryId;
     }
 
-    public void setImageURL(String imageURL){
+    public void setImageURL(String imageURL) {
         this.imageURL = imageURL;
     }
 
-    public String getImageURL(){
+    public String getImageURL() {
         return this.imageURL;
     }
 

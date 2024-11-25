@@ -15,6 +15,10 @@ public class ItemService {
     @Autowired
     private ItemRepository itemRepository;
 
+    public ItemService(ItemRepository itemRepository) {
+        this.itemRepository = itemRepository;
+    }
+
     public Page<Item> getItems(int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         return itemRepository.findAll(pageable);
@@ -25,11 +29,11 @@ public class ItemService {
     }
 
     // Display Items by category
-    public Page<Item> getItemsByCategory(String categoryId, int pageNo, int pageSize) {
+    public Page<Item> getItemsByCategory(int categoryId, int pageNo, int pageSize) {
         Pageable pageable = PageRequest.of(pageNo, pageSize);
         return itemRepository.findAll(pageable);
     }
-  
+
     // ITEM MANAGEMENT BY ADMIN
 
     // Add a new item to a category

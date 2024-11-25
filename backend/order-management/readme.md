@@ -85,8 +85,10 @@
 - **Request Body:**
   ```json
   {
-  "userId": 10,
+  "userId": 6,
+  "paymentId":0,
   "shippingAddress": "Lorem-ipsum",
+  "status":"PENDING"
   "totalAmount":150.54
   }
   ```
@@ -95,10 +97,10 @@
  ```json
   {
   "id": 201,
-  "userId": 10,
-  "status": PENDING,
+  "userId": 6,
+  "status": PAID,
   "shippingAddress": "Lorem-ipsum",
   "totalAmount":150.54,
-  "paymentId": 0
+  "paymentId": 3
   }
   ```
