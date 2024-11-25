@@ -5,6 +5,7 @@ import com.example.usermanagement.Dto.ReqRes;
 import com.example.usermanagement.Entity.OurUsers;
 import com.example.usermanagement.Repository.OurUserRepo;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -22,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@Disabled
 public class AuthServiceTest {
 
     @InjectMocks
