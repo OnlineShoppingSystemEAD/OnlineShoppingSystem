@@ -59,10 +59,38 @@ function App() {
                       )
                   }
               />
-              <Route path="/about" element={<About />} />
-              <Route path="/shop" element={<Shop />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/" element={<Home />} />
+              <Route
+                  path="/"
+                  element={
+                      <PrivateRoute disallowedRoles={["ADMIN"]}>
+                          <Home />
+                      </PrivateRoute>
+                  }
+              />
+              <Route
+                  path="/about"
+                  element={
+                      <PrivateRoute disallowedRoles={["ADMIN"]}>
+                          <About />
+                      </PrivateRoute>
+                  }
+              />
+              <Route
+                  path="/shop"
+                  element={
+                      <PrivateRoute disallowedRoles={["ADMIN"]}>
+                          <Shop />
+                      </PrivateRoute>
+                  }
+              />
+              <Route
+                  path="/contact"
+                  element={
+                      <PrivateRoute disallowedRoles={["ADMIN"]}>
+                          <Contact />
+                      </PrivateRoute>
+                  }
+              />
               <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
               <Route path="/emailVerification" element={<EmailVerification />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -98,7 +126,7 @@ function App() {
               <Route
                   path="/orders"
                   element={
-                      <PrivateRoute allowedRoles={["ADMIN"]}>
+                      <PrivateRoute allowedRoles={["ADMIN"]} disallowedRoles={["USER"]}>
                           <Orders />
                       </PrivateRoute>
                   }
@@ -106,7 +134,7 @@ function App() {
               <Route
                   path="/categories"
                   element={
-                      <PrivateRoute allowedRoles={["ADMIN"]}>
+                      <PrivateRoute allowedRoles={["ADMIN"]} disallowedRoles={["USER"]}>
                           <Categories />
                       </PrivateRoute>
                   }
@@ -114,7 +142,7 @@ function App() {
               <Route
                   path="/order/:id"
                   element={
-                      <PrivateRoute allowedRoles={["ADMIN"]}>
+                      <PrivateRoute allowedRoles={["ADMIN"]} disallowedRoles={["USER"]}>
                           <Order />
                       </PrivateRoute>
                   }
@@ -122,7 +150,7 @@ function App() {
               <Route
                   path="/category/:id"
                   element={
-                      <PrivateRoute allowedRoles={["ADMIN"]}>
+                      <PrivateRoute allowedRoles={["ADMIN"]} disallowedRoles={["USER"]}>
                           <Category />
                       </PrivateRoute>
                   }
