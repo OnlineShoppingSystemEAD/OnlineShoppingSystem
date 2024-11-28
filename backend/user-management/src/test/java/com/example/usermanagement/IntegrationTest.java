@@ -1,101 +1,47 @@
 package com.example.usermanagement;
 
 import com.example.usermanagement.Dto.ReqRes;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.Getter;
+import lombok.Setter;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.*;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-
-
-import java.util.Collections;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+// NOTE: @SpringBootTest is used to test the application with a real server. Slow but real HTTP requests.
+// NOTE: @AutoConfigureMockMvc is used to test the application with a mock server. Fast but no HTTP requests.
 
-@Disabled
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@AutoConfigureMockMvc
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class IntegrationTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    private String authToken;
-    private Long userId;
-    private String testEmail;
+    private static String createdUserId;
+    private static String authToken;
+    private static String refreshToken;
+    private static String verificationCode;
+    private static String resetPasswordToken;
 
     @Test
+    @Disabled
     void aTestThatPasses() {
         assertTrue(true);
     }
 
     @Test
-    void testSignupWithUsernameAndPassword() {
-//        // random test user
-//        testEmail = "testuser_" + System.currentTimeMillis() + "@example.com";
-//
-//        // Create request payload
-//        ReqRes signupRequest = new ReqRes();
-//        signupRequest.setEmail("testUser@email.com");
-//        signupRequest.setPassword("testPassword");
-////        signupRequest.setRole(Collections.singleton("USER").toString());
-//
-//        // Set headers
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-////        headers.add("Content-Type", "application/json");
-//
-//        // Create HttpEntity
-//        HttpEntity<ReqRes> requestEntity = new HttpEntity<>(signupRequest, headers);
-//
-////        // Send POST request
-////        ResponseEntity<ReqRes> responseEntity = restTemplate.postForEntity(
-////                "/auth/signup",
-////                requestEntity,
-////                ReqRes.class
-////        );
-//        ResponseEntity<ReqRes> responseEntity = null;
-//
-//        try {
-//            // First try with String to see the actual response
-//            ResponseEntity<String> rawResponse = restTemplate.exchange(
-//                    "/auth/signup",
-//                    HttpMethod.POST,
-//                    requestEntity,
-//                    String.class  // Get raw response to see what's coming back
-//            );
-//            System.out.println("Raw response: " + rawResponse.getBody());
-//
-//            // Now try the actual test
-//            responseEntity = restTemplate.exchange(
-//                    "/auth/signup",
-//                    HttpMethod.POST,
-//                    requestEntity,
-//                    ReqRes.class
-//            );
-//
-//        } catch (Exception e) {
-//            System.out.println("Error occurred: " + e.getMessage());
-//            e.printStackTrace();
-//            fail("Test failed: " + e.getMessage());
-//        }
-//
-//        // Basic assertions
-//        assertThat(responseEntity.getBody()).isNotNull();
-//        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-//        assertThat(responseEntity.getBody().getEmail()).isEqualTo(testEmail);
-
-        // Create request payload exactly like Postman
+    @Disabled
+    void testSignupWithUsernameAndPassword_ReqResAsRawString() {
+        // Creating a request payload exactly like Postman
         String requestJson = """
             {
                 "email": "user@example.com",
@@ -110,7 +56,7 @@ public class IntegrationTest {
         // Create HttpEntity with raw JSON
         HttpEntity<String> requestEntity = new HttpEntity<>(requestJson, headers);
 
-        // Dont deserialize the response to ReqRes, it fails & you will have a headache
+        // Don't deserialize the response to ReqRes, it will give birth to unforeseen demons!
         ResponseEntity<String> responseEntity = restTemplate.exchange(
                 "/auth/signup",
                 HttpMethod.POST,
@@ -124,4 +70,67 @@ public class IntegrationTest {
         assertTrue(responseEntity.getBody().contains("user@example.com"));
     }
 
+    @Test
+    @Disabled
+    void testSignUpWithUsernameAndPasswordGetsAccepted() {
+        String currentTime = String.valueOf(System.currentTimeMillis());
+        String testEmail = "testuser_" + currentTime+ "@example.com";
+        String testPassword = "testPassword";
+
+        ReqRes signupRequest = new ReqRes();
+        signupRequest.setEmail(testEmail);
+        signupRequest.setPassword(testPassword);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        // parse the request to HttpEntity
+        HttpEntity<ReqRes> requestEntity = new HttpEntity<>(signupRequest, headers);
+
+        // Send POST request with TestResponse class
+        ResponseEntity<TestResponse> responseEntity = restTemplate.exchange(
+                "/auth/signup",
+                HttpMethod.POST,
+                requestEntity,
+                TestResponse.class
+        );
+
+        // Assertions
+        assertNotNull(responseEntity.getBody());
+        assertEquals(200, responseEntity.getBody().getStatusCode());
+        assertEquals("User Saved Successfully", responseEntity.getBody().getMessage());
+        assertNotNull(responseEntity.getBody().getOurUsers());
+        assertEquals(String.format("testuser_%s@example.com", currentTime), responseEntity.getBody().getOurUsers().getEmail());
+    }
+
+
+}
+
+/**
+ * Helper classes for deserializing the response JSON.
+ * These classes are used to deserialize the response JSON into Java objects.
+ * Default deserialization is not possible because the response JSON is nested.
+ */
+@Setter
+@Getter
+class TestAuthority {
+    private String authority;
+}
+
+@Setter
+@Getter
+class TestUser {
+    private Long id;
+    private String email;
+    private String role;
+    private List<TestAuthority> authorities;
+
+}
+
+@Setter
+@Getter
+class TestResponse {
+    private int statusCode;
+    private String message;
+    private TestUser ourUsers;
 }
