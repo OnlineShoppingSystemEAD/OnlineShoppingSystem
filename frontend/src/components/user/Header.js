@@ -116,23 +116,23 @@ const Header = () => {
             </span>
           </span>
 
-          {/* Profile or Logout */}
-          {isLoggedIn ? (
-            <FontAwesomeIcon
-              icon={faRightFromBracket}
-              className="text-gray-700 cursor-pointer hover:text-purple-500"
-              onClick={handleLogout}
-            />
-          ) : (
-            <Link to="/account">
-              <FontAwesomeIcon
-                icon={faUser}
-                className={`cursor-pointer ${
-                  isActive("/account") ? "text-purple-500" : "text-gray-700"
-                } hover:text-purple-500`}
-              />
-            </Link>
-          )}
+{/* Account Icon */}
+<Link to="/account">
+  <FontAwesomeIcon
+    icon={faUser}
+    className={`cursor-pointer ${
+      isActive("/account") ? "text-purple-500" : "text-gray-700"
+    } hover:text-purple-500`}
+  />
+</Link>
+
+{/* Logout Icon */}
+<FontAwesomeIcon
+  icon={faRightFromBracket}
+  className="text-gray-700 cursor-pointer hover:text-purple-500"
+  onClick={handleLogout}
+/>
+
         </div>
       </div>
 
