@@ -50,6 +50,7 @@ public class CategoryService {
         dto.setId(category.getId());
         dto.setName(category.getName());
         dto.setDescription(category.getDescription());
+        dto.setImageUrl(category.getImageUrl());
         return dto;
     }
 
@@ -58,6 +59,7 @@ public class CategoryService {
         category.setId(dto.getId());
         category.setName(dto.getName());
         category.setDescription(dto.getDescription());
+        category.setImageUrl(dto.getImageUrl());  // Set image URL in entity
         return category;
     }
 }

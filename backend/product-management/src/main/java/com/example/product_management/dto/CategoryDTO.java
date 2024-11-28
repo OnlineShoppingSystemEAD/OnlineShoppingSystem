@@ -4,6 +4,8 @@ public class CategoryDTO {
     private int id;
     private String name;
     private String description;
+    private String imageUrl;  // Add this field for image URL
+
 
     public String getDescription() {
         return description;
@@ -27,6 +29,14 @@ public class CategoryDTO {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
 

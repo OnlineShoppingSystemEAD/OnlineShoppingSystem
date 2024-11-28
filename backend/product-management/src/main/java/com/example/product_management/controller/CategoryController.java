@@ -27,8 +27,8 @@ public class CategoryController {
         return category != null ? ResponseEntity.ok(category) : ResponseEntity.notFound().build();
     }
 
-    @PostMapping
-    public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO) {
+    /* @PostMapping
+     public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO) {
         CategoryDTO createdCategory = categoryService.createCategory(categoryDTO);
         return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
     }
@@ -43,5 +43,5 @@ public class CategoryController {
     public ResponseEntity<Void> deleteCategory(@PathVariable int id) {
         categoryService.deleteCategory(id);
         return ResponseEntity.noContent().build();
-    }
+    }*/
 }
