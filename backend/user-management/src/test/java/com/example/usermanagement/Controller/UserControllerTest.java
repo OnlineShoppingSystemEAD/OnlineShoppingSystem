@@ -15,6 +15,11 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,6 +44,7 @@ public class UserControllerTest {
     private ReqRes mockResponse;
     private UserProfile mockProfile;
     private ChangePasswordReq mockPasswordReq;
+    private MultipartFile mockMultipart;
 
     @BeforeEach
     public void setUp() {
@@ -50,6 +56,48 @@ public class UserControllerTest {
 
         mockProfile = new UserProfile();
         mockProfile.setId(1);
+
+        mockMultipart = new MultipartFile() {
+            @Override
+            public String getName() {
+                return "";
+            }
+
+            @Override
+            public String getOriginalFilename() {
+                return "";
+            }
+
+            @Override
+            public String getContentType() {
+                return "";
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return false;
+            }
+
+            @Override
+            public long getSize() {
+                return 0;
+            }
+
+            @Override
+            public byte[] getBytes() throws IOException {
+                return new byte[0];
+            }
+
+            @Override
+            public InputStream getInputStream() throws IOException {
+                return null;
+            }
+
+            @Override
+            public void transferTo(File dest) throws IOException, IllegalStateException {
+
+            }
+        };
 
         mockPasswordReq = new ChangePasswordReq();
         mockPasswordReq.setCurrentPassword("currentPassword");
@@ -91,9 +139,9 @@ public class UserControllerTest {
 
     @Test
     public void testUpdateUserProfile() {
-        when(ourUserDetailsService.updateUserProfile(1, mockProfile)).thenReturn(mockResponse);
+        when(ourUserDetailsService.updateUserProfile(1, mockProfile, mockMultipart)).thenReturn(mockResponse);
 
-        ResponseEntity<ReqRes> result = userController.updateUserProfile(1, mockProfile);
+        ResponseEntity<ReqRes> result = userController.updateUserProfile(1, mockProfile, mockMultipart);
 
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertEquals(mockResponse, result.getBody());
