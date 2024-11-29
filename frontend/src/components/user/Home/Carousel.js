@@ -2,29 +2,28 @@ import React, { useState } from 'react';
 import Slider from 'react-slick';
 import rightArrow from '../../../assets/right-arrow.png';
 import leftArrow from '../../../assets/left-arrow.png';
-import '../../../styles/carouselStyles.css'; // Import your CSS
 
 const Carousel = ({ images }) => {
     const [nav1, setNav1] = useState(null);
     const [nav2, setNav2] = useState(null);
 
-    const NextArrow = (props) => {
-        const { onClick } = props;
-        return (
-            <div className="nextArrow" onClick={onClick}>
-                <img src={rightArrow} alt="Next" />
-            </div>
-        );
-    };
+    const NextArrow = ({ onClick }) => (
+        <div
+            className="absolute top-1/2 right-5 z-10 cursor-pointer transform -translate-y-1/2 w-12 h-12 bg-black/50 flex items-center justify-center rounded-full"
+            onClick={onClick}
+        >
+            <img src={rightArrow} alt="Next" className="w-full h-auto" />
+        </div>
+    );
 
-    const PrevArrow = (props) => {
-        const { onClick } = props;
-        return (
-            <div className="prevArrow" onClick={onClick}>
-                <img src={leftArrow} alt="Previous" />
-            </div>
-        );
-    };
+    const PrevArrow = ({ onClick }) => (
+        <div
+            className="absolute top-1/2 left-5 z-10 cursor-pointer transform -translate-y-1/2 w-12 h-12 bg-black/50 flex items-center justify-center rounded-full"
+            onClick={onClick}
+        >
+            <img src={leftArrow} alt="Previous" className="w-full h-auto" />
+        </div>
+    );
 
     const settingsMain = {
         dots: true,
@@ -40,57 +39,21 @@ const Carousel = ({ images }) => {
         asNavFor: nav2,
     };
 
-    const settingsThumbs = {
-        slidesToShow: 3,
-        slidesToScroll: 1,
-        asNavFor: nav1,
-        focusOnSelect: true,
-        arrows: false,
-        centerMode: true,
-        variableWidth: true,
-    };
-
     return (
-        <>
-            {/* Main Slider */}
-            <Slider {...settingsMain} asNavFor={nav2} ref={(slider1) => setNav1(slider1)}>
-                {images.map((image, index) => (
-                    <div key={index} className="slide">
-                        <img src={image.src} alt={`Slide ${index + 1}`} className="carousel-image" />
-
-                        {/* Main Text */}
-                        {image.mainText && (
-                            <div className="main-text effect-fadeUp">
-                                {image.mainText}
-                            </div>
-                        )}
-
-                        {/* Sub Text */}
-                        {image.subText && (
-                            <div className="sub-text effect-slideRight">
-                                {image.subText}
-                            </div>
-                        )}
-
-                        {/* Conditionally Render Button */}
-                        {image.mainText && (
-                            <button className="carousel-button effect-zoomIn">
-                                {image.buttonText}
-                            </button>
-                        )}
+        <Slider {...settingsMain} asNavFor={nav2} ref={(slider1) => setNav1(slider1)}>
+            {images.map((image, index) => (
+                <div key={index} className="relative">
+                    <img src={image.src} alt={`Slide ${index + 1}`} className="w-full h-screen object-cover" />
+                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
+                        <h1 className="text-4xl md:text-5xl font-bold mb-4">{image.mainText}</h1>
+                        <p className="text-lg md:text-xl mb-6">{image.subText}</p>
+                        <button className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-dark transition">
+                            {image.buttonText}
+                        </button>
                     </div>
-                ))}
-            </Slider>
-
-            {/* Thumbnail Slider */}
-            <Slider {...settingsThumbs} asNavFor={nav1} ref={(slider2) => setNav2(slider2)}>
-                {images.map((image, index) => (
-                    <div key={index} className="thumbnail">
-                        <img src={image.src} alt={`Thumbnail ${index + 1}`} />
-                    </div>
-                ))}
-            </Slider>
-        </>
+                </div>
+            ))}
+        </Slider>
     );
 };
 

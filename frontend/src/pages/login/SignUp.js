@@ -74,7 +74,7 @@ const Signup = () => {
   return (
       <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
         <h1 className="absolute top-16 text-6xl font-bold font-montserrat">
-          COZA STORE
+          SHOPZEN
         </h1>
 
         <form className="flex flex-col mt-20" onSubmit={handleSubmit}>
