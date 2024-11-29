@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.example.product_management.repository.ItemRepository;
 import com.example.product_management.model.Item;
+import com.example.product_management.exception.ItemNotFoundException;
 import java.util.Optional;
 
 @Service
@@ -24,8 +25,12 @@ public class ItemService {
         return itemRepository.findAll(pageable);
     }
 
-    public Optional<Item> getItembyId(int id) {
-        return itemRepository.findById(id);
+    public Optional<Item> getItemById(int id) {
+        if (itemRepository.existsById(id)) {
+            return itemRepository.findById(id);
+        } else {
+            throw new ItemNotFoundException("Item not found with id: " + id);
+        }
     }
 
     // Display Items by category
@@ -34,21 +39,24 @@ public class ItemService {
         return itemRepository.findAll(pageable);
     }
 
-    // ITEM MANAGEMENT BY ADMIN
+    // ITEM MANAGEMENT BY ADMINd
 
     // Add a new item to a category
     public Item addItemToCategory(Item item) {
-        // You can add custom logic here to associate the item with a category
-        return itemRepository.save(item);
+        try {
+            return itemRepository.save(item);
+        } catch (Exception e) {
+            throw new RuntimeException("Error adding item to category");
+        }
     }
 
     // Update an existing item
     public Optional<Item> updateItem(int id, Item item) {
         if (itemRepository.existsById(id)) {
-            item.setId(id); // Ensure the item's ID stays the same
             return Optional.of(itemRepository.save(item));
+        } else {
+            throw new ItemNotFoundException("Item not found with id: " + id);
         }
-        return Optional.empty();
     }
 
     // Delete an item from a category
@@ -56,8 +64,8 @@ public class ItemService {
         if (itemRepository.existsById(id)) {
             itemRepository.deleteById(id);
             return true;
+        } else {
+            throw new ItemNotFoundException("Item not found with id: " + id);
         }
-        return false;
     }
-
 }

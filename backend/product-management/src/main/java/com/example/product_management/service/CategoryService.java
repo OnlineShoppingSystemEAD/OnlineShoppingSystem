@@ -3,6 +3,7 @@ package com.example.product_management.service;
 import com.example.product_management.dto.CategoryDTO;
 import com.example.product_management.model.Category;
 import com.example.product_management.repository.CategoryRepository;
+import com.example.product_management.exception.CategoryNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,31 +19,81 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
 
     public List<CategoryDTO> getAllCategories() {
-        return categoryRepository.findAll().stream()
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
+        try{
+            return categoryRepository.findAll().stream()
+                    .map(this::convertToDTO)
+                    .collect(Collectors.toList());
+        }catch (Exception e){
+            System.out.println("Error: " + e);
+            return null;
+        }
     }
 
     public CategoryDTO getCategoryById(int id) {
-        Optional<Category> category = categoryRepository.findById(id);
-        return category.map(this::convertToDTO).orElse(null);
+        try{
+            Optional<Category> category = categoryRepository.findById(id);
+            if (category.isEmpty()) {
+                throw new CategoryNotFoundException("Category not found with id: " + id);
+            }
+            return convertToDTO(category.get());
+        }catch (Exception e){
+            System.out.println("Error: " + e);
+            return null;
+        }
     }
 
     public CategoryDTO createCategory(CategoryDTO categoryDTO) {
-        Category category = convertToEntity(categoryDTO);
-        Category savedCategory = categoryRepository.save(category);
-        return convertToDTO(savedCategory);
+        try {
+            Category category = new Category();
+            category.setName(categoryDTO.getName());
+            category.setDescription(categoryDTO.getDescription());
+            category.setImageURL(categoryDTO.getImageURL());
+            Category savedCategory = categoryRepository.save(category);
+            return convertToDTO(savedCategory);
+        }catch (Exception e){
+            System.out.println("Error: " + e);
+            return null;
+        }
+
     }
 
     public CategoryDTO updateCategory(int id, CategoryDTO categoryDTO) {
-        Category category = convertToEntity(categoryDTO);
-        category.setId(id);
-        Category updatedCategory = categoryRepository.save(category);
-        return convertToDTO(updatedCategory);
+        try{
+            Optional<Category> category = categoryRepository.findById(id);
+            if (category.isEmpty()) {
+                throw new CategoryNotFoundException("Category not found with id: " + id);
+            }
+            Category categoryToUpdate = category.get();
+
+            if(categoryDTO.getName() != null){
+                categoryToUpdate.setName(categoryDTO.getName());
+            }
+            if(categoryDTO.getDescription() != null){
+                categoryToUpdate.setDescription(categoryDTO.getDescription());
+            }
+            if(categoryDTO.getImageURL() != null){
+                categoryToUpdate.setImageURL(categoryDTO.getImageURL());
+            }
+
+            Category updatedCategory = categoryRepository.save(categoryToUpdate);
+            return convertToDTO(updatedCategory);
+        }catch (Exception e){
+            System.out.println("Error: " + e);
+            return null;
+        }
+
     }
 
     public void deleteCategory(int id) {
-        categoryRepository.deleteById(id);
+        try{
+            Optional<Category> category = categoryRepository.findById(id);
+            if (category.isEmpty()) {
+                throw new CategoryNotFoundException("Category not found with id: " + id);
+            }
+            categoryRepository.deleteById(id);
+        }catch (Exception e){
+            System.out.println("Error: " + e);
+        }
     }
 
     private CategoryDTO convertToDTO(Category category) {
@@ -50,14 +101,15 @@ public class CategoryService {
         dto.setId(category.getId());
         dto.setName(category.getName());
         dto.setDescription(category.getDescription());
+        dto.setImageURL(category.getImageURL());
         return dto;
     }
 
     private Category convertToEntity(CategoryDTO dto) {
         Category category = new Category();
-        category.setId(dto.getId());
         category.setName(dto.getName());
         category.setDescription(dto.getDescription());
+        category.setImageURL(dto.getImageURL());
         return category;
     }
 }
