@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,9 @@ public class OurUserDetailsServiceTest {
 
     @Mock
     private UserProfileRepo userProfileRepo;
+
+    @Mock
+    private MultipartFile multipartFile;
 
     @InjectMocks
     private OurUserDetailsService ourUserDetailsService;
@@ -115,7 +119,7 @@ public class OurUserDetailsServiceTest {
         when(userProfileRepo.findById(1)).thenReturn(Optional.of(profile));
         when(userProfileRepo.save(profile)).thenReturn(profile);
 
-        ReqRes response = ourUserDetailsService.updateUserProfile(1, updatedProfile);
+        ReqRes response = ourUserDetailsService.updateUserProfile(1, updatedProfile, multipartFile);
 
         assertEquals(200, response.getStatusCode());
         assertEquals("User Profile Updated Successfully", response.getMessage());
@@ -130,7 +134,7 @@ public class OurUserDetailsServiceTest {
 
         when(userProfileRepo.findById(1)).thenReturn(Optional.empty());
 
-        ReqRes response = ourUserDetailsService.updateUserProfile(1, profile);
+        ReqRes response = ourUserDetailsService.updateUserProfile(1, profile, multipartFile);
 
         assertEquals(404, response.getStatusCode());
         assertEquals("User Profile Not Found", response.getMessage());
