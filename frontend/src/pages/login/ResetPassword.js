@@ -96,7 +96,7 @@ const ResetPassword = () => {
                 {error && <div className="text-red-500 mb-4">{error}</div>}
                 <button
                     type="submit"
-                    className="p-2 bg-black text-white rounded-md w-64"
+                    className="w-full px-6 py-3 text-white bg-purple-600 rounded-lg hover:bg-black transition-all duration-300"
                 >
                     Reset Password
                 </button>
