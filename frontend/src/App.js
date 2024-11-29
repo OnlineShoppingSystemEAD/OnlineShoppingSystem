@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import About from './pages/user/About';
 import Home from './pages/user/Home';
 import Shop from './pages/user/Shop';
@@ -23,113 +23,101 @@ import EmailVerification from "./pages/login/EmailVerification";
 import ResetPassword from "./pages/login/ResetPassword";
 import ForgotPassword from "./pages/login/ForgotPassword";
 
-
-
 function App() {
     const isLoggedIn = userService.isTokenValid(); // Check if the user is logged in
-    console.log("ss" + isLoggedIn);
-  return (
-      <Router>
-          <Routes>
-              {/* Public Routes with Redirection for Authenticated Users */}
-              {/* Handle Login Route */}
-              <Route
-                  path="/login"
-                  element={
-                      isLoggedIn ? (
-                          <PrivateRoute allowedRoles={null} redirectIfAuthenticated>
-                              <Login />
-                          </PrivateRoute>
-                      ) : (
-                          <Login />
-                      )
-                  }
-              />
 
-              {/* Handle SignUp Route */}
-              <Route
-                  path="/signup"
-                  element={
-                      isLoggedIn ? (
-                          <PrivateRoute allowedRoles={null} redirectIfAuthenticated>
-                              <SignUp />
-                          </PrivateRoute>
-                      ) : (
-                          <SignUp />
-                      )
-                  }
-              />
-              <Route path="/about" element={<About />} />
-              <Route path="/shop" element={<Shop />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/" element={<Home />} />
-              <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
-              <Route path="/emailVerification" element={<EmailVerification />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
+    return (
+        <Router>
+            <Routes>
+                {/* Redirect root "/" to Home page */}
+                <Route
+                    path="/"
+                    element={
+                        <Home />
+                    }
+                />
 
-              {/* Protected User Routes */}
-              <Route
-                  path="/account"
-                  element={
-                      <PrivateRoute allowedRoles={["USER"]}>
-                          <Account />
-                      </PrivateRoute>
-                  }
-              />
-              <Route
-                  path="/cart"
-                  element={
-                      <PrivateRoute allowedRoles={["USER"]}>
-                          <Cart />
-                      </PrivateRoute>
-                  }
-              />
-              <Route
-                  path="/checkout"
-                  element={
-                      <PrivateRoute allowedRoles={["USER"]}>
-                          <Checkout />
-                      </PrivateRoute>
-                  }
-              />
+                {/* Public Routes */}
+                <Route
+                    path="/login"
+                    element={isLoggedIn ? <Navigate to="/" /> : <Login />}
+                />
+                <Route
+                    path="/signup"
+                    element={isLoggedIn ? <Navigate to="/" /> : <SignUp />}
+                />
+                <Route path="/emailVerification" element={<EmailVerification />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
 
-              {/* Protected Admin Routes */}
-              <Route
-                  path="/orders"
-                  element={
-                      <PrivateRoute allowedRoles={["ADMIN"]}>
-                          <Orders />
-                      </PrivateRoute>
-                  }
-              />
-              <Route
-                  path="/categories"
-                  element={
-                      <PrivateRoute allowedRoles={["ADMIN"]}>
-                          <Categories />
-                      </PrivateRoute>
-                  }
-              />
-              <Route
-                  path="/order/:id"
-                  element={
-                      <PrivateRoute allowedRoles={["ADMIN"]}>
-                          <Order />
-                      </PrivateRoute>
-                  }
-              />
-              <Route
-                  path="/category/:id"
-                  element={
-                      <PrivateRoute allowedRoles={["ADMIN"]}>
-                          <Category />
-                      </PrivateRoute>
-                  }
-              />
-          </Routes>
-      </Router>
-  );
+                {/* Protected User Routes */}
+                <Route
+                    path="/account"
+                    element={
+                        <PrivateRoute allowedRoles={["USER"]}>
+                            <Account />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/cart"
+                    element={
+                        <PrivateRoute allowedRoles={["USER"]}>
+                            <Cart />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/checkout"
+                    element={
+                        <PrivateRoute allowedRoles={["USER"]}>
+                            <Checkout />
+                        </PrivateRoute>
+                    }
+                />
+
+                {/* Protected Admin Routes */}
+                <Route
+                    path="/orders"
+                    element={
+                        <PrivateRoute allowedRoles={["ADMIN"]}>
+                            <Orders />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/categories"
+                    element={
+                        <PrivateRoute allowedRoles={["ADMIN"]}>
+                            <Categories />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/order/:id"
+                    element={
+                        <PrivateRoute allowedRoles={["ADMIN"]}>
+                            <Order />
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/category/:id"
+                    element={
+                        <PrivateRoute allowedRoles={["ADMIN"]}>
+                            <Category />
+                        </PrivateRoute>
+                    }
+                />
+
+                {/* Other Public Routes */}
+                <Route path="/about" element={<About />} />
+                <Route path="/shop" element={<Shop />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="*" element={<NotFound />} /> {/* Catch-all route */}
+            </Routes>
+        </Router>
+    );
 }
 
 export default App;

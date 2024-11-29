@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faShoppingCart,
@@ -14,6 +14,7 @@ const Header = () => {
   const [isCartOpen, setCartOpen] = useState(false);
   const [isSearchOpen, setSearchOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate(); // Hook for programmatic navigation
 
   const openCart = () => setCartOpen(true);
   const closeCart = () => setCartOpen(false);
@@ -25,6 +26,14 @@ const Header = () => {
   const handleLogout = () => {
     userService.logout(); // Clear tokens from localStorage
     window.location.reload(); // Reload the page to update UI
+  };
+
+  const handleAccountClick = () => {
+    if (isLoggedIn) {
+      navigate("/account"); // Redirect to the account page if logged in
+    } else {
+      navigate("/login"); // Redirect to sign-in page if not logged in
+    }
   };
 
   return (
@@ -51,14 +60,6 @@ const Header = () => {
             Shop
           </Link>
           <Link
-            to="/cart"
-            className={`text-gray-700 hover:text-purple-500 ${
-              isActive("/cart") ? "font-bold text-purple-500" : ""
-            }`}
-          >
-            Cart
-          </Link>
-          <Link
             to="/about"
             className={`text-gray-700 hover:text-purple-500 ${
               isActive("/about") ? "font-bold text-purple-500" : ""
@@ -80,7 +81,7 @@ const Header = () => {
               to="/signUp"
               className="text-gray-700 hover:text-purple-500"
             >
-              Sign In
+              Sign Up
             </Link>
           )}
         </nav>
@@ -105,33 +106,35 @@ const Header = () => {
             )}
           </div>
 
-          {/* Cart Icon */}
-          <span className="relative" onClick={openCart}>
-            <FontAwesomeIcon
-              icon={faShoppingCart}
-              className="text-gray-700 cursor-pointer hover:text-purple-500"
-            />
-            <span className="absolute w-4 h-4 text-xs text-center text-white bg-purple-500 rounded-full -top-1 -right-1">
-              3
+          {/* Cart Icon - Visible Only If Logged In */}
+          {isLoggedIn && (
+            <span className="relative" onClick={openCart}>
+              <FontAwesomeIcon
+                icon={faShoppingCart}
+                className="text-gray-700 cursor-pointer hover:text-purple-500"
+              />
+              <span className="absolute w-4 h-4 text-xs text-center text-white bg-purple-500 rounded-full -top-1 -right-1">
+                3
+              </span>
             </span>
-          </span>
+          )}
 
-          {/* Profile or Logout */}
-          {isLoggedIn ? (
+          {/* Account Icon */}
+          <FontAwesomeIcon
+            icon={faUser}
+            className={`cursor-pointer ${
+              isActive("/account") ? "text-purple-500" : "text-gray-700"
+            } hover:text-purple-500`}
+            onClick={handleAccountClick} // Dynamically handle account navigation
+          />
+
+          {/* Logout Icon - Visible Only If Logged In */}
+          {isLoggedIn && (
             <FontAwesomeIcon
               icon={faRightFromBracket}
               className="text-gray-700 cursor-pointer hover:text-purple-500"
               onClick={handleLogout}
             />
-          ) : (
-            <Link to="/account">
-              <FontAwesomeIcon
-                icon={faUser}
-                className={`cursor-pointer ${
-                  isActive("/account") ? "text-purple-500" : "text-gray-700"
-                } hover:text-purple-500`}
-              />
-            </Link>
           )}
         </div>
       </div>

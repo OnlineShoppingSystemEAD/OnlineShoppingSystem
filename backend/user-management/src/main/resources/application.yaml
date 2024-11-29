@@ -1,6 +1,12 @@
 spring:
   application:
     name: USER-MANAGEMENT-SERVICE
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 20MB
+        
   cloud:
     gateway:
       globalcors:
@@ -15,10 +21,11 @@ spring:
             allowedHeaders:
               - "*"
   datasource:
-    url: jdbc:mysql://ead2.ch0mg0sywvjb.ap-south-1.rds.amazonaws.com/ead2
+    url: jdbc:mysql://ead3-instance-1.ch0mg0sywvjb.ap-south-1.rds.amazonaws.com/ead3
     username: admin
     password: wIvsa9-dykjon-suxcuq
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -38,7 +45,16 @@ spring:
 eureka:
   client:
     serviceUrl:
-#      defaultZone: http://service-registry:8761/eureka/
        defaultZone: http://localhost:8761/eureka/
 server:
   port: 8081
+
+
+
+aws:
+  access: ${AWS_ACCESS:default_access_key}
+  secret: ${AWS_SECRET:default_secret_key}
+  account-no: ${AWS_ACCOUNT_NO:default_account_no}
+  s3:
+    bucket: ${S3_BUCKET:aws-bucket-sns-tutorial}
+    region: ${S3_REGION:ap-south-1}

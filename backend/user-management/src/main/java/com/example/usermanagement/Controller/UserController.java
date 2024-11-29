@@ -5,9 +5,9 @@ import com.example.usermanagement.Dto.ReqRes;
 import com.example.usermanagement.Entity.UserProfile;
 import com.example.usermanagement.Service.AuthService;
 import com.example.usermanagement.Service.OurUserDetailsService;
-import jakarta.ws.rs.QueryParam;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -55,7 +55,6 @@ public class UserController {
      * Endpoint to create a new user profile.
      *
      * @param userProfile the request body containing user profile details:
-     *                    - id: the ID of the user profile
      *                    - firstName: the user's first name
      *                    - lastName: the user's last name
      *                    - email: the user's email address
@@ -65,7 +64,6 @@ public class UserController {
      *                    - addressLine1: the first line of the user's address
      *                    - addressLine2: the second line of the user's address
      *                    - profilePicture: the URL of the user's profile picture
-     *                    - user: the associated user details
      * @return ResponseEntity containing the create user profile response
      */
     @PostMapping("/{id}/profile")
@@ -76,11 +74,10 @@ public class UserController {
 
 
     /**
-     * Endpoint to update a user profile.
+     * Endpoint to update a user profile by ID.
      *
-     * @param id the ID of the user profile to update
-     * @param userProfileDetails the request body containing updated user profile details:
-     *                           - id: the ID of the user profile
+     * @param id the ID of the user
+     * @param userProfileDetails the request body containing user profile details:
      *                           - firstName: the user's first name
      *                           - lastName: the user's last name
      *                           - email: the user's email address
@@ -89,13 +86,12 @@ public class UserController {
      *                           - houseNumber: the user's house number
      *                           - addressLine1: the first line of the user's address
      *                           - addressLine2: the second line of the user's address
-     *                           - profilePicture: the URL of the user's profile picture
-     *                           - user: the associated user details
+     * @param profilePicture the MultipartFile containing the user's profile picture
      * @return ResponseEntity containing the update user profile response
      */
     @PutMapping("/{id}/profile")
-    public ResponseEntity<ReqRes> updateUserProfile(@PathVariable Integer id, @RequestBody UserProfile userProfileDetails) {
-        ReqRes resp = ourUserDetailsService.updateUserProfile(id, userProfileDetails);
+    public ResponseEntity<ReqRes> updateUserProfile(@PathVariable Integer id, @RequestPart("userProfileDetails") UserProfile userProfileDetails, @RequestPart("profilePicture") MultipartFile profilePicture) {
+        ReqRes resp = ourUserDetailsService.updateUserProfile(id, userProfileDetails, profilePicture);
         return ResponseEntity.status(resp.getStatusCode()).body(resp);
     }
 
@@ -154,12 +150,6 @@ public class UserController {
         ReqRes resp = authService.forgotPasswordVerify(reqRes);
         return ResponseEntity.status(resp.getStatusCode()).body(resp);
     }
-//    just test post method to test email sending
-//    @PostMapping("/send-email")
-//    public ResponseEntity<ReqRes> sendEmail(@RequestBody ReqRes reqRes){
-//        emailSenderService.sendEmail("janithravisankax@gmail.com", "hi", "hello");
-//        return ResponseEntity.ok(reqRes);
-//    }
 
     /**
      * Endpoint to verify the user's email.
@@ -174,5 +164,6 @@ public class UserController {
         ReqRes resp = authService.verifyEmail(reqRes);
         return ResponseEntity.status(resp.getStatusCode()).body(resp);
     }
+
 
 }
