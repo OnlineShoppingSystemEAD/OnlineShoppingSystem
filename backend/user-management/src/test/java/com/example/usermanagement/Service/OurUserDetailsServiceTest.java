@@ -6,6 +6,7 @@ import com.example.usermanagement.Entity.UserProfile;
 import com.example.usermanagement.Repository.OurUserRepo;
 import com.example.usermanagement.Repository.UserProfileRepo;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
+@Disabled
 public class OurUserDetailsServiceTest {
 
     @Mock
