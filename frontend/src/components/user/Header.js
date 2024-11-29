@@ -32,7 +32,7 @@ const Header = () => {
     if (isLoggedIn) {
       navigate("/account"); // Redirect to the account page if logged in
     } else {
-      navigate("/signUp"); // Redirect to sign-in page if not logged in
+      navigate("/login"); // Redirect to sign-in page if not logged in
     }
   };
 
@@ -78,10 +78,10 @@ const Header = () => {
           {/* Sign In link */}
           {!isLoggedIn && (
             <Link
-              to="/login"
+              to="/signUp"
               className="text-gray-700 hover:text-purple-500"
             >
-              Sign In
+              Sign Up
             </Link>
           )}
         </nav>
