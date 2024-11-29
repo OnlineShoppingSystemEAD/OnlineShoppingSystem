@@ -80,7 +80,7 @@ const EmailVerification = () => {
                 )}
                 <button
                     type="submit"
-                    className="p-2 bg-black text-white rounded-md w-64"
+                    className="flex-1 px-12 py-3 text-white bg-purple-600 rounded-lg hover:bg-black transition-all duration-300"
                 >
                     Verify
                 </button>
