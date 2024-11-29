@@ -27,7 +27,6 @@ public class AdminService {
             existingItem.setDescription(updatedItem.getDescription());
             existingItem.setPrice(updatedItem.getPrice());
             existingItem.setQuantity(updatedItem.getQuantity());
-            existingItem.setCategoryId(updatedItem.getCategoryId());
             return itemRepository.save(existingItem);
         } else {
             throw new RuntimeException("Item not found with id: " + id);

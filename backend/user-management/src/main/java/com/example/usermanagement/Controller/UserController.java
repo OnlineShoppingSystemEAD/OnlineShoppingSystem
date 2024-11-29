@@ -159,7 +159,7 @@ public class UserController {
      *               - verificationCode: the verification code sent to the user's email
      * @return ResponseEntity containing the email verification response
      */
-    @PostMapping("verify-email")
+    @PostMapping("/verify-email")
     public ResponseEntity<ReqRes> verifyEmail(@RequestBody ReqRes reqRes){
         ReqRes resp = authService.verifyEmail(reqRes);
         return ResponseEntity.status(resp.getStatusCode()).body(resp);

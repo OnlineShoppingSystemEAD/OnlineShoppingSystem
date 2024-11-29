@@ -8,9 +8,13 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
+//@Repository
+//public interface ItemRepository extends JpaRepository<Item, Integer> {
+//    @Query(nativeQuery = true, value = "SELECT * FROM items WHERE categoryId=:categoryId")
+//    List<Item> findByCategoryId(@Param("categoryId") int categoryId);
+//}
+
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Integer> {
-    @Query(nativeQuery = true, value = "SELECT * FROM items WHERE categoryId=:categoryId")
-    List<Item> findByCategoryId(@Param("categoryId") int categoryId);
-
 }
+

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
-//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.data.domain.Page;
 import com.example.product_management.service.ItemService;
@@ -28,7 +27,9 @@ public class ItemController {
     // Get specific items
     @GetMapping("/{id}")
     public ResponseEntity<Item> getItembyId(@PathVariable int id) {
-        return itemService.getItembyId(id).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+        Optional<Item> item = itemService.getItemById(id);
+        return item.map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Get items by category
@@ -51,7 +52,6 @@ public class ItemController {
 
     // Add a new item to a category
     @PostMapping("/add")
-//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Item> addItem(@RequestBody Item item) {
         // Assuming the 'categoryId' is set in the Item object
         Item savedItem = itemService.addItemToCategory(item);
@@ -60,7 +60,6 @@ public class ItemController {
 
     // Update an existing item in a category
     @PutMapping("/update/{id}")
-//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Item> updateItem(@PathVariable int id, @RequestBody Item item) {
         Optional<Item> updatedItem = itemService.updateItem(id, item);
         return updatedItem.map(ResponseEntity::ok)
@@ -69,7 +68,6 @@ public class ItemController {
 
     // Delete an item from a category
     @DeleteMapping("/delete/{id}")
-//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteItem(@PathVariable int id) {
         boolean isDeleted = itemService.deleteItem(id);
         if (isDeleted) {
