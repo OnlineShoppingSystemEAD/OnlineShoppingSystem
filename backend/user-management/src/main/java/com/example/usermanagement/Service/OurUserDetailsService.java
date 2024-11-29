@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.util.List;
@@ -22,12 +22,14 @@ public class OurUserDetailsService implements UserDetailsService {
 
     private final OurUserRepo ourUserRepo;
     private final UserProfileRepo userProfileRepo;
+    private final AmazonS3Service amazonS3Service;
 
 
     @Autowired
-    public OurUserDetailsService(OurUserRepo ourUserRepo, UserProfileRepo userProfileRepo) {
+    public OurUserDetailsService(OurUserRepo ourUserRepo, UserProfileRepo userProfileRepo,  AmazonS3Service amazonS3Service) {
         this.ourUserRepo = ourUserRepo;
         this.userProfileRepo = userProfileRepo;
+        this.amazonS3Service = amazonS3Service;
 
     }
 
@@ -157,15 +159,15 @@ public class OurUserDetailsService implements UserDetailsService {
 //        return resp;
 //    }
 
-    public ReqRes updateUserProfile(Integer id, UserProfile updatedProfile) {
+    public ReqRes updateUserProfile(Integer id, UserProfile updatedProfile, MultipartFile profilePicture) {
         ReqRes resp = new ReqRes();
 
-        try{
+        try {
             OurUsers user = ourUserRepo.findById(id)
-                    .orElseThrow(()->new RuntimeException("User not found"));
+                    .orElseThrow(() -> new RuntimeException("User not found"));
             UserProfile existingProfile = user.getUserProfile();
 
-            if(existingProfile == null){
+            if (existingProfile == null) {
                 throw new RuntimeException("User Profile not found");
             }
             if (updatedProfile.getFirstName() != null) existingProfile.setFirstName(updatedProfile.getFirstName());
@@ -176,13 +178,26 @@ public class OurUserDetailsService implements UserDetailsService {
             if (updatedProfile.getHouseNumber() != null) existingProfile.setHouseNumber(updatedProfile.getHouseNumber());
             if (updatedProfile.getAddressLine1() != null) existingProfile.setAddressLine1(updatedProfile.getAddressLine1());
             if (updatedProfile.getAddressLine2() != null) existingProfile.setAddressLine2(updatedProfile.getAddressLine2());
-            if (updatedProfile.getProfilePicture() != null) existingProfile.setProfilePicture(updatedProfile.getProfilePicture());
+
+            if (updatedProfile.getProfilePicture() != null) {
+                // Delete the existing profile picture from S3
+                if (existingProfile.getProfilePicture() != null) {
+                    amazonS3Service.deleteFile(existingProfile.getProfilePicture());
+                }
+                existingProfile.setProfilePicture(updatedProfile.getProfilePicture());
+            }
+
+            if (profilePicture != null) {
+                // Upload the new profile picture to S3 with user ID
+                String profilePictureUrl = amazonS3Service.uploadFile(profilePicture, id);
+                existingProfile.setProfilePicture(profilePictureUrl);
+            }
 
             userProfileRepo.save(existingProfile);
             resp.setStatusCode(200);
             resp.setMessage("User Profile Updated Successfully");
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resp.setStatusCode(500);
             resp.setError(e.getMessage());
         }

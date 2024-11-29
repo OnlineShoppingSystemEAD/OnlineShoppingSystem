@@ -53,8 +53,7 @@ const Login = () => {
     return (
         <div className="login-container">
             <div className="inline">
-                <h1 className="logo1">COZA</h1>
-                <h1 className="logo2">STORE</h1>
+                <h1 className="logo1">SHOPZEN</h1>
             </div>
             <h2 className="admin-heading">Welcome Back</h2>
             <form className="login-form" onSubmit={handleLoginSubmit}>
