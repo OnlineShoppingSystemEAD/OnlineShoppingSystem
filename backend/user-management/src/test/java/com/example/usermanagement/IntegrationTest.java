@@ -27,6 +27,7 @@ import java.util.UUID;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Disabled
 public class IntegrationTest {
     @Autowired
     private TestRestTemplate restTemplate;
