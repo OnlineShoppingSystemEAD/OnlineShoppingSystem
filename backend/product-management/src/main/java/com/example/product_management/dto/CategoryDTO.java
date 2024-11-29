@@ -2,9 +2,12 @@ package com.example.product_management.dto;
 
 public class CategoryDTO {
     private int id;
-    private String name;
+    private String categoryName;
     private String description;
     private String imageUrl;  // Add this field for image URL
+
+    public CategoryDTO() {
+    }
 
 
     public String getDescription() {
@@ -15,12 +18,12 @@ public class CategoryDTO {
         this.description = description;
     }
 
-    public String getName() {
-        return name;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public int getId() {

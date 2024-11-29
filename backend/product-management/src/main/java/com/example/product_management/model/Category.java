@@ -16,17 +16,21 @@ public class Category {
     private int id;
 
     @Column(nullable = false, unique = true, length = 50)
-    private String name;
+    private String categoryName;
 
     @Column(length = 255)
     private String description;
 
+    @Column(length = 255)
+    private String imageUrl;
+
     public Category() {
     }
 
-    public Category(String name, String description) {
-        this.name = name;
+    public Category(String categoryName, String description, String imageUrl) {
+        this.categoryName = categoryName;
         this.description = description;
+        this.imageUrl = imageUrl;
     }
 
     // Getters and Setters
@@ -38,12 +42,12 @@ public class Category {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 
     public String getDescription() {
@@ -53,4 +57,13 @@ public class Category {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
 }

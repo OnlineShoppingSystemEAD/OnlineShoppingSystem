@@ -48,7 +48,7 @@ public class CategoryService {
     private CategoryDTO convertToDTO(Category category) {
         CategoryDTO dto = new CategoryDTO();
         dto.setId(category.getId());
-        dto.setName(category.getName());
+        dto.setCategoryName(category.getCategoryName());
         dto.setDescription(category.getDescription());
         dto.setImageUrl(category.getImageUrl());
         return dto;
@@ -57,9 +57,9 @@ public class CategoryService {
     private Category convertToEntity(CategoryDTO dto) {
         Category category = new Category();
         category.setId(dto.getId());
-        category.setName(dto.getName());
+        category.setCategoryName(dto.getCategoryName());
         category.setDescription(dto.getDescription());
-        category.setImageUrl(dto.getImageUrl());  // Set image URL in entity
+        category.setImageUrl(dto.getImageUrl()); // Set image URL in entity
         return category;
     }
 }
