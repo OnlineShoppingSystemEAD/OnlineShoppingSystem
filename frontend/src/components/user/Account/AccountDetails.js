@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import userService from '../../../api/services/UserService'; // Adjust path as needed
+import userService from '../../../api/services/UserService'; 
 
 const AccountDetails = () => {
   const [accountData, setAccountData] = useState(() => {
