@@ -153,7 +153,7 @@ const AccountDetails = () => {
         </div>
 
         <button
-            className="bg-black text-white py-2 px-4 mt-6 rounded"
+            className="px-6 py-3 bg-primary mt-6 text-white rounded-lg hover:bg-dark transition"
             onClick={handleUpdateProfile}
             disabled={isUpdating}
         >
