@@ -121,7 +121,7 @@ public class AuthService {
         } catch (Exception e) {
             e.printStackTrace();
             response.setStatusCode(500);
-            response.setError(e.getMessage());
+            response.setError("An error occurred in the sign-in process");
         }
 
         return response;

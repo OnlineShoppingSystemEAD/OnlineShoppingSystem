@@ -39,28 +39,22 @@ public class OurUserDetailsService implements UserDetailsService {
         return ourUserRepo.findByEmail(username).orElseThrow();
     }
 
-    public List<UserProfile> getAllUserProfiles() {
-        return userProfileRepo.findAll();
+    public ReqRes getAllUserProfiles() {
+        ReqRes resp = new ReqRes();
+        try{
+            List<UserProfile> userProfiles = userProfileRepo.findAll();
+            resp.setStatusCode(200);
+            resp.setMessage("User Profiles Found");
+            resp.setUserProfiles(userProfiles);
+        }catch (Exception e){
+            e.printStackTrace();
+            resp.setStatusCode(500);
+            resp.setError("An error occurred while retrieving the User Profiles");
+        }
+        return resp;
+
     }
 
-//    public ReqRes getUserProfileById(Integer id) {
-//        ReqRes resp = new ReqRes();
-//        try{
-//            Optional<UserProfile> userProfile = userProfileRepo.findById(id);
-//            if (userProfile.isPresent()) {
-//                resp.setStatusCode(200);
-//                resp.setMessage("User Profile Found");
-//                resp.setUserProfile(userProfile.get());
-//            } else {
-//                resp.setStatusCode(404);
-//                resp.setMessage("User Profile Not Found");
-//            }
-//        }catch (Exception e){
-//            resp.setStatusCode(500);
-//            resp.setError(e.getMessage());
-//        }
-//        return resp;
-//    }
 
     public ReqRes getUserProfileById(Integer id) {
         ReqRes resp = new ReqRes();
@@ -88,27 +82,6 @@ public class OurUserDetailsService implements UserDetailsService {
         return resp;
     }
 
-
-
-//    public ReqRes createUserProfile(UserProfile userProfile) {
-//        ReqRes resp = new ReqRes();
-//        try {
-//            UserProfile userProfileResult = userProfileRepo.save(userProfile);
-//            if (userProfileResult.getId() > 0) {
-//                resp.setStatusCode(200);
-//                resp.setMessage("User Profile Saved Successfully");
-//                resp.setUserProfile(userProfileResult);
-//            }else{
-//                resp.setStatusCode(500);
-//                resp.setMessage("User Profile Not Saved");
-//            }
-//        } catch (Exception e) {
-//            resp.setStatusCode(500);
-//            resp.setError(e.getMessage());
-//        }
-//        return resp;
-//    }
-
     public ReqRes createUserProfile(Integer id, UserProfile userProfile) {
         ReqRes resp = new ReqRes();
         try{
@@ -121,43 +94,13 @@ public class OurUserDetailsService implements UserDetailsService {
             resp.setStatusCode(200);
             resp.setMessage("User Profile Created Successfully");
         }catch (Exception e){
+            e.printStackTrace();
             resp.setStatusCode(500);
-            resp.setError(e.getMessage());
+            resp.setError("An error occurred while creating the User Profile");
         }
 
         return resp;
     }
-
-//    public ReqRes updateUserProfile(Integer id, UserProfile userProfileDetails) {
-//
-//        ReqRes resp = new ReqRes();
-//        try {
-//            Optional<UserProfile> userProfileOptional = userProfileRepo.findById(id);
-//            if (userProfileOptional.isPresent()) {
-//                UserProfile userProfile = userProfileOptional.get();
-//                userProfile.setPostalCode(userProfileDetails.getPostalCode());
-//                userProfile.setContactNumber(userProfileDetails.getContactNumber());
-//                userProfile.setAddressLine1(userProfileDetails.getAddressLine1());
-//                userProfile.setAddressLine2(userProfileDetails.getAddressLine2());
-//                userProfile.setHouseNumber(userProfileDetails.getHouseNumber());
-//                userProfile.setProfilePicture(userProfileDetails.getProfilePicture());
-//                userProfile.setFirstName(userProfileDetails.getFirstName());
-//                userProfile.setLastName(userProfileDetails.getLastName());
-//                userProfile.setEmail(userProfileDetails.getEmail());
-//                UserProfile userProfileResult = userProfileRepo.save(userProfile);
-//                resp.setStatusCode(200);
-//                resp.setMessage("User Profile Updated Successfully");
-//                resp.setUserProfile(userProfileResult);
-//            } else {
-//                resp.setStatusCode(404);
-//                resp.setMessage("User Profile Not Found");
-//            }
-//        } catch (Exception e) {
-//            resp.setStatusCode(500);
-//            resp.setError(e.getMessage());
-//        }
-//        return resp;
-//    }
 
     public ReqRes updateUserProfile(Integer id, UserProfile updatedProfile, MultipartFile profilePicture) {
         ReqRes resp = new ReqRes();
@@ -198,8 +141,9 @@ public class OurUserDetailsService implements UserDetailsService {
             resp.setMessage("User Profile Updated Successfully");
 
         } catch (Exception e) {
+            e.printStackTrace();
             resp.setStatusCode(500);
-            resp.setError(e.getMessage());
+            resp.setError("An error occurred while updating the User Profile");
         }
 
         return resp;
@@ -233,9 +177,10 @@ public class OurUserDetailsService implements UserDetailsService {
             }
         } catch (Exception e) {
             // Handle unexpected errors
+            e.printStackTrace();
             resp.setStatusCode(500);
-            resp.setMessage("An error occurred while deleting the User Profile");
-            resp.setError(e.getMessage());
+//            resp.setMessage("An error occurred while deleting the User Profile");
+            resp.setError("Error while deleting user profile");
         }
         return resp;
     }
