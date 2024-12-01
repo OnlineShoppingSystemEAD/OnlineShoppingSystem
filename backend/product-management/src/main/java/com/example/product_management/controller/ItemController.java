@@ -27,7 +27,14 @@ public class ItemController {
     @GetMapping("/{id}")
     public ResponseEntity<ResponseDTO<ItemDTO>> getItemById(@PathVariable int id) {
         ResponseDTO<ItemDTO> response = itemService.getItemById(id);
+        System.out.println(response.getData());
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
+    }
+
+    @GetMapping("/order/{id}")
+    public ItemDTO getItemByIdForOrder(@PathVariable int id) {
+        ResponseDTO<ItemDTO> response = itemService.getItemById(id);
+        return (ItemDTO) response.getData();
     }
 
     /**
