@@ -67,14 +67,13 @@ public class AuthService {
             if (ourUserResult != null && ourUserResult.getId()>0) {
                 // Send the verification code to the user's email
                 emailSenderService.sendEmail(ourUsers.getEmail(), "Email Verification Code", "Your verification code is: " + verificationCode);
-
-                resp.setOurUsers(ourUserResult);
                 resp.setMessage("User Saved Successfully");
                 resp.setStatusCode(200);
             }
         }catch (Exception e){
+            e.printStackTrace();
             resp.setStatusCode(500);
-            resp.setError(e.getMessage());
+            resp.setError("An error occurred while saving the user");
         }
         return resp;
     }
@@ -121,7 +120,7 @@ public class AuthService {
         } catch (Exception e) {
             e.printStackTrace();
             response.setStatusCode(500);
-            response.setError(e.getMessage());
+            response.setError("An error occurred in the sign-in process");
         }
 
         return response;
@@ -168,8 +167,9 @@ public class AuthService {
                 response.setMessage("Current Password is Incorrect");
             }
         }catch (Exception e){
+            e.printStackTrace();
             response.setStatusCode(500);
-            response.setError(e.getMessage());
+            response.setError("An error occurred while changing the password");
         }
         return response;
     }
@@ -199,8 +199,9 @@ public class AuthService {
                 response.setMessage("Email Not Found");
             }
         } catch (Exception e) {
+            e.printStackTrace();
             response.setStatusCode(500);
-            response.setError(e.getMessage());
+            response.setError("An error occurred while sending the password reset code");
         }
         return response;
     }
@@ -227,8 +228,9 @@ public class AuthService {
                 response.setMessage("Verification Code is Incorrect");
             }
         }catch (Exception e){
+            e.printStackTrace();
             response.setStatusCode(500);
-            response.setError(e.getMessage());
+            response.setError("An error occurred while resetting the password");
         }
         return response;
 
@@ -251,8 +253,9 @@ public class AuthService {
                 response.setMessage("Verification Code is Incorrect");
             }
         }catch (Exception e){
+            e.printStackTrace();
             response.setStatusCode(500);
-            response.setError(e.getMessage());
+            response.setError("An error occurred while verifying the email");
         }
         return response;
     }
@@ -274,8 +277,9 @@ public class AuthService {
                 response.setMessage("Token is Invalid");
             }
         } catch (Exception e) {
+            e.printStackTrace();
             response.setStatusCode(500);
-            response.setError(e.getMessage());
+            response.setError("An error occurred while verifying the token");
         }
         System.out.println(response);
         return response;

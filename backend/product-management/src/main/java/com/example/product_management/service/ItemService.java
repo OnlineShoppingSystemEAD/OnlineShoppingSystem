@@ -201,7 +201,7 @@ public class ItemService {
         response.setStatus(status);
         response.setMessage(message);
         if (data instanceof List) {
-            response.setDataList((List<ItemDTO>) data);
+            response.setData((List<ItemDTO>) data);
         } else {
             response.setData((ItemDTO) data);
         }

@@ -9,14 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     private final OurUserDetailsService ourUserDetailsService;
-
     private final AuthService authService;
 
     public UserController(AuthService authService, OurUserDetailsService ourUserDetailsService) {
@@ -25,145 +22,139 @@ public class UserController {
     }
 
     /**
-     * Endpoint to get all user profiles.
+     * Validates if the user is authorized to perform the action.
      *
-     * @return List of all user profiles
+     * @param id the ID of the resource
+     * @param userId the ID of the user making the request
+     * @param role the role of the user making the request
+     * @return ResponseEntity containing the validation response if unauthorized, otherwise null
      */
-    @GetMapping
-    public List<UserProfile> getAllUserProfiles() {
-        return ourUserDetailsService.getAllUserProfiles();
+    private ResponseEntity<ReqRes> validateAndRespond(Integer id, Integer userId, String role) {
+        ReqRes resp = new ReqRes();
+        if (!id.equals(userId) && !"ADMIN".equals(role)) {
+            resp.setStatusCode(401);
+            resp.setMessage("User is not authorized to perform this action");
+            return ResponseEntity.status(resp.getStatusCode()).body(resp);
+        }
+        return null;
     }
 
     /**
-     * Endpoint to get a user profile by ID.
+     * Retrieves all user profiles.
      *
-     * @param id the ID of the user
-     * @return ResponseEntity containing the user profile response
+     * @param userId the ID of the user making the request
+     * @param role the role of the user making the request
+     * @return ResponseEntity containing the list of all user profiles
+     */
+    @GetMapping
+    public ResponseEntity<ReqRes> getAllUserProfiles(@RequestParam Integer userId, @RequestParam String role) {
+        ReqRes resp = ourUserDetailsService.getAllUserProfiles();
+        return ResponseEntity.status(resp.getStatusCode()).body(resp);
+    }
+
+    /**
+     * Retrieves a user profile by ID.
+     *
+     * @param id the ID of the user profile to retrieve
+     * @param userId the ID of the user making the request
+     * @param role the role of the user making the request
+     * @return ResponseEntity containing the user profile
      */
     @GetMapping("/{id}/profile")
     public ResponseEntity<ReqRes> getUserProfileById(@PathVariable Integer id, @RequestParam Integer userId, @RequestParam String role) {
+        ResponseEntity<ReqRes> validationResp = validateAndRespond(id, userId, role);
+        if (validationResp != null) {
+            return validationResp;
+        }
         ReqRes resp = ourUserDetailsService.getUserProfileById(id);
-
-        System.out.println("userId: " + userId);
-        System.out.println("role: " + role);
-
         return ResponseEntity.status(resp.getStatusCode()).body(resp);
-
     }
 
     /**
-     * Endpoint to create a new user profile.
+     * Creates a new user profile.
      *
-     * @param userProfile the request body containing user profile details:
-     *                    - firstName: the user's first name
-     *                    - lastName: the user's last name
-     *                    - email: the user's email address
-     *                    - postalCode: the user's postal code
-     *                    - contactNumber: the user's contact number
-     *                    - houseNumber: the user's house number
-     *                    - addressLine1: the first line of the user's address
-     *                    - addressLine2: the second line of the user's address
-     *                    - profilePicture: the URL of the user's profile picture
-     * @return ResponseEntity containing the create user profile response
+     * @param id the ID of the user profile to create
+     * @param userId the ID of the user making the request
+     * @param role the role of the user making the request
+     * @param userProfile the user profile data
+     * @return ResponseEntity containing the created user profile
      */
     @PostMapping("/{id}/profile")
-    public ResponseEntity<ReqRes> createUserProfile(@PathVariable Integer id,@RequestBody UserProfile userProfile) {
-        ReqRes resp = ourUserDetailsService.createUserProfile(id, userProfile);
+    public ResponseEntity<ReqRes> createUserProfile(@PathVariable Integer id, @RequestParam Integer userId, @RequestParam String role, @RequestPart("userProfile") UserProfile userProfile, @RequestPart("profilePicture") MultipartFile profilePicture) {
+        ResponseEntity<ReqRes> validationResp = validateAndRespond(id, userId, role);
+        if (validationResp != null) {
+            return validationResp;
+        }
+        ReqRes resp = ourUserDetailsService.createUserProfile(id, userProfile, profilePicture);
         return ResponseEntity.status(resp.getStatusCode()).body(resp);
     }
 
-
     /**
-     * Endpoint to update a user profile by ID.
+     * Updates an existing user profile.
      *
-     * @param id the ID of the user
-     * @param userProfileDetails the request body containing user profile details:
-     *                           - firstName: the user's first name
-     *                           - lastName: the user's last name
-     *                           - email: the user's email address
-     *                           - postalCode: the user's postal code
-     *                           - contactNumber: the user's contact number
-     *                           - houseNumber: the user's house number
-     *                           - addressLine1: the first line of the user's address
-     *                           - addressLine2: the second line of the user's address
-     * @param profilePicture the MultipartFile containing the user's profile picture
-     * @return ResponseEntity containing the update user profile response
+     * @param id the ID of the user profile to update
+     * @param userId the ID of the user making the request
+     * @param role the role of the user making the request
+     * @param userProfileDetails the updated user profile data
+     * @param profilePicture the updated profile picture
+     * @return ResponseEntity containing the updated user profile
      */
     @PutMapping("/{id}/profile")
-    public ResponseEntity<ReqRes> updateUserProfile(@PathVariable Integer id, @RequestPart("userProfileDetails") UserProfile userProfileDetails, @RequestPart("profilePicture") MultipartFile profilePicture) {
+    public ResponseEntity<ReqRes> updateUserProfile(@PathVariable Integer id, @RequestParam Integer userId, @RequestParam String role, @RequestPart("userProfileDetails") UserProfile userProfileDetails, @RequestPart("profilePicture") MultipartFile profilePicture) {
+        ResponseEntity<ReqRes> validationResp = validateAndRespond(id, userId, role);
+        if (validationResp != null) {
+            return validationResp;
+        }
         ReqRes resp = ourUserDetailsService.updateUserProfile(id, userProfileDetails, profilePicture);
         return ResponseEntity.status(resp.getStatusCode()).body(resp);
     }
 
-
     /**
-     * Endpoint to delete a user profile by ID.
+     * Deletes a user profile.
      *
-     * @param id the ID of the user
-     * @return ResponseEntity with the status of the delete operation
+     * @param id the ID of the user profile to delete
+     * @param userId the ID of the user making the request
+     * @param role the role of the user making the request
+     * @return ResponseEntity indicating the result of the deletion
      */
     @DeleteMapping("/{id}/profile")
-    public ResponseEntity<ReqRes> deleteUserProfile(@PathVariable Integer id) {
+    public ResponseEntity<ReqRes> deleteUserProfile(@PathVariable Integer id, @RequestParam Integer userId, @RequestParam String role) {
+        ResponseEntity<ReqRes> validationResp = validateAndRespond(id, userId, role);
+        if (validationResp != null) {
+            return validationResp;
+        }
         ReqRes resp = ourUserDetailsService.deleteUserProfile(id);
         return ResponseEntity.status(resp.getStatusCode()).build();
     }
 
     /**
-     * Endpoint to change a user's password.
+     * Changes the password of a user.
      *
-     * @param id the ID of the user
-     * @param changePasswordReq the request body containing password change details:
-     *                          - oldPassword: the user's current password
-     *                          - newPassword: the user's new password
-     * @return ResponseEntity containing the change password response
+     * @param id the ID of the user whose password is to be changed
+     * @param userId the ID of the user making the request
+     * @param role the role of the user making the request
+     * @param changePasswordReq the password change request data
+     * @return ResponseEntity containing the result of the password change
      */
     @PutMapping("/{id}/password")
-    public ResponseEntity<ReqRes> changePassword(@PathVariable Integer id, @RequestBody ChangePasswordReq changePasswordReq) {
+    public ResponseEntity<ReqRes> changePassword(@PathVariable Integer id, @RequestParam Integer userId, @RequestParam String role, @RequestBody ChangePasswordReq changePasswordReq) {
+        ResponseEntity<ReqRes> validationResp = validateAndRespond(id, userId, role);
+        if (validationResp != null) {
+            return validationResp;
+        }
         ReqRes resp = authService.changePassword(id, changePasswordReq);
         return ResponseEntity.status(resp.getStatusCode()).body(resp);
     }
 
     /**
-     * Endpoint to initiate the forgot password process.
+     * Verifies the email of a user.
      *
-     * @param forgotPasswordReq the request body containing forgot password details:
-     *                          - email: the user's email address
-     * @return ResponseEntity containing the forgot password response
-     */
-    @PostMapping("/forgot-password")
-    public ResponseEntity<ReqRes> forgotPassword(@RequestBody ReqRes forgotPasswordReq){
-        ReqRes resp = authService.forgotPassword(forgotPasswordReq);
-        return ResponseEntity.status(resp.getStatusCode()).body(resp);
-    }
-
-    /**
-     * Endpoint to verify the forgot password process.
-     *
-     * @param reqRes the request body containing verification details:
-     *               - email: the user's email address
-     *               - verificationCode: the verification code sent to the user's email
-     *               - newPassword: the user's new password
-     * @return ResponseEntity containing the forgot password verification response
-     */
-    @PostMapping("/forgot-password/verify")
-    public ResponseEntity<ReqRes> forgotPasswordVerify(@RequestBody ReqRes reqRes) {
-        ReqRes resp = authService.forgotPasswordVerify(reqRes);
-        return ResponseEntity.status(resp.getStatusCode()).body(resp);
-    }
-
-    /**
-     * Endpoint to verify the user's email.
-     *
-     * @param reqRes the request body containing email verification details:
-     *               - email: the user's email address
-     *               - verificationCode: the verification code sent to the user's email
-     * @return ResponseEntity containing the email verification response
+     * @param reqRes the email verification request data
+     * @return ResponseEntity containing the result of the email verification
      */
     @PostMapping("/verify-email")
     public ResponseEntity<ReqRes> verifyEmail(@RequestBody ReqRes reqRes){
         ReqRes resp = authService.verifyEmail(reqRes);
         return ResponseEntity.status(resp.getStatusCode()).body(resp);
     }
-
-
 }

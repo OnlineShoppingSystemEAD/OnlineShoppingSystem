@@ -12,6 +12,7 @@ import java.util.List;
 public class ResponseDTO<T> {
     private int status;
     private String message;
-    private T data;
-    private List<T> dataList;
+    private String error;
+    private Object data;
+//    private List<T> dataList;
 }
