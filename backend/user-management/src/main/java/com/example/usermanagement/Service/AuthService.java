@@ -60,6 +60,7 @@ public class AuthService {
             // Generate a random verification code
             String verificationCode = generateVerificationCode();
             ourUsers.setVerificationCode(verificationCode);
+            ourUsers.setIsVerified(false);
 
             OurUsers ourUserResult = ourUserRepo.save(ourUsers);
 
