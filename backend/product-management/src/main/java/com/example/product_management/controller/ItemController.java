@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/items")
@@ -72,14 +73,14 @@ public class ItemController {
      * Add a new item to a category.
      *
      * @param item the item to add
-     * @param image the image of the item
+     * @param images the images of the item
      * @return the added item
      * @throws IOException if an I/O error occurs
      */
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<ResponseDTO<ItemDTO>> addItem(@RequestPart("item") ItemDTO item,
-                                                        @RequestPart("image") MultipartFile image) throws IOException {
-        ResponseDTO<ItemDTO> response = itemService.addItemToCategory(item, image);
+                                                        @RequestPart("images") List<MultipartFile> images) throws IOException {
+        ResponseDTO<ItemDTO> response = itemService.addItemToCategory(item, images);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
@@ -88,15 +89,15 @@ public class ItemController {
      *
      * @param id the ID of the item to update
      * @param item the updated item details
-     * @param image the updated image of the item
+     * @param images the updated images of the item
      * @return the updated item
      * @throws IOException if an I/O error occurs
      */
     @PutMapping(value = "/{id}", consumes = "multipart/form-data")
     public ResponseEntity<ResponseDTO<ItemDTO>> updateItem(@PathVariable int id,
                                                            @RequestPart("item") ItemDTO item,
-                                                           @RequestPart("image") MultipartFile image) throws IOException {
-        ResponseDTO<ItemDTO> response = itemService.updateItem(id, item, image);
+                                                           @RequestPart("images") List<MultipartFile> images) throws IOException {
+        ResponseDTO<ItemDTO> response = itemService.updateItem(id, item, images);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
