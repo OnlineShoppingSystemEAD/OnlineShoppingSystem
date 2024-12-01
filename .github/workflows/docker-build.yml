@@ -39,8 +39,13 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Determine if service folder changed
+        id: changes
+        run: |
+          if git diff --name-only HEAD^ HEAD | grep -q "^backend/${{ matrix.service }}/"; then echo "changed=true" >> $GITHUB_ENV; else echo "changed=false" >> $GITHUB_ENV; fi
+
       - name: Build and push Docker image
-        if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, matrix.service) }}
+        if: env.changed == 'true'
         uses: docker/build-push-action@v2
         with:
           context: ./backend/${{ matrix.service }}
