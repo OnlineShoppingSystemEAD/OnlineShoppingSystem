@@ -25,8 +25,17 @@ import java.util.List;
 
 
 
+//@Repository
+//public interface ItemRepository extends JpaRepository<Item, Integer> {
+//    Page<Item> findByCategoryId(int categoryId, Pageable pageable);
+//    List<Item> findByCategoryId(int categoryId);
+//}
+
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Integer> {
-    Page<Item> findByCategoryId(int categoryId, Pageable pageable);
-}
+    @Query("SELECT i FROM Item i WHERE i.category.id = :categoryId")
+    List<Item> findByCategoryId(@Param("categoryId") int categoryId);
 
+    @Query("SELECT i FROM Item i WHERE i.category.id = :categoryId")
+    Page<Item> findByCategoryId(@Param("categoryId") int categoryId, Pageable pageable);
+}

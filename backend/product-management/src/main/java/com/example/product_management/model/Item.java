@@ -35,4 +35,8 @@ public class Item {
         this.imageURL = imageURL;
         this.category = category;
     }
+
+    public int getCategoryId() {
+        return category.getId();
+    }
 }
