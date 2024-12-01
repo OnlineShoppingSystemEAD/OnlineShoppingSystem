@@ -5,7 +5,9 @@ import com.example.product_management.dto.ResponseDTO;
 import com.example.product_management.exception.ItemNotFoundException;
 import com.example.product_management.model.Category;
 import com.example.product_management.model.Item;
+import com.example.product_management.model.ItemImage;
 import com.example.product_management.repository.CategoryRepository;
+import com.example.product_management.repository.ItemImageRepository;
 import com.example.product_management.repository.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,6 +32,9 @@ public class ItemService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ItemImageRepository itemImageRepository;
 
     /**
      * Get all items with pagination support.
@@ -100,11 +105,11 @@ public class ItemService {
      * Add a new item to a category.
      *
      * @param itemDTO the item to add
-     * @param image the image of the item
+     * @param images the images of the item
      * @return a response DTO containing the added item
      * @throws IOException if an I/O error occurs
      */
-    public ResponseDTO<ItemDTO> addItemToCategory(ItemDTO itemDTO, MultipartFile image) throws IOException {
+    public ResponseDTO<ItemDTO> addItemToCategory(ItemDTO itemDTO, List<MultipartFile> images) throws IOException {
         ResponseDTO<ItemDTO> response = new ResponseDTO<>();
         try {
             Item newItem = new Item();
@@ -116,11 +121,8 @@ public class ItemService {
             newItem.setCategory(category);
             newItem.setQuantity(itemDTO.getQuantity());
             newItem.setDescription(itemDTO.getDescription());
-            if (image != null) {
-                String imageUrl = amazonS3Service.uploadFile(image, (int) (Math.random() * 100000), "item");
-                newItem.setImageURL(imageUrl);
-            }
             Item savedItem = itemRepository.save(newItem);
+            saveItemImages(savedItem, images);
             setResponseDetails(response, 201, "Item created successfully", convertToDTO(savedItem));
         } catch (Exception e) {
             setResponseDetails(response, 500, "Error: " + e.getMessage(), null);
@@ -133,11 +135,11 @@ public class ItemService {
      *
      * @param id the ID of the item to update
      * @param itemDTO the updated item details
-     * @param image the updated image of the item
+     * @param images the updated images of the item
      * @return a response DTO containing the updated item
      * @throws IOException if an I/O error occurs
      */
-    public ResponseDTO<ItemDTO> updateItem(int id, ItemDTO itemDTO, MultipartFile image) throws IOException {
+    public ResponseDTO<ItemDTO> updateItem(int id, ItemDTO itemDTO, List<MultipartFile> images) throws IOException {
         ResponseDTO<ItemDTO> response = new ResponseDTO<>();
         try {
             Optional<Item> item = itemRepository.findById(id);
@@ -145,9 +147,8 @@ public class ItemService {
                 throw new ItemNotFoundException("Item not found with id: " + id);
             }
             Item itemToUpdate = item.get();
-            if (image != null) {
-                String imageUrl = amazonS3Service.uploadFile(image, itemToUpdate.getId(), "item");
-                itemToUpdate.setImageURL(imageUrl);
+            if (images != null) {
+                saveItemImages(itemToUpdate, images);
             }
             if (itemDTO.getName() != null) {
                 itemToUpdate.setName(itemDTO.getName());
@@ -222,6 +223,14 @@ public class ItemService {
         dto.setQuantity(item.getQuantity());
         dto.setImageURL(item.getImageURL());
         dto.setCategoryId(item.getCategory().getId());
+        
+        // Add other image URLs
+        List<String> imageUrls = itemImageRepository.findByItemId(item.getId())
+                .stream()
+                .map(ItemImage::getImageUrl)
+                .collect(Collectors.toList());
+        dto.setOtherImageURLs(imageUrls);
+        
         return dto;
     }
 
@@ -240,5 +249,25 @@ public class ItemService {
                 .orElseThrow(() -> new ItemNotFoundException("Category not found with id: " + dto.getCategoryId()));
         item.setCategory(category);
         return item;
+    }
+
+    /**
+     * Save item images.
+     *
+     * @param item the item entity
+     * @param images the list of images
+     * @throws IOException if an I/O error occurs
+     */
+    private void saveItemImages(Item item, List<MultipartFile> images) throws IOException {
+        for (MultipartFile image : images) {
+            if (image != null) {
+                //random number
+                String imageUrl = amazonS3Service.uploadFile(image, (int) (Math.random() * 1000), "item");
+                ItemImage itemImage = new ItemImage();
+                itemImage.setItem(item);
+                itemImage.setImageUrl(imageUrl);
+                itemImageRepository.save(itemImage);
+            }
+        }
     }
 }
