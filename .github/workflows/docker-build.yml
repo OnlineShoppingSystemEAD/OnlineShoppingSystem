@@ -1,0 +1,48 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    paths:
+      - 'backend/service-registry/**'
+      - 'backend/api-gateway/**'
+      - 'backend/user-management/**'
+      - 'backend/product-management/**'
+      - 'backend/order-management/**'
+      - 'backend/payment-management/**'
+      # Add paths for other services as needed
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        service:
+          - service-registry
+          - api-gateway
+          - user-management
+          - product-management
+          - order-management
+          - payment-management
+          # Add other services as needed
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Docker image
+        if: ${{ github.event_name == 'push' && contains(github.event.head_commit.message, matrix.service) }}
+        uses: docker/build-push-action@v2
+        with:
+          context: ./backend/${{ matrix.service }}
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ matrix.service }}:latest
