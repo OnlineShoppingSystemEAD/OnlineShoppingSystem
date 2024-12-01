@@ -12,6 +12,7 @@ import com.example.order_management.model.ShoppingCartItem;
 import com.example.order_management.dto.ShoppingCartItemDto;
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/api/shoppingCart")
 public class ShoppingCartController {
