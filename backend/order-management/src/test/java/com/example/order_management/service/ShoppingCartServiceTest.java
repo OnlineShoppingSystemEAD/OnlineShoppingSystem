@@ -54,6 +54,7 @@ public class ShoppingCartServiceTest {
     @Test
     void testDeleteItemFromtheShoppingCart() {
         int itemId = 1;
+        int userId = 1;
         underTestShoppingCartService.deleteItemFromtheShoppingCart(itemId);
         verify(underTestShoppingCartRepository, times(1)).deleteById(itemId);
 

@@ -43,7 +43,7 @@ public class ShoppingCartController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping
+    @PostMapping("/addItem")
     public ShoppingCartItem createShoppingCartItem(@RequestBody ShoppingCartItem shoppingCartItem) {
         return shoppingCartService.createShoppingCartItem(shoppingCartItem);
     }
