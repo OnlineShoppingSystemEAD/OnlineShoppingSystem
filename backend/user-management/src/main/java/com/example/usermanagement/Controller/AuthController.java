@@ -27,7 +27,8 @@ public class AuthController {
      */
     @PostMapping("/signup")
     public ResponseEntity<ReqRes> signUp(@RequestBody ReqRes signUpRequest){
-        return ResponseEntity.ok(authService.signUp(signUpRequest));
+        ReqRes response = authService.signUp(signUpRequest);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
 
@@ -42,7 +43,8 @@ public class AuthController {
      */
     @PostMapping("/signIn")
     public ResponseEntity<ReqRes> signIn(@RequestBody ReqRes signInRequest){
-        return ResponseEntity.ok(authService.signIn(signInRequest));
+        ReqRes response = authService.signIn(signInRequest);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
 
@@ -55,13 +57,21 @@ public class AuthController {
      */
     @PostMapping("/token/refresh")
     public ResponseEntity<ReqRes> refreshToken(@RequestBody ReqRes refreshTokenRequest){
-        return ResponseEntity.ok(authService.refreshToken(refreshTokenRequest));
+        ReqRes response = authService.refreshToken(refreshTokenRequest);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
+    /**
+     * Endpoint for verifying the authentication token.
+     *
+     * @param verifyTokenRequest the request body containing the token to verify
+     * @return ResponseEntity containing the verify token response
+     */
     @PostMapping("/verify-token")
     public ResponseEntity<ReqRes> verifyToken(@RequestBody ReqRes verifyTokenRequest){
         System.out.println("verify token");
-        return ResponseEntity.ok(authService.verifyToken(verifyTokenRequest));
+        ReqRes response = authService.verifyToken(verifyTokenRequest);
+        return ResponseEntity.status(response.getStatusCode()).body(response);
     }
 
 

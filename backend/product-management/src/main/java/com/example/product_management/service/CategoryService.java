@@ -75,8 +75,9 @@ public class CategoryService {
 
             return response;
         } catch (Exception e) {
+            e.printStackTrace();
             response.setStatus(500);
-            response.setMessage("Error: " + e.getMessage());
+            response.setError("Error while creating category");
             response.setData(null);
             return response;
         }
@@ -111,8 +112,9 @@ public class CategoryService {
             response.setMessage("Category updated successfully");
             return response;
         } catch (Exception e) {
+            e.printStackTrace();
             response.setStatus(500);
-            response.setMessage("Error: " + e.getMessage());
+            response.setError("Error while updating category");
             response.setData(null);
             return response;
         }
@@ -132,8 +134,9 @@ public class CategoryService {
             response.setMessage("Category deleted successfully");
             return response;
         } catch (Exception e) {
+            e.printStackTrace();
             response.setStatus(500);
-            response.setMessage("Error: " + e.getMessage());
+            response.setError("Error while deleting category");
             response.setData(null);
             return response;
         }
