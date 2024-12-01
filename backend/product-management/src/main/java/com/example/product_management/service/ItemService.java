@@ -108,10 +108,7 @@ public class ItemService {
         ResponseDTO<ItemDTO> response = new ResponseDTO<>();
         try {
             Item newItem = new Item();
-            if (image != null) {
-                String imageUrl = amazonS3Service.uploadFile(image, 123);
-                newItem.setImageURL(imageUrl);
-            }
+
             Category category = categoryRepository.findById(itemDTO.getCategoryId())
                     .orElseThrow(() -> new ItemNotFoundException("Category not found with id: " + itemDTO.getCategoryId()));
             newItem.setName(itemDTO.getName());
@@ -119,6 +116,10 @@ public class ItemService {
             newItem.setCategory(category);
             newItem.setQuantity(itemDTO.getQuantity());
             newItem.setDescription(itemDTO.getDescription());
+            if (image != null) {
+                String imageUrl = amazonS3Service.uploadFile(image, (int) (Math.random() * 100000), "item");
+                newItem.setImageURL(imageUrl);
+            }
             Item savedItem = itemRepository.save(newItem);
             setResponseDetails(response, 201, "Item created successfully", convertToDTO(savedItem));
         } catch (Exception e) {
@@ -145,7 +146,7 @@ public class ItemService {
             }
             Item itemToUpdate = item.get();
             if (image != null) {
-                String imageUrl = amazonS3Service.uploadFile(image, itemToUpdate.getId());
+                String imageUrl = amazonS3Service.uploadFile(image, itemToUpdate.getId(), "item");
                 itemToUpdate.setImageURL(imageUrl);
             }
             if (itemDTO.getName() != null) {

@@ -11,6 +11,7 @@ import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.model.StorageClass;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -24,12 +25,13 @@ public class AmazonS3Service {
         this.awsProperties = awsProperties;
     }
 
-    public String uploadFile(MultipartFile multipartFile, Integer userId) {
+    public String uploadFile(MultipartFile multipartFile, Integer id, String type) {
         try {
             System.out.println("Uploading file to S3...");
             String bucketName = awsProperties.getS3().getBucket();
-            String fileExtension = multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf('.'));
-            String fileName = "category_" + userId + fileExtension;
+            String fileExtension = Objects.requireNonNull(multipartFile.getOriginalFilename()).substring(multipartFile.getOriginalFilename().lastIndexOf('.'));
+            String folder = type.equals("category") ? "categories" : "products";
+            String fileName = folder + "/" + type + "_" + id + fileExtension;
 
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                     .bucket(bucketName)

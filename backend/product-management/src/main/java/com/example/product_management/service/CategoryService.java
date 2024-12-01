@@ -68,7 +68,7 @@ public class CategoryService {
             response.setMessage("Category created successfully");
 
             if (image != null) {
-                String imageUrl = amazonS3Service.uploadFile(image, savedCategory.getId());
+                String imageUrl = amazonS3Service.uploadFile(image, savedCategory.getId(), "category");
                 savedCategory.setImageURL(imageUrl);
                 categoryRepository.save(savedCategory);
             }
@@ -103,7 +103,7 @@ public class CategoryService {
             Category updatedCategory = categoryRepository.save(categoryToUpdate);
 
             if (image != null) {
-                String imageUrl = amazonS3Service.uploadFile(image, updatedCategory.getId());
+                String imageUrl = amazonS3Service.uploadFile(image, updatedCategory.getId(), "category");
                 updatedCategory.setImageURL(imageUrl);
                 categoryRepository.save(updatedCategory);
             }
@@ -118,8 +118,6 @@ public class CategoryService {
             response.setData(null);
             return response;
         }
-
-
     }
 
     public ResponseDTO<CategoryDTO> deleteCategory ( int id){
