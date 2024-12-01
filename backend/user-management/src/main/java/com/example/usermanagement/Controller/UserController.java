@@ -6,6 +6,7 @@ import com.example.usermanagement.Entity.OurUsers;
 import com.example.usermanagement.Entity.UserProfile;
 import com.example.usermanagement.Service.AuthService;
 import com.example.usermanagement.Service.OurUserDetailsService;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -90,6 +91,8 @@ public class UserController {
         ReqRes resp = ourUserDetailsService.getUserProfileById(id);
         return ResponseEntity.status(resp.getStatusCode()).body(resp);
     }
+
+
     /**
      * Creates a new user profile.
      *
@@ -128,7 +131,7 @@ public class UserController {
      *           - statusCode: 200
      *           - message: "User profile updated successfully"
      */
-    @PutMapping("/{id}/profile")
+    @PutMapping(value = "/{id}/profile", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ReqRes> updateUserProfile(@PathVariable Integer id, @RequestParam Integer userId, @RequestParam String role, @RequestPart("userProfileDetails") UserProfile userProfileDetails, @RequestPart("profilePicture") MultipartFile profilePicture) {
         ResponseEntity<ReqRes> validationResp = validateAndRespond(id, userId, role);
         if (validationResp != null) {

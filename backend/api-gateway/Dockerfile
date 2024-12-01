@@ -7,8 +7,8 @@ COPY mvnw .
 RUN chmod +x mvnw
 
 COPY pom.xml .
+COPY src/main ./src/main
 
-COPY src ./src
 
 RUN ./mvnw package -DskipTests
 

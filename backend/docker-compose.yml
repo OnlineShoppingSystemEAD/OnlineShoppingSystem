@@ -12,6 +12,7 @@ services:
       - EUREKA_SERVER_URL=http://service-registry:8761/eureka
       - SPRING_PROFILES_ACTIVE=docker
 
+
   api-gateway:
     build:
       context: ./api-gateway
@@ -36,6 +37,8 @@ services:
     environment:
       - EUREKA_SERVER_URL=http://service-registry:8761/eureka
       - SPRING_PROFILES_ACTIVE=docker
+    env_file:
+      - ./user-management/.env
     depends_on:
       - service-registry
 
@@ -48,6 +51,8 @@ services:
     environment:
       - EUREKA_SERVER_URL=http://service-registry:8761/eureka
       - SPRING_PROFILES_ACTIVE=docker
+    env_file:
+      - ./product-management/.env
     depends_on:
       - service-registry
 
