@@ -11,7 +11,9 @@ const Account = () => {
   const [userData, setUserData] = useState(null); // Store user data
   const [isLoading, setIsLoading] = useState(true); // Manage loading state
   const [error, setError] = useState(''); // Store error messages
-  const [profilePicture, setProfilePicture] = useState('https://cdn-icons-png.flaticon.com/512/3135/3135715.png'); // Default profile picture
+  const [profilePicture, setProfilePicture] = useState(
+      localStorage.getItem('profilePictureCache') || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'
+  ); // Default profile picture or cached one
 
   useEffect(() => {
     const fetchAccountData = async () => {
@@ -22,9 +24,9 @@ const Account = () => {
         console.log(response);
 
         // Ensure correct response structure
-        if (response && response.userProfile) {
-          setUserData(response.userProfile); // Store the user profile data
-          localStorage.setItem('userProfileCache', JSON.stringify(response));
+        if (response && response.data) {
+          setUserData(response.data); // Store the user profile data
+          localStorage.setItem('userProfileCache', JSON.stringify(response.data));
         } else {
           throw new Error('Invalid response structure');
         }
@@ -40,13 +42,16 @@ const Account = () => {
   }, []);
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
+    const file = e.target.files[0]; // Get the selected file
     if (file) {
+      setProfilePicture(URL.createObjectURL(file));
+      // Convert to base64 for caching
       const reader = new FileReader();
       reader.onload = () => {
-        setProfilePicture(reader.result); // Set the uploaded image as profile picture
+        const base64Image = reader.result; // Get base64 image data
+        localStorage.setItem('profilePictureCache', base64Image); // Cache the base64 image
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file); // Read file as base64 string for display
     }
   };
 
@@ -108,7 +113,7 @@ const Account = () => {
             <h2 className="mt-4 text-2xl font-bold">
               {`${userData?.firstName || ''} ${userData?.lastName || ''}`}
             </h2>
-            <span className="text-sm text-gray-500">â­ 4.3</span>
+            <span className="text-sm text-gray-500">⭐ 4.3</span>
           </div>
 
           {/* Tab Navigation */}
