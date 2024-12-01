@@ -81,4 +81,13 @@ public class OrderService {
         return responseEntity.getBody();
     }
 
+    public List<Orders> getAllOrders() {
+        List<Orders> orders = orderRespository.findAll();
+        return orders;
+    }
+
+    public String deleteOrder(int orderId) {
+        orderRespository.deleteById(orderId);
+        return "Successfully Deleted";
+    }
 }
