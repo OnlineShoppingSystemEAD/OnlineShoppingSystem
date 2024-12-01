@@ -1,5 +1,6 @@
 package com.example.order_management.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -23,7 +24,6 @@ public class ShoppingCartService {
     // Get Shopping Cart Items for viewing
     public Optional<List<ShoppingCartItemDto>> getShoppingCartByUserId(int userId) {
         List<ShoppingCartItem> items = shoppingCartRepository.findByUserId(userId);
-
         List<ShoppingCartItemDto> itemDTOs = items.stream().map(item -> {
             ItemDetailsDto itemDetails = getItem(item.getItemId());
             ShoppingCartItemDto dto = new ShoppingCartItemDto();
@@ -56,8 +56,9 @@ public class ShoppingCartService {
     }
 
     // Remove item from the shopping cart
-    public void deleteItemFromtheShoppingCart(int id) {
-        shoppingCartRepository.deleteById(id);
+    @Transactional
+    public void deleteItemFromtheShoppingCart(int id, int userId) {
+        shoppingCartRepository.deleteById(id, userId);
     }
 
     // Add a new item to the shopping cart
@@ -75,7 +76,7 @@ public class ShoppingCartService {
 
     public ItemDetailsDto getItem(int itemId) {
         ItemDetailsDto responseItemDetails = restTemplate.getForObject(
-                "lb://PRODUCT-MANAGEMENT-SERVICE/api/items/{itemId}", ItemDetailsDto.class, itemId);
+                "lb://PRODUCT-MANAGEMENT-SERVICE/api/items/order/{itemId}", ItemDetailsDto.class, itemId);
         return responseItemDetails;
     }
 }

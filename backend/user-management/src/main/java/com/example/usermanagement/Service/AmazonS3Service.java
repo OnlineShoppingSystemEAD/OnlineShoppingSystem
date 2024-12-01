@@ -31,7 +31,7 @@ public class AmazonS3Service {
         try {
             String bucketName = awsProperties.getS3().getBucket();
             String fileExtension = multipartFile.getOriginalFilename().substring(multipartFile.getOriginalFilename().lastIndexOf('.'));
-            String fileName = "user_" + userId + fileExtension;
+            String fileName = "propics/user_" + userId + fileExtension;
 
             PutObjectRequest putObjectRequest = PutObjectRequest.builder()
                     .bucket(bucketName)

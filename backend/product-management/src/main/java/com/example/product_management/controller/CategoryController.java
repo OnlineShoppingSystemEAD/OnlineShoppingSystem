@@ -1,13 +1,16 @@
-package com.example.product_management.Controller;
+package com.example.product_management.controller;
 
 import com.example.product_management.dto.CategoryDTO;
+import com.example.product_management.dto.ResponseDTO;
+import com.example.product_management.service.AmazonS3Service;
 import com.example.product_management.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/categories")
@@ -16,16 +19,19 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private AmazonS3Service amazonS3Service;
+
     /**
      * Get all categories.
      *
      * @return a list of all categories
      */
     @GetMapping
-    public ResponseEntity<List<CategoryDTO>> getAllCategories() {
-        return ResponseEntity.ok(categoryService.getAllCategories());
+    public ResponseEntity<ResponseDTO<CategoryDTO>> getAllCategories() {
+        ResponseDTO<CategoryDTO> response = categoryService.getAllCategories();
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
-
 
     /**
      * Get a category by its ID.
@@ -34,51 +40,65 @@ public class CategoryController {
      * @return the category with the specified ID
      */
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable int id) {
-        CategoryDTO category = categoryService.getCategoryById(id);
-        return category != null ? ResponseEntity.ok(category) : ResponseEntity.notFound().build();
+    public ResponseEntity<ResponseDTO<CategoryDTO>> getCategoryById(@PathVariable int id) {
+        ResponseDTO<CategoryDTO> response = categoryService.getCategoryById(id);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
     /**
      * Create a new category.
      *
      * @param categoryDTO the category to create
-     *                    - name: the name of the category
-     *                    - description: the description of the category
-     *                    - imageURL: the URL of the image of the category
+     * @param image the image of the category
      * @return the created category
      */
-    @PostMapping
-    public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO) {
-        CategoryDTO createdCategory = categoryService.createCategory(categoryDTO);
-        return new ResponseEntity<>(createdCategory, HttpStatus.CREATED);
+    @PostMapping(consumes = {"multipart/form-data"})
+    public ResponseEntity<ResponseDTO<CategoryDTO>> createCategory(
+            @RequestPart("category") CategoryDTO categoryDTO,
+            @RequestPart(value = "image", required = false) MultipartFile image,
+            @RequestParam Integer userId,
+            @RequestParam String role
+    ) throws IOException {
+        ResponseDTO<CategoryDTO> response = categoryService.createCategory(categoryDTO, image);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
-
     /**
-     * Create a new category.
+     * Update a category by its ID.
      *
-     * @param categoryDTO the category to create
-     *                    - name: the name of the category
-     *                    - description: the description of the category
-     *                    - imageURL: the URL of the image of the category
-     * @return the created category
+     * @param id the ID of the category
+     * @param categoryDTO the updated category
+     * @param image the updated image of the category
+     * @return the updated category
      */
-    @PutMapping("/{id}")
-    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable int id, @RequestBody CategoryDTO categoryDTO) {
-        CategoryDTO updatedCategory = categoryService.updateCategory(id, categoryDTO);
-        return ResponseEntity.ok(updatedCategory);
+    @PutMapping(value = "/{id}", consumes = {"multipart/form-data"})
+    public ResponseEntity<ResponseDTO<CategoryDTO>> updateCategory(
+            @PathVariable int id,
+            @RequestPart(value = "category", required = false) CategoryDTO categoryDTO,
+            @RequestPart(value = "image", required = false) MultipartFile image,
+            @RequestParam Integer userId,
+            @RequestParam String role
+    ) throws IOException {
+        System.out.println("userId: " + userId);
+        System.out.println("role: " + role);
+
+        ResponseDTO<CategoryDTO> response = categoryService.updateCategory(id, categoryDTO, image);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
     /**
      * Delete a category by its ID.
      *
-     * @param id the ID of the category to delete
-     * @return a response entity with no content
+     * @param id the ID of the category
+     * @return the deleted category
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable int id) {
-        categoryService.deleteCategory(id);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<ResponseDTO<CategoryDTO>> deleteCategory(
+            @PathVariable int id,
+            @RequestParam Integer userId,
+            @RequestParam String role
+    ) {
+        ResponseDTO<CategoryDTO> response = categoryService.deleteCategory(id);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 }

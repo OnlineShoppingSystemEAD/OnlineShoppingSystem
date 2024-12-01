@@ -12,6 +12,7 @@ import com.example.order_management.model.ShoppingCartItem;
 import com.example.order_management.dto.ShoppingCartItemDto;
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/api/shoppingCart")
 public class ShoppingCartController {
@@ -38,12 +39,12 @@ public class ShoppingCartController {
 
     // Delete Item from the Shopping Cart
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteItemFromtheShoppingCart(@PathVariable int id) {
-        shoppingCartService.deleteItemFromtheShoppingCart(id);
+    public ResponseEntity<Void> deleteItemFromtheShoppingCart(@PathVariable int id, @RequestParam int userId) {
+        shoppingCartService.deleteItemFromtheShoppingCart(id,userId);
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping
+    @PostMapping("/addItem")
     public ShoppingCartItem createShoppingCartItem(@RequestBody ShoppingCartItem shoppingCartItem) {
         return shoppingCartService.createShoppingCartItem(shoppingCartItem);
     }

@@ -15,7 +15,6 @@ spring:
             allowedHeaders:
               - "*"
   datasource:
-#    url: jdbc:mysql://ead2.ch0mg0sywvjb.ap-south-1.rds.amazonaws.com/ead2
     url: jdbc:mysql://ead3-instance-1.ch0mg0sywvjb.ap-south-1.rds.amazonaws.com/ead3
     username: admin
     password: wIvsa9-dykjon-suxcuq
@@ -35,6 +34,9 @@ spring:
           auth: true
           starttls:
             enable: true
+  servlet:
+    multipart:
+      enabled: true
 
 eureka:
   client:

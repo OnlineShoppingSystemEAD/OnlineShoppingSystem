@@ -13,7 +13,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Random;
-
 import java.util.HashMap;
 
 @Service
@@ -67,14 +66,13 @@ public class AuthService {
             if (ourUserResult != null && ourUserResult.getId()>0) {
                 // Send the verification code to the user's email
                 emailSenderService.sendEmail(ourUsers.getEmail(), "Email Verification Code", "Your verification code is: " + verificationCode);
-
-                resp.setOurUsers(ourUserResult);
                 resp.setMessage("User Saved Successfully");
                 resp.setStatusCode(200);
             }
         }catch (Exception e){
+            e.printStackTrace();
             resp.setStatusCode(500);
-            resp.setError(e.getMessage());
+            resp.setError("An error occurred while saving the user");
         }
         return resp;
     }
@@ -121,7 +119,7 @@ public class AuthService {
         } catch (Exception e) {
             e.printStackTrace();
             response.setStatusCode(500);
-            response.setError(e.getMessage());
+            response.setError("An error occurred in the sign-in process");
         }
 
         return response;
@@ -129,27 +127,38 @@ public class AuthService {
 
 
 
-    public ReqRes refreshToken(ReqRes refreshTokenReqiest){
+    public ReqRes refreshToken(ReqRes refreshTokenRequest) {
         ReqRes response = new ReqRes();
-        String ourEmail = jwtUtils.extractUsername(refreshTokenReqiest.getToken());
-        System.out.println("refresh token:" + refreshTokenReqiest.getToken());
-        OurUsers users = ourUserRepo.findByEmail(ourEmail).orElseThrow();
-        HashMap<String, Object> claims = new HashMap<>();
+        try {
+            String ourEmail = jwtUtils.extractUsername(refreshTokenRequest.getToken());
+            System.out.println("refresh token:" + refreshTokenRequest.getToken());
+            OurUsers users = ourUserRepo.findByEmail(ourEmail).orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + ourEmail));
+            HashMap<String, Object> claims = new HashMap<>();
 
-        // add
-        claims.put("userId", users.getId());
-        claims.put("role", users.getRole());
-        claims.put("accStatus", users.getIsVerified() ? "Verified" : "Not Verified");
+            // add
+            claims.put("userId", users.getId());
+            claims.put("role", users.getRole());
+            claims.put("accStatus", users.getIsVerified() ? "Verified" : "Not Verified");
 
-        if (jwtUtils.isTokenValid(refreshTokenReqiest.getToken(), users)) {
-            var jwt = jwtUtils.generateToken(claims, users);
-            response.setStatusCode(200);
-            response.setToken(jwt);
-            response.setRefreshToken(refreshTokenReqiest.getToken());
-            response.setExpirationTime("24Hr");
-            response.setMessage("Successfully Refreshed Token");
+            if (jwtUtils.isTokenValid(refreshTokenRequest.getToken(), users)) {
+                var jwt = jwtUtils.generateToken(claims, users);
+                response.setStatusCode(200);
+                response.setToken(jwt);
+                response.setRefreshToken(refreshTokenRequest.getToken());
+                response.setExpirationTime("24Hr");
+                response.setMessage("Successfully Refreshed Token");
+            } else {
+                response.setStatusCode(401);
+                response.setMessage("Invalid Refresh Token");
+            }
+        } catch (UsernameNotFoundException ex) {
+            response.setStatusCode(404);
+            response.setMessage(ex.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setStatusCode(500);
+            response.setError("An error occurred while refreshing the token");
         }
-        response.setStatusCode(500);
         return response;
     }
 
@@ -168,8 +177,9 @@ public class AuthService {
                 response.setMessage("Current Password is Incorrect");
             }
         }catch (Exception e){
+            e.printStackTrace();
             response.setStatusCode(500);
-            response.setError(e.getMessage());
+            response.setError("An error occurred while changing the password");
         }
         return response;
     }
@@ -199,8 +209,9 @@ public class AuthService {
                 response.setMessage("Email Not Found");
             }
         } catch (Exception e) {
+            e.printStackTrace();
             response.setStatusCode(500);
-            response.setError(e.getMessage());
+            response.setError("An error occurred while sending the password reset code");
         }
         return response;
     }
@@ -227,8 +238,9 @@ public class AuthService {
                 response.setMessage("Verification Code is Incorrect");
             }
         }catch (Exception e){
+            e.printStackTrace();
             response.setStatusCode(500);
-            response.setError(e.getMessage());
+            response.setError("An error occurred while resetting the password");
         }
         return response;
 
@@ -251,8 +263,9 @@ public class AuthService {
                 response.setMessage("Verification Code is Incorrect");
             }
         }catch (Exception e){
+            e.printStackTrace();
             response.setStatusCode(500);
-            response.setError(e.getMessage());
+            response.setError("An error occurred while verifying the email");
         }
         return response;
     }
@@ -274,8 +287,9 @@ public class AuthService {
                 response.setMessage("Token is Invalid");
             }
         } catch (Exception e) {
+            e.printStackTrace();
             response.setStatusCode(500);
-            response.setError(e.getMessage());
+            response.setError("An error occurred while verifying the token");
         }
         System.out.println(response);
         return response;

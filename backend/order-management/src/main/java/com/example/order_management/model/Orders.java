@@ -33,7 +33,7 @@ public class Orders {
     public enum Status {
         PENDING,
         PAID,
-        ONDELIEVARY,
+        ONDELIVERY,
         COMPLETED
     }
 

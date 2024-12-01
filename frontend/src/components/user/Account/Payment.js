@@ -70,13 +70,13 @@ const Payment = () => {
 
         {/* Save Button */}
         <div className="flex justify-end">
-          <button className="bg-black text-white py-2 px-4 mt-4 rounded">Done</button>
+          <button className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-dark transition mt-4">Done</button>
         </div>
       </div>
 
       {/* Add New Payment Method */}
       <div className="mt-8 flex justify-center">
-        <button className="bg-black text-white py-2 px-6 rounded flex items-center">
+        <button className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-dark transition">
           <span className="mr-2">+</span> Add Payment Method
         </button>
       </div>

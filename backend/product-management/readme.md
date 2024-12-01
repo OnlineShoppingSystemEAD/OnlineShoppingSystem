@@ -1,91 +1,124 @@
-## API End Points
+# Product Management
 
-### Getting number of items to display
+This module handles all product-related operations in the Online Shopping System.
 
-- **URL:** `/api/items/`
+## Features
+
+- Add, update, delete, and retrieve products
+- Manage product categories
+- Upload product images to Amazon S3
+
+## Endpoints
+
+### Product Endpoints
+
+#### Get All Products
+- **Endpoint:** `/api/products`
 - **Method:** `GET`
-- **Request Body:**
-  ```json
-  {
-    "pageNo": 1,
-    "pageSize": 16
-  }
-  ```
+- **Parameters:** None
+- **Responses:**
+  - `200 OK` with list of products
 
-  ### Get a specific item
-
-- **URL:** `/api/items/{id}`
+#### Get Product by ID
+- **Endpoint:** `/api/products/{id}`
 - **Method:** `GET`
-- **Request Body:**
-  ```json
-  {
-    "itemId": 1
-  }
-  ```
+- **Parameters:**
+  - `id` (string, required)
+- **Responses:**
+  - `200 OK` with product details
+  - `404 Not Found` if product does not exist
 
-  - **Response Body:**
-  ```json
-  {
-    "itemId": 1,
-    "name": "T-shirt",
-    "description": "Lorem-ipsum",
-    "price":40.65,
-    "quantity":5,
-    "categoryId":2
-  }
-  ```
-
-   ### Get set of items by category
-
-- **URL:** `/api/items/category/{categoryId}`
-- **Method:** `GET`
-- **Request Body:**
-  ```json
-  {
-    "categoryId": 2,
-    "pageNo": 1,
-    "pageSize":16
-  }
-  ```
-### Create a new item by admin
-
-- **URL:** `/api/admin/items`
+#### Add New Product
+- **Endpoint:** `/api/products`
 - **Method:** `POST`
-- **Request Body:**
-  ```json
-  {
-  "name": "T-shirt",
-  "description": "Lorem-ipsum",
-  "price": 40.65,
-  "quantity": 5,
-  "categoryId": 2
-  }
-  ```
+- **Parameters:**
+  - `name` (string, required)
+  - `price` (number, required)
+  - `description` (string, optional)
+- **Responses:**
+  - `201 Created` on success
+  - `400 Bad Request` if parameters are missing or invalid
 
-### Update an existing item by admin
-
-- **URL:** `/api/admin/items/{id}`
+#### Update Product
+- **Endpoint:** `/api/products/{id}`
 - **Method:** `PUT`
-- **Request Body:**
-  ```json
-  {
-  "name": "Updated T-shirt",
-  "description": "Updated description",
-  "price": 45.00,
-  "quantity": 10,
-  "categoryId": 2
-  }
-  ```
-### Delete an existing item by admin
+- **Parameters:**
+  - `id` (string, required)
+  - `name` (string, optional)
+  - `price` (number, optional)
+  - `description` (string, optional)
+- **Responses:**
+  - `200 OK` on success
+  - `400 Bad Request` if parameters are invalid
+  - `404 Not Found` if product does not exist
 
-- **URL:** `/api/admin/items/{id}`
+#### Delete Product
+- **Endpoint:** `/api/products/{id}`
 - **Method:** `DELETE`
-- **Response Body:**
-  ```json
-  {
-  "message": "Item deleted successfully."
-  }
-  ```
-  
+- **Parameters:**
+  - `id` (string, required)
+- **Responses:**
+  - `200 OK` on success
+  - `404 Not Found` if product does not exist
 
-  
+#### Get Items by Category
+- **Endpoint:** `/api/items/category/{categoryId}`
+- **Method:** `GET`
+- **Parameters:**
+  - `categoryId` (string, required)
+  - `pageNo` (int, optional, default: 0)
+  - `pageSize` (int, optional, default: 16)
+- **Responses:**
+  - `200 OK` with list of items in the specified category
+  - `404 Not Found` if category does not exist
+
+### Category Endpoints
+
+#### Get All Categories
+- **Endpoint:** `/api/categories`
+- **Method:** `GET`
+- **Parameters:** None
+- **Responses:**
+  - `200 OK` with list of categories
+
+#### Get Category by ID
+- **Endpoint:** `/api/categories/{id}`
+- **Method:** `GET`
+- **Parameters:**
+  - `id` (string, required)
+- **Responses:**
+  - `200 OK` with category details
+  - `404 Not Found` if category does not exist
+
+#### Create Category
+- **Endpoint:** `/api/categories`
+- **Method:** `POST`
+- **Parameters:**
+  - `category` (CategoryDTO, required)
+  - `image` (MultipartFile, optional)
+- **Responses:**
+  - `201 Created` on success
+  - `400 Bad Request` if parameters are missing or invalid
+
+#### Update Category
+- **Endpoint:** `/api/categories/{id}`
+- **Method:** `PUT`
+- **Parameters:**
+  - `id` (string, required)
+  - `category` (CategoryDTO, optional)
+  - `image` (MultipartFile, optional)
+- **Responses:**
+  - `200 OK` on success
+  - `400 Bad Request` if parameters are invalid
+  - `404 Not Found` if category does not exist
+
+#### Delete Category
+- **Endpoint:** `/api/categories/{id}`
+- **Method:** `DELETE`
+- **Parameters:**
+  - `id` (string, required)
+- **Responses:**
+  - `200 OK` on success
+  - `404 Not Found` if category does not exist
+
+

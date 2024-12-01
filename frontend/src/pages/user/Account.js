@@ -11,6 +11,9 @@ const Account = () => {
   const [userData, setUserData] = useState(null); // Store user data
   const [isLoading, setIsLoading] = useState(true); // Manage loading state
   const [error, setError] = useState(''); // Store error messages
+  const [profilePicture, setProfilePicture] = useState(
+      localStorage.getItem('profilePictureCache') || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'
+  ); // Default profile picture or cached one
 
   useEffect(() => {
     const fetchAccountData = async () => {
@@ -21,9 +24,9 @@ const Account = () => {
         console.log(response);
 
         // Ensure correct response structure
-        if (response && response.userProfile) {
-          setUserData(response.userProfile); // Store the user profile data
-          localStorage.setItem('userProfileCache', JSON.stringify(response));
+        if (response && response.data) {
+          setUserData(response.data); // Store the user profile data
+          localStorage.setItem('userProfileCache', JSON.stringify(response.data));
         } else {
           throw new Error('Invalid response structure');
         }
@@ -37,6 +40,20 @@ const Account = () => {
 
     fetchAccountData();
   }, []);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]; // Get the selected file
+    if (file) {
+      setProfilePicture(URL.createObjectURL(file));
+      // Convert to base64 for caching
+      const reader = new FileReader();
+      reader.onload = () => {
+        const base64Image = reader.result; // Get base64 image data
+        localStorage.setItem('profilePictureCache', base64Image); // Cache the base64 image
+      };
+      reader.readAsDataURL(file); // Read file as base64 string for display
+    }
+  };
 
   // Function to render the active tab content
   const renderContent = () => {
@@ -79,10 +96,19 @@ const Account = () => {
         <div className="container mx-auto py-8">
           {/* User Profile Section */}
           <div className="flex flex-col items-center">
-            <img
-                className="w-24 h-24 rounded-full"
-                src={userData?.profilePicture || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'}
-                alt="Profile"
+            <label htmlFor="profile-upload">
+              <img
+                  className="w-24 h-24 rounded-full cursor-pointer"
+                  src={profilePicture}
+                  alt="Profile"
+              />
+            </label>
+            <input
+                id="profile-upload"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleImageChange}
             />
             <h2 className="mt-4 text-2xl font-bold">
               {`${userData?.firstName || ''} ${userData?.lastName || ''}`}

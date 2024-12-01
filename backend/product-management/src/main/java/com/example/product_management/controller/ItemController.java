@@ -1,21 +1,16 @@
-package com.example.product_management.Controller;
+package com.example.product_management.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.data.domain.Page;
+import com.example.product_management.dto.ItemDTO;
+import com.example.product_management.dto.ResponseDTO;
 import com.example.product_management.service.ItemService;
-import com.example.product_management.model.Item;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Optional;
+import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/items")
@@ -24,56 +19,97 @@ public class ItemController {
     @Autowired
     private ItemService itemService;
 
-    // Get specific items
+    /**
+     * Get an item by its ID.
+     *
+     * @param id the ID of the item
+     * @return the item with the specified ID
+     */
     @GetMapping("/{id}")
-    public ResponseEntity<Item> getItembyId(@PathVariable int id) {
-        Optional<Item> item = itemService.getItemById(id);
-        return item.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ResponseDTO<ItemDTO>> getItemById(@PathVariable int id) {
+        ResponseDTO<ItemDTO> response = itemService.getItemById(id);
+        System.out.println(response.getData());
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
-    // Get items by category
+    @GetMapping("/order/{id}")
+    public ItemDTO getItemByIdForOrder(@PathVariable int id) {
+        System.out.println(id);
+        ResponseDTO<ItemDTO> response = itemService.getItemById(id);
+        return (ItemDTO) response.getData();
+    }
+
+    /**
+     * Get items by category ID with pagination support.
+     *
+     * @param categoryId the ID of the category
+     * @param pageNo the page number (default is 0)
+     * @param pageSize the page size (default is 16)
+     * @return a paginated list of items in the specified category
+     */
     @GetMapping("/category/{categoryId}")
-    public ResponseEntity<Page<Item>> getItemsByCategory(@PathVariable int categoryId,
-            @RequestParam(defaultValue = "0") int pageNo, @RequestParam(defaultValue = "16") int pageSize) {
-        Page<Item> items = itemService.getItemsByCategory(categoryId, pageNo, pageSize);
-        return ResponseEntity.ok(items);
+    public ResponseEntity<ResponseDTO<ItemDTO>> getItemsByCategory(@PathVariable int categoryId,
+                                                                   @RequestParam(defaultValue = "0") int pageNo,
+                                                                   @RequestParam(defaultValue = "16") int pageSize) {
+        ResponseDTO<ItemDTO> response = itemService.getItemsByCategory(categoryId, pageNo, pageSize);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
-    // Get Items
+    /**
+     * Get all items with pagination support.
+     *
+     * @param pageNo the page number (default is 0)
+     * @param pageSize the page size (default is 16)
+     * @return a paginated list of all items
+     */
     @GetMapping
-    public ResponseEntity<Page<Item>> getItems(@RequestParam(defaultValue = "0") int pageNo,
-            @RequestParam(defaultValue = "16") int pageSize) {
-        Page<Item> items = itemService.getItems(pageNo, pageSize);
-        return ResponseEntity.ok(items);
+    public ResponseEntity<ResponseDTO<ItemDTO>> getItems(@RequestParam(defaultValue = "0") int pageNo,
+                                                         @RequestParam(defaultValue = "16") int pageSize) {
+        ResponseDTO<ItemDTO> response = itemService.getItems(pageNo, pageSize);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
-    // ITEM MANAGEMENT BY ADMIN
-
-    // Add a new item to a category
-    @PostMapping("/add")
-    public ResponseEntity<Item> addItem(@RequestBody Item item) {
-        // Assuming the 'categoryId' is set in the Item object
-        Item savedItem = itemService.addItemToCategory(item);
-        return ResponseEntity.ok(savedItem);
+    /**
+     * Add a new item to a category.
+     *
+     * @param item the item to add
+     * @param images the images of the item
+     * @return the added item
+     * @throws IOException if an I/O error occurs
+     */
+    @PostMapping(consumes = "multipart/form-data")
+    public ResponseEntity<ResponseDTO<ItemDTO>> addItem(@RequestPart("item") ItemDTO item,
+                                                        @RequestPart("images") List<MultipartFile> images) throws IOException {
+        ResponseDTO<ItemDTO> response = itemService.addItemToCategory(item, images);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
-    // Update an existing item in a category
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Item> updateItem(@PathVariable int id, @RequestBody Item item) {
-        Optional<Item> updatedItem = itemService.updateItem(id, item);
-        return updatedItem.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    /**
+     * Update an existing item.
+     *
+     * @param id the ID of the item to update
+     * @param item the updated item details
+     * @param images the updated images of the item
+     * @return the updated item
+     * @throws IOException if an I/O error occurs
+     */
+    @PutMapping(value = "/{id}", consumes = "multipart/form-data")
+    public ResponseEntity<ResponseDTO<ItemDTO>> updateItem(@PathVariable int id,
+                                                           @RequestPart("item") ItemDTO item,
+                                                           @RequestPart("images") List<MultipartFile> images) throws IOException {
+        ResponseDTO<ItemDTO> response = itemService.updateItem(id, item, images);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
-    // Delete an item from a category
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteItem(@PathVariable int id) {
-        boolean isDeleted = itemService.deleteItem(id);
-        if (isDeleted) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
-
+    /**
+     * Delete an item by its ID.
+     *
+     * @param id the ID of the item to delete
+     * @return a response entity with no content if the item is deleted successfully
+     */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseDTO<ItemDTO>> deleteItem(@PathVariable int id) {
+        ResponseDTO<ItemDTO> response = itemService.deleteItem(id);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 }
