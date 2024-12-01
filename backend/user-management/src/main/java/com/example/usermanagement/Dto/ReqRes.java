@@ -43,4 +43,6 @@ public class ReqRes {
     private String newPassword;
     private String accStatus;
     private List<UserProfile> userProfiles;
+
+    private Object data;
  }

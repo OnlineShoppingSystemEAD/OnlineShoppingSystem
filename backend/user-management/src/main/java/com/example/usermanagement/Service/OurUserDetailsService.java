@@ -45,7 +45,7 @@ public class OurUserDetailsService implements UserDetailsService {
             List<UserProfile> userProfiles = userProfileRepo.findAll();
             resp.setStatusCode(200);
             resp.setMessage("User Profiles Found");
-            resp.setUserProfiles(userProfiles);
+            resp.setData(userProfiles);
         }catch (Exception e){
             e.printStackTrace();
             resp.setStatusCode(500);
@@ -67,7 +67,7 @@ public class OurUserDetailsService implements UserDetailsService {
                 // UserProfile found
                 resp.setStatusCode(200);
                 resp.setMessage("User Profile Found");
-                resp.setUserProfile(userProfile);
+                resp.setData(userProfile);
             } else {
                 // UserProfile not found
                 resp.setStatusCode(404);
@@ -82,23 +82,26 @@ public class OurUserDetailsService implements UserDetailsService {
         return resp;
     }
 
-    public ReqRes createUserProfile(Integer id, UserProfile userProfile) {
+    public ReqRes createUserProfile(Integer id, UserProfile userProfile, MultipartFile profilePicture) {
         ReqRes resp = new ReqRes();
-        try{
-            OurUsers user = ourUserRepo.findById(id)
-                    .orElseThrow(()->new RuntimeException("User not found"));
+        try {
+            OurUsers user = ourUserRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
             userProfile.setUser(user);
             user.setUserProfile(userProfile);
-            userProfileRepo.save(userProfile);
 
+            if (profilePicture != null) {
+                String profilePictureUrl = amazonS3Service.uploadFile(profilePicture, id);
+                userProfile.setProfilePicture(profilePictureUrl);
+            }
+
+            userProfileRepo.save(userProfile);
             resp.setStatusCode(200);
             resp.setMessage("User Profile Created Successfully");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             resp.setStatusCode(500);
             resp.setError("An error occurred while creating the User Profile");
         }
-
         return resp;
     }
 
