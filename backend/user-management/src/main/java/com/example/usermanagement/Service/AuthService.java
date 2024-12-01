@@ -40,17 +40,22 @@ public class AuthService {
         this.userProfileRepo = userProfileRepo;
     }
 
-    public ReqRes signUp(ReqRes registrationRequest){
+    public ReqRes signUp(ReqRes registrationRequest) {
         ReqRes resp = new ReqRes();
         try {
+            // Check if the email already exists
+            if (ourUserRepo.findByEmail(registrationRequest.getEmail()).isPresent()) {
+                resp.setStatusCode(400);
+                resp.setMessage("Email already exists");
+                return resp;
+            }
+
             OurUsers ourUsers = new OurUsers();
             UserProfile userProfile = new UserProfile();
 
             ourUsers.setEmail(registrationRequest.getEmail());
             ourUsers.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
-//            ourUsers.setRole(registrationRequest.getRole());
             ourUsers.setRole("USER");
-
 
             // Generate a random verification code
             String verificationCode = generateVerificationCode();
@@ -58,18 +63,17 @@ public class AuthService {
 
             OurUsers ourUserResult = ourUserRepo.save(ourUsers);
 
-
-            //save to the profile
+            // Save to the profile
             userProfile.setUser(ourUsers);
             userProfileRepo.save(userProfile);
 
-            if (ourUserResult != null && ourUserResult.getId()>0) {
+            if (ourUserResult != null && ourUserResult.getId() > 0) {
                 // Send the verification code to the user's email
                 emailSenderService.sendEmail(ourUsers.getEmail(), "Email Verification Code", "Your verification code is: " + verificationCode);
                 resp.setMessage("User Saved Successfully");
                 resp.setStatusCode(200);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             resp.setStatusCode(500);
             resp.setError("An error occurred while saving the user");
