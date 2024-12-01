@@ -5,15 +5,15 @@ const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 const ItemService = {
     // Get items with pagination
-    getItems: async (pageNo, pageSize) => {
+    getItems: async (pageNo = 0, pageSize = 16) => {
         try {
-            const response = await axios.get(`${API_BASE_URL}/items`, {
+            const response = await axios.get(`${API_BASE_URL}/api/items`, {
+                params: { pageNo, pageSize },
                 headers: getDefaultHeaders(),
-                params: { pageNo, pageSize }, // Pass pagination params
             });
-            return response.data;
+            return response.data; // Assuming the API returns the items in the `data` field
         } catch (error) {
-            console.error("Error fetching items:", error.response?.data || error.message);
+            console.error('Error fetching items:', error.response?.data || error.message);
             throw error;
         }
     },
@@ -57,7 +57,18 @@ const ItemService = {
             throw error;
         }
     },
-
+    getCategories: async () => {
+        try {
+            const response = await axios.get(`${API_BASE_URL}/api/categories`, {
+                headers: getDefaultHeaders(),
+            });
+            console.log('API Response:', response); // Debugging log
+            return response.data; // Adjust this line to match your API's response structure
+        } catch (error) {
+            console.error("Error fetching items by category:", error.response?.data || error.message);
+            throw error;
+        }
+    },
     // Update an existing item (Admin Only)
     updateItem: async (id, itemData) => {
         try {

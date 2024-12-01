@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import userService from '../../../api/services/UserService'; 
+import userService from '../../../api/services/UserService';
+import UserService from "../../../api/services/UserService";
 
 const AccountDetails = () => {
   const [accountData, setAccountData] = useState(() => {
@@ -9,6 +10,10 @@ const AccountDetails = () => {
   const [isLoading, setIsLoading] = useState(!localStorage.getItem('userProfileCache'));
   const [error, setError] = useState('');
   const [isUpdating, setIsUpdating] = useState(false); // State to track update process
+  const [profilePicture, setProfilePicture] = useState(null); // To store the File object
+  const [profilePicturePreview, setProfilePicturePreview] = useState(
+      localStorage.getItem('profilePictureCache') || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'
+  ); // Default image or cached base64
 
   useEffect(() => {
     const fetchAccountData = async () => {
@@ -36,19 +41,63 @@ const AccountDetails = () => {
 
     fetchAccountData();
   }, []);
+// Remove profilePictureCache on page load
+  window.addEventListener('load', () => {
+    localStorage.removeItem('profilePictureCache');
+  });
 
   const handleUpdateProfile = async () => {
     setIsUpdating(true);
     try {
-      const userId = userService.getUserId();
-      const updatedProfile = { ...accountData }; // Prepare updated data (modify if needed)
-      const response = await userService.updateUserProfile(userId, updatedProfile);
+      const userId = userService.getUserId(); // Retrieve the user ID
+
+      // Prepare FormData object
+      const formData = new FormData();
+
+      // Add user profile details as a JSON string
+      formData.append('userProfileDetails', JSON.stringify(accountData));
+
+      // Retrieve cached profile picture from localStorage
+      let cachedProfilePicture = null;
+      try {
+        cachedProfilePicture = localStorage.getItem('profilePictureCache');
+      } catch (err) {
+        console.warn('Error accessing localStorage:', err);
+      }
+
+      if (cachedProfilePicture) {
+        // Convert base64 string to Blob
+        const base64Data = cachedProfilePicture.split(',')[1]; // Strip off base64 header
+        const mimeType =
+            cachedProfilePicture.split(',')[0].match(/:(.*?);/)[1] || 'image/jpeg'; // Infer MIME type
+        const byteCharacters = atob(base64Data);
+        const byteNumbers = Array.from(byteCharacters).map((char) => char.charCodeAt(0));
+        const blob = new Blob([new Uint8Array(byteNumbers)], { type: mimeType });
+
+        // Append the profile picture to FormData
+        formData.append('profilePicture', blob, `${userId}.jpg`);
+      } else {
+        console.warn('No valid profile picture found in cache.');
+      }
+
+      // Debugging FormData content
+      for (let [key, value] of formData.entries()) {
+        console.log(`${key}:`, value);
+      }
+
+      // Call the updateUserProfile API function
+      const response = await UserService.updateUserProfile(userId, formData);
+
       console.log('Updated Profile Response:', response);
 
       if (response) {
-        // Update cache and refresh the page
+        // Update localStorage and UI after successful update
         localStorage.setItem('userProfileCache', JSON.stringify({ userProfile: response }));
-        window.location.reload(); // Reload the page to fetch updated data
+        if (response.profilePicture) {
+          setProfilePicturePreview(response.profilePicture); // Update the profile picture preview
+        }
+        // Show a success message to the user
+        alert('Profile updated successfully!');
       }
     } catch (err) {
       console.error('Error updating profile:', err);

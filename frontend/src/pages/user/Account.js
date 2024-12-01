@@ -68,68 +68,68 @@ const Account = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-lg text-gray-500">Loading...</p>
-      </div>
+        <div className="flex items-center justify-center min-h-screen">
+          <p className="text-lg text-gray-500">Loading...</p>
+        </div>
     );
   }
 
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <p className="text-red-500 text-lg">{error}</p>
-      </div>
+        <div className="flex items-center justify-center min-h-screen">
+          <p className="text-red-500 text-lg">{error}</p>
+        </div>
     );
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen">
-      {/* Render Header */}
-      <Header />
+      <div className="bg-gray-100 min-h-screen">
+        {/* Render Header */}
+        <Header />
 
-      {/* Account Page Content */}
-      <div className="container mx-auto py-8">
-        {/* User Profile Section */}
-        <div className="flex flex-col items-center">
-          <label htmlFor="profile-upload">
-            <img
-              className="w-24 h-24 rounded-full cursor-pointer"
-              src={profilePicture}
-              alt="Profile"
+        {/* Account Page Content */}
+        <div className="container mx-auto py-8">
+          {/* User Profile Section */}
+          <div className="flex flex-col items-center">
+            <label htmlFor="profile-upload">
+              <img
+                  className="w-24 h-24 rounded-full cursor-pointer"
+                  src={profilePicture}
+                  alt="Profile"
+              />
+            </label>
+            <input
+                id="profile-upload"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleImageChange}
             />
-          </label>
-          <input
-            id="profile-upload"
-            type="file"
-            accept="image/*"
-            className="hidden"
-            onChange={handleImageChange}
-          />
-          <h2 className="mt-4 text-2xl font-bold">
-            {`${userData?.firstName || ''} ${userData?.lastName || ''}`}
-          </h2>
-          <span className="text-sm text-gray-500">⭐ 4.3</span>
-        </div>
+            <h2 className="mt-4 text-2xl font-bold">
+              {`${userData?.firstName || ''} ${userData?.lastName || ''}`}
+            </h2>
+            <span className="text-sm text-gray-500">â­ 4.3</span>
+          </div>
 
-        {/* Tab Navigation */}
-        <div className="flex justify-center mt-6 space-x-4">
-          {['general', 'payment', 'ongoing', 'completed'].map((tab) => (
-            <button
-              key={tab}
-              className={`px-4 py-2 rounded-full ${
-                activeTab === tab ? 'bg-gray-300' : ''
-              }`}
-              onClick={() => setActiveTab(tab)}
-            >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
-            </button>
-          ))}
-        </div>
+          {/* Tab Navigation */}
+          <div className="flex justify-center mt-6 space-x-4">
+            {['general', 'payment', 'ongoing', 'completed'].map((tab) => (
+                <button
+                    key={tab}
+                    className={`px-4 py-2 rounded-full ${
+                        activeTab === tab ? 'bg-gray-300' : ''
+                    }`}
+                    onClick={() => setActiveTab(tab)}
+                >
+                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                </button>
+            ))}
+          </div>
 
-        {/* Render Active Tab Content */}
-        <div className="mt-8">{renderContent()}</div>
+          {/* Render Active Tab Content */}
+          <div className="mt-8">{renderContent()}</div>
+        </div>
       </div>
-    </div>
   );
 };
 
