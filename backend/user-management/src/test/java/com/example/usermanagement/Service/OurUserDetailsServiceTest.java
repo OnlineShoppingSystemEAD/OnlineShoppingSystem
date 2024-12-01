@@ -102,7 +102,7 @@ public class OurUserDetailsServiceTest {
 
         when(userProfileRepo.save(profile)).thenReturn(profile);
 
-        ReqRes response = ourUserDetailsService.createUserProfile(profile.getId(), profile);
+        ReqRes response = ourUserDetailsService.createUserProfile(1, profile, multipartFile);
 
         assertEquals(200, response.getStatusCode());
         assertEquals("User Profile Saved Successfully", response.getMessage());
