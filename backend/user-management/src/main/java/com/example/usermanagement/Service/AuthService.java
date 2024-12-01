@@ -274,8 +274,9 @@ public class AuthService {
                 response.setMessage("Token is Invalid");
             }
         } catch (Exception e) {
+            e.printStackTrace();
             response.setStatusCode(500);
-            response.setError(e.getMessage());
+            response.setError("An error occurred while verifying the token");
         }
         System.out.println(response);
         return response;

@@ -13,6 +13,6 @@ public class ResponseDTO<T> {
     private int status;
     private String message;
     private String error;
-    private T data;
-    private List<T> dataList;
+    private Object data;
+//    private List<T> dataList;
 }
