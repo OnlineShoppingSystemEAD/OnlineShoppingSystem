@@ -30,7 +30,7 @@ public class CategoryService {
                     .collect(Collectors.toList());
             response.setStatus(200);
             response.setMessage("Success");
-            response.setDataList(categories);
+            response.setData(categories);
             return response;
         } catch (Exception e) {
             response.setStatus(500);
