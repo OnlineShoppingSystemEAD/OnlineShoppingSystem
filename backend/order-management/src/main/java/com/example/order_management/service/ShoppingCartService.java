@@ -57,8 +57,8 @@ public class ShoppingCartService {
 
     // Remove item from the shopping cart
     @Transactional
-    public void deleteItemFromtheShoppingCart(int id) {
-        shoppingCartRepository.deleteById(id);
+    public void deleteItemFromtheShoppingCart(int id, int userId) {
+        shoppingCartRepository.deleteById(id, userId);
     }
 
     // Add a new item to the shopping cart
@@ -77,7 +77,6 @@ public class ShoppingCartService {
     public ItemDetailsDto getItem(int itemId) {
         ItemDetailsDto responseItemDetails = restTemplate.getForObject(
                 "lb://PRODUCT-MANAGEMENT-SERVICE/api/items/order/{itemId}", ItemDetailsDto.class, itemId);
-        System.out.println(responseItemDetails);
         return responseItemDetails;
     }
 }
