@@ -34,6 +34,7 @@ public class ItemController {
 
     @GetMapping("/order/{id}")
     public ItemDTO getItemByIdForOrder(@PathVariable int id) {
+        System.out.println(id);
         ResponseDTO<ItemDTO> response = itemService.getItemById(id);
         return (ItemDTO) response.getData();
     }

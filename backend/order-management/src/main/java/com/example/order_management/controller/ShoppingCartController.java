@@ -38,8 +38,8 @@ public class ShoppingCartController {
 
     // Delete Item from the Shopping Cart
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteItemFromtheShoppingCart(@PathVariable int id) {
-        shoppingCartService.deleteItemFromtheShoppingCart(id);
+    public ResponseEntity<Void> deleteItemFromtheShoppingCart(@PathVariable int id, @RequestParam int userId) {
+        shoppingCartService.deleteItemFromtheShoppingCart(id,userId);
         return ResponseEntity.noContent().build();
     }
 
