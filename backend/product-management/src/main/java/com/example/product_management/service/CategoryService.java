@@ -7,6 +7,7 @@ import com.example.product_management.repository.CategoryRepository;
 import com.example.product_management.exception.CategoryNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +18,9 @@ public class CategoryService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private AmazonS3Service amazonS3Service;
 
     public ResponseDTO<CategoryDTO> getAllCategories() {
         ResponseDTO<CategoryDTO> response = new ResponseDTO<>();
@@ -55,14 +59,20 @@ public class CategoryService {
         }
     }
 
-    public ResponseDTO<CategoryDTO> createCategory(CategoryDTO categoryDTO) {
+    public ResponseDTO<CategoryDTO> createCategory(CategoryDTO categoryDTO, MultipartFile image) {
         ResponseDTO<CategoryDTO> response = new ResponseDTO<>();
         try {
             Category category = convertToEntity(categoryDTO);
             Category savedCategory = categoryRepository.save(category);
             response.setStatus(201);
             response.setMessage("Category created successfully");
-//            response.setData(convertToDTO(savedCategory));
+
+            if (image != null) {
+                String imageUrl = amazonS3Service.uploadFile(image, savedCategory.getId());
+                savedCategory.setImageURL(imageUrl);
+                categoryRepository.save(savedCategory);
+            }
+
             return response;
         } catch (Exception e) {
             response.setStatus(500);
@@ -72,7 +82,7 @@ public class CategoryService {
         }
     }
 
-    public ResponseDTO<CategoryDTO> updateCategory(int id, CategoryDTO categoryDTO) {
+    public ResponseDTO<CategoryDTO> updateCategory(int id, CategoryDTO categoryDTO, MultipartFile image) {
         ResponseDTO<CategoryDTO> response = new ResponseDTO<>();
         try {
             Optional<Category> category = categoryRepository.findById(id);
@@ -90,6 +100,13 @@ public class CategoryService {
                 categoryToUpdate.setImageURL(categoryDTO.getImageURL());
             }
             Category updatedCategory = categoryRepository.save(categoryToUpdate);
+
+            if (image != null) {
+                String imageUrl = amazonS3Service.uploadFile(image, updatedCategory.getId());
+                updatedCategory.setImageURL(imageUrl);
+                categoryRepository.save(updatedCategory);
+            }
+
             response.setStatus(200);
             response.setMessage("Category updated successfully");
             return response;

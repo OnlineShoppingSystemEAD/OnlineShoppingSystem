@@ -59,11 +59,7 @@ public class CategoryController {
             @RequestParam Integer userId,
             @RequestParam String role
     ) throws IOException {
-        if (image != null) {
-            String imageUrl = amazonS3Service.uploadFile(image, categoryDTO.getId());
-            categoryDTO.setImageURL(imageUrl);
-        }
-        ResponseDTO<CategoryDTO> response = categoryService.createCategory(categoryDTO);
+        ResponseDTO<CategoryDTO> response = categoryService.createCategory(categoryDTO, image);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
@@ -85,11 +81,8 @@ public class CategoryController {
     ) throws IOException {
         System.out.println("userId: " + userId);
         System.out.println("role: " + role);
-        if (image != null) {
-            String imageUrl = amazonS3Service.uploadFile(image, categoryDTO.getId());
-            categoryDTO.setImageURL(imageUrl);
-        }
-        ResponseDTO<CategoryDTO> response = categoryService.updateCategory(id, categoryDTO);
+
+        ResponseDTO<CategoryDTO> response = categoryService.updateCategory(id, categoryDTO, image);
         return new ResponseEntity<>(response, HttpStatus.valueOf(response.getStatus()));
     }
 
