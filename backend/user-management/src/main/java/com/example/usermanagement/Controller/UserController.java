@@ -80,12 +80,12 @@ public class UserController {
      * @return ResponseEntity containing the created user profile
      */
     @PostMapping("/{id}/profile")
-    public ResponseEntity<ReqRes> createUserProfile(@PathVariable Integer id, @RequestParam Integer userId, @RequestParam String role, @RequestBody UserProfile userProfile) {
+    public ResponseEntity<ReqRes> createUserProfile(@PathVariable Integer id, @RequestParam Integer userId, @RequestParam String role, @RequestPart("userProfile") UserProfile userProfile, @RequestPart("profilePicture") MultipartFile profilePicture) {
         ResponseEntity<ReqRes> validationResp = validateAndRespond(id, userId, role);
         if (validationResp != null) {
             return validationResp;
         }
-        ReqRes resp = ourUserDetailsService.createUserProfile(id, userProfile);
+        ReqRes resp = ourUserDetailsService.createUserProfile(id, userProfile, profilePicture);
         return ResponseEntity.status(resp.getStatusCode()).body(resp);
     }
 
