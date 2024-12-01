@@ -16,6 +16,7 @@ public class LoggingFilter extends AbstractGatewayFilterFactory<LoggingFilter.Co
         super(Config.class);
     }
 
+
     @Override
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
