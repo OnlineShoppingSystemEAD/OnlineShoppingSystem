@@ -106,6 +106,7 @@ public class AuthService {
             var jwt = jwtUtils.generateToken(claims, user);
             var refreshToken = jwtUtils.generateRefreshToken(claims, user);
 
+
             // Set response fields
             response.setStatusCode(200);
             response.setMessage("Successfully Signed In");

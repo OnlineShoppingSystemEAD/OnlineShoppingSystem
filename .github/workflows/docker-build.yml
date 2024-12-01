@@ -1,3 +1,71 @@
+# name: Build, Push Docker Images and Deploy to AWS EC2
+
+# on:
+#   push:
+#     paths:
+#       - 'backend/service-registry/**'
+#       - 'backend/api-gateway/**'
+#       - 'backend/user-management/**'
+#       - 'backend/product-management/**'
+#       - 'backend/order-management/**'
+#       - 'backend/payment-management/**'
+#       # Add paths for other services as needed
+
+# jobs:
+#   build-and-push:
+#     runs-on: ubuntu-latest
+
+#     strategy:
+#       matrix:
+#         service:
+#           - service-registry
+#           - api-gateway
+#           - user-management
+#           - product-management
+#           - order-management
+#           - payment-management
+#           # Add other services as needed
+
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+
+#       - name: Set up Docker Buildx
+#         uses: docker/setup-buildx-action@v1
+
+#       - name: Log in to Docker Hub
+#         uses: docker/login-action@v1
+#         with:
+#           username: ${{ secrets.DOCKER_USERNAME }}
+#           password: ${{ secrets.DOCKER_PASSWORD }}
+
+#       - name: Determine if service folder changed
+#         id: changes
+#         run: |
+#           if [ "$(git rev-parse --is-shallow-repository)" = "true" ]; then
+#             git fetch --prune --unshallow
+#           fi
+#           if git diff --name-only HEAD~1 HEAD | grep -q "^backend/${{ matrix.service }}/"; then
+#             echo "changed=true" >> $GITHUB_ENV
+#           else
+#             echo "changed=false" >> $GITHUB_ENV
+
+#       - name: Build and push Docker image
+#         if: env.changed == 'true'
+#         uses: docker/build-push-action@v2
+#         with:
+#           context: ./backend/${{ matrix.service }}
+#           push: true
+#           tags: ${{ secrets.DOCKER_USERNAME }}/${{ matrix.service }}:latest
+
+#       - name: Deploy to AWS EC2
+#         if: env.changed == 'true'
+#         run: |
+#           ssh -o StrictHostKeyChecking=no -i ${{ secrets.EC2_SSH_KEY }} ec2-user@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+#             docker pull ${{ secrets.DOCKER_USERNAME }}/${{ matrix.service }}:latest
+#             docker-compose -f /Users/janithravisanka/Documents/GitHub/OnlineShoppingSystem/backend/docker-compose-deploy.yml up -d
+#           EOF
+
 name: Build, Push Docker Images and Deploy to AWS EC2
 
 on:
@@ -49,6 +117,7 @@ jobs:
             echo "changed=true" >> $GITHUB_ENV
           else
             echo "changed=false" >> $GITHUB_ENV
+          fi
 
       - name: Build and push Docker image
         if: env.changed == 'true'
