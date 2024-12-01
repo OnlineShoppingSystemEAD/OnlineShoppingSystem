@@ -242,17 +242,41 @@ const userService = {
     /**
      * Update a user profile by ID.
      * @param {number} id - User ID.
-     * @param {Object} userProfileDetails - Updated profile details.
+     * @param formData
      * @returns {Promise<Object>} - Response data.
      */
-    updateUserProfile: async (id, userProfileDetails) => {
+    updateUserProfile: async (id, formData) => {
         try {
-            const response = await axios.put(`${API_BASE_URL}/users/${id}/profile`, userProfileDetails, {
-                headers: getDefaultHeaders(),
+            const token = localStorage.getItem("token"); // Retrieve token from localStorage
+            if (!token) {
+                throw new Error("User is not authenticated. Token is missing.");
+            }
+
+            // Prepare headers without specifying Content-Type
+            const headers = {
+                Authorization: `Bearer ${token}`, // Include token in the Authorization header
+            };
+
+            // Send FormData via Axios
+            const response = await axios.put(`${API_BASE_URL}/users/${id}/profile`, formData, {
+                headers, // Axios will set the appropriate Content-Type
             });
+
             return response.data;
         } catch (error) {
+            // Detailed error handling
             console.error("Error updating user profile:", error);
+
+            // Handle specific Axios errors
+            if (error.response) {
+                console.error("Server responded with a status:", error.response.status);
+                console.error("Response data:", error.response.data);
+            } else if (error.request) {
+                console.error("No response received:", error.request);
+            } else {
+                console.error("Error in request setup:", error.message);
+            }
+
             throw error;
         }
     },
