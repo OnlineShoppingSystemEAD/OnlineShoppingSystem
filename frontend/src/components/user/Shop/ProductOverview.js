@@ -144,58 +144,85 @@ const ProductOverview = () => {
                     <p>No products found in this category.</p>
                 )}
             </div>
-            {/* Quick View Modal */}
-            {isModalOpen && selectedProduct && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <span className="close-modal" onClick={closeQuickView}>&times;</span>
-                        <div className="quick-view-container">
-                            <div className="quick-view-image">
-                                <Carousel images={carouselImages}/>
-                            </div>
-                            <div className="quick-view-details">
-                                <h2>{selectedProduct.title}</h2>
-                                <p className="product-price">{selectedProduct.price}</p>
-                                <p className="product-description">Some description about the product.</p>
 
-                                {/* Size and Color Selection */}
-                                <div className="options">
-                                    <div className="option-group">
-                                        <label>Size</label>
-                                        <select>
-                                            <option>Choose an option</option>
-                                            {/* Add more sizes dynamically if available */}
-                                        </select>
-                                    </div>
+{/* Quick View Modal */}
+{isModalOpen && selectedProduct && (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white w-1/2 sm:w-[60%] h-[60vh] overflow-y-auto rounded-lg shadow-lg relative p-4 flex flex-col justify-between">
+            {/* Close Button */}
+            <button 
+                onClick={closeQuickView} 
+                className="absolute top-4 right-4 text-gray-600 hover:text-black md:top-6 md:right-6"
+                style={{ 
+                    fontSize: "1.5rem", 
+                    padding: "0.5rem", 
+                    lineHeight: "1",
+                }}
+            >
+                &times;
+            </button>
 
-                                    <div className="option-group">
-                                        <label>Color</label>
-                                        <select>
-                                            <option>Choose an option</option>
-                                            {/* Add more colors dynamically if available */}
-                                        </select>
-                                    </div>
-                                </div>
-
-                                {/* Quantity Selector and Add to Cart */}
-                                <div className="quantity-add">
-                                    <button onClick={decreaseQuantity}>-</button>
-                                    <input type="number" value={quantity} readOnly/>
-                                    <button onClick={increaseQuantity}>+</button>
-                                    <button className="add-cart-btn"> ADD TO CART</button>
-                                </div>
-
-                                {/* Social Share Icons */}
-                                <div className="social-share">
-                                    <i className="fab fa-facebook-f"></i>
-                                    <i className="fab fa-twitter"></i>
-                                    <i className="fab fa-google-plus-g"></i>
-                                </div>
-                            </div>
-                        </div>
+            <div className="flex flex-col md:flex-row h-full">
+                {/* Image Section */}
+                <div className="w-full md:w-1/2 p-4">
+                    <div className="w-full h-full">
+                        <Carousel images={carouselImages} isModal={true} /> {/* Pass isModal here */}
                     </div>
                 </div>
-            )}
+
+                {/* Details Section */}
+                <div className="w-full md:w-1/2 p-4 flex flex-col justify-between">
+                    <h2 className="text-xl md:text-2xl font-semibold mb-4">{selectedProduct.title}</h2>
+                    <p className="text-lg md:text-xl text-gray-700 mb-4">{selectedProduct.price}</p>
+                    <p className="text-sm md:text-base text-gray-500 mb-4">Some description about the product.</p>
+
+                    {/* Size and Color Selection */}
+                    <div className="space-y-4">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Size</label>
+                            <select className="w-full border-gray-300 rounded-md">
+                                <option>Choose an option</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700">Color</label>
+                            <select className="w-full border-gray-300 rounded-md">
+                                <option>Choose an option</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    {/* Quantity Selector */}
+                    <div className="flex items-center space-x-4 mt-6">
+                        <button onClick={decreaseQuantity} className="px-4 py-2 border rounded">-</button>
+                        <input
+                            type="number"
+                            value={quantity}
+                            readOnly
+                            className="w-16 text-center border rounded"
+                        />
+                        <button onClick={increaseQuantity} className="px-4 py-2 border rounded">+</button>
+                    </div>
+
+                    {/* Add to Cart Button */}
+                    <button className="mt-6 bg-purple-600 text-white px-6 py-3 rounded hover:bg-black transition-all duration-300">
+                        ADD TO CART
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+)}
+
+
+
+
+
+
+
+
+
+
         </div>
     );
 };
