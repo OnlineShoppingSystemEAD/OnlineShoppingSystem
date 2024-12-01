@@ -247,9 +247,9 @@ const userService = {
      */
     updateUserProfile: async (id, formData) => {
         try {
-            const token = localStorage.getItem("token"); // Retrieve token from localStorage
+            const token = localStorage.getItem('token'); // Retrieve token from localStorage
             if (!token) {
-                throw new Error("User is not authenticated. Token is missing.");
+                throw new Error('User is not authenticated. Token is missing.');
             }
 
             // Prepare headers without specifying Content-Type
@@ -265,16 +265,16 @@ const userService = {
             return response.data;
         } catch (error) {
             // Detailed error handling
-            console.error("Error updating user profile:", error);
+            console.error('Error updating user profile:', error);
 
             // Handle specific Axios errors
             if (error.response) {
-                console.error("Server responded with a status:", error.response.status);
-                console.error("Response data:", error.response.data);
+                console.error('Server responded with a status:', error.response.status);
+                console.error('Response data:', error.response.data);
             } else if (error.request) {
-                console.error("No response received:", error.request);
+                console.error('No response received:', error.request);
             } else {
-                console.error("Error in request setup:", error.message);
+                console.error('Error in request setup:', error.message);
             }
 
             throw error;
