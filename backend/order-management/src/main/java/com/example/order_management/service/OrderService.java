@@ -40,7 +40,7 @@ public class OrderService {
             orderItem.setQuantity(cartItem.getItemQuantity());
             orderItemService.createOrderItem(orderItem);
 
-            deleteItemFromtheShoppingCart(cartItem.getId());
+            deleteItemFromtheShoppingCart(cartItem.getId(), userId);
 
         }
         // Send a request to the payment-management
@@ -66,8 +66,8 @@ public class OrderService {
     }
 
     // Delete item from the shopping cart after creating the orderItem
-    public void deleteItemFromtheShoppingCart(int id) {
-        shoppingCartService.deleteItemFromtheShoppingCart(id);
+    public void deleteItemFromtheShoppingCart(int id, int userId) {
+        shoppingCartService.deleteItemFromtheShoppingCart(id, userId);
     }
 
     public PaymentResponse sendPaymentRequest(PaymentRequest paymentRequest) {

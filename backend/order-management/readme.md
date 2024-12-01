@@ -10,24 +10,19 @@
   ```json
   [
   {
-    "id": 101,
-    "itemQuantity": 2,
+    "id": 13,
     "itemName": "T-shirt",
-    "itemPrice": 25.50
-  },
-  {
-    "id": 102,
-    "itemQuantity": 1,
-    "itemName": "Jeans",
-    "itemPrice": 45.75
+    "itemPrice": 25.50,
+    "itemQuantity": 2,
+    "imageURL": "https://ead-propics.s3.ap-south-1.amazonaws.com/products/item_36130.jpeg"
   }
   ]
   ```
 
-### Update an Item in the Shopping Cart
+### Get all Items (Admin)
 
-- **URL:** `/api/shoppingCart/{id}`
-- **Method:** `PUT`
+- **URL:** `/api/order`
+- **Method:** `GET`
 - **Request Body:**
   ```json
   {
@@ -39,68 +34,14 @@
   }
   ```
 
-###  Update Quantity of a Shopping Cart Item 
-
-- **URL:** `/api/shoppingCart/{id}`
-- **Method:** `PUT`
-- **Request Body:**
-  ```json
-  {
-  "itemId": 101,
-  "userId": 1,
-  "quantity": 3
-  }
-  ```
-
-### Delete an Item from the Shopping Cart
-
-- **URL:** `/api/shoppingCart/{id}`
-- **Method:** `DELETE`
-
-### Add an Item to the Shopping Cart
-
-- **URL:** `/api/shoppingCart`
-- **Method:** `POST`
-- **Request Body:**
-  ```json
-  {
-  "itemId": 101,
-  "quantity": 2,
-  "price": 50.00,
-  "userId": 10
-  }
-  ```
-### Fetching Item Details
-
-- **URL:** `http://localhost:8080/api/items/{itemId}`
-
-  ```
-
- ### Order Endpoints
-
-### Create a New Order 
+###  Delete an order 
 
 - **URL:** `/api/order`
-- **Method:** `POST`
-- **Request Body:**
-  ```json
-  {
-  "userId": 6,
-  "paymentId":0,
-  "shippingAddress": "Lorem-ipsum",
-  "status":"PENDING"
-  "totalAmount":150.54
-  }
-  ```
+- **Method:** `DELETE`
 
- - **Response Body:**
- ```json
-  {
-  "id": 201,
-  "userId": 6,
-  "status": PAID,
-  "shippingAddress": "Lorem-ipsum",
-  "totalAmount":150.54,
-  "paymentId": 3
-  }
-  ```
+### Update an Order
+
+- **URL:** `/api/order`
+- **Method:** `PUT`
+
+
