@@ -188,8 +188,27 @@ public class OurUserDetailsService implements UserDetailsService {
         return resp;
     }
 
+    public ReqRes updateUserRole(Integer id, OurUsers updatedUser) {
+        ReqRes resp = new ReqRes();
+        if (!"ADMIN".equals(updatedUser.getRole()) && !"USER".equals(updatedUser.getRole())) {
+            resp.setStatusCode(400);
+            resp.setMessage("Invalid role. Role must be either 'ADMIN' or 'USER'");
+            return resp;
+        }
+        try {
+            OurUsers user = ourUserRepo.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+            user.setRole(updatedUser.getRole());
+            ourUserRepo.save(user);
+            resp.setStatusCode(200);
+            resp.setMessage("User role updated successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            resp.setStatusCode(500);
+            resp.setError("An error occurred while updating the user role");
+        }
+        return resp;
+    }
 
-    //    change password
 
 
 
