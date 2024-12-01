@@ -127,27 +127,38 @@ public class AuthService {
 
 
 
-    public ReqRes refreshToken(ReqRes refreshTokenReqiest){
+    public ReqRes refreshToken(ReqRes refreshTokenRequest) {
         ReqRes response = new ReqRes();
-        String ourEmail = jwtUtils.extractUsername(refreshTokenReqiest.getToken());
-        System.out.println("refresh token:" + refreshTokenReqiest.getToken());
-        OurUsers users = ourUserRepo.findByEmail(ourEmail).orElseThrow();
-        HashMap<String, Object> claims = new HashMap<>();
+        try {
+            String ourEmail = jwtUtils.extractUsername(refreshTokenRequest.getToken());
+            System.out.println("refresh token:" + refreshTokenRequest.getToken());
+            OurUsers users = ourUserRepo.findByEmail(ourEmail).orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + ourEmail));
+            HashMap<String, Object> claims = new HashMap<>();
 
-        // add
-        claims.put("userId", users.getId());
-        claims.put("role", users.getRole());
-        claims.put("accStatus", users.getIsVerified() ? "Verified" : "Not Verified");
+            // add
+            claims.put("userId", users.getId());
+            claims.put("role", users.getRole());
+            claims.put("accStatus", users.getIsVerified() ? "Verified" : "Not Verified");
 
-        if (jwtUtils.isTokenValid(refreshTokenReqiest.getToken(), users)) {
-            var jwt = jwtUtils.generateToken(claims, users);
-            response.setStatusCode(200);
-            response.setToken(jwt);
-            response.setRefreshToken(refreshTokenReqiest.getToken());
-            response.setExpirationTime("24Hr");
-            response.setMessage("Successfully Refreshed Token");
+            if (jwtUtils.isTokenValid(refreshTokenRequest.getToken(), users)) {
+                var jwt = jwtUtils.generateToken(claims, users);
+                response.setStatusCode(200);
+                response.setToken(jwt);
+                response.setRefreshToken(refreshTokenRequest.getToken());
+                response.setExpirationTime("24Hr");
+                response.setMessage("Successfully Refreshed Token");
+            } else {
+                response.setStatusCode(401);
+                response.setMessage("Invalid Refresh Token");
+            }
+        } catch (UsernameNotFoundException ex) {
+            response.setStatusCode(404);
+            response.setMessage(ex.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.setStatusCode(500);
+            response.setError("An error occurred while refreshing the token");
         }
-        response.setStatusCode(500);
         return response;
     }
 
