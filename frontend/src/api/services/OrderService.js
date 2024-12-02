@@ -36,7 +36,7 @@ const ShoppingCartService = {
         }
     },
 
-    // Update an item in the shopping cart
+    // Update an item in the shopping cart (General update or quantity update)
     updateShoppingCartItem: async (id, itemData) => {
         try {
             const response = await axios.put(`${API_BASE_URL}/api/shoppingCart/${id}`, itemData, {
@@ -60,15 +60,27 @@ const ShoppingCartService = {
             throw error;
         }
     },
+
+    // Fetch item details by item ID
+    fetchItemDetails: async (itemId) => {
+        try {
+            const response = await axios.get(`${API_BASE_URL}/api/items/${itemId}`, {
+                headers: getDefaultHeaders(),
+            });
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching item details:", error.response?.data || error.message);
+            throw error;
+        }
+    },
 };
 
 // Service for Order APIs
 const OrderService = {
     // Create a new order
-    createOrder: async (userId, orderData) => {
+    createOrder: async (orderData) => {
         try {
             const response = await axios.post(`${API_BASE_URL}/api/order`, orderData, {
-                params: { userId },
                 headers: getDefaultHeaders(),
             });
             return response.data;

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../../components/user/Header";
-import { OrderService } from "../../api/services/OrderService"; // Adjust the path to your service file
+import PaymentService from "../../api/services/Paymentervice"; // Adjust the path to your PaymentService file
 
 const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState("");
@@ -14,13 +15,15 @@ const Checkout = () => {
     zipCode: "",
   });
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setOrderDetails((prevDetails) => ({
-      ...prevDetails,
-      [name]: value,
-    }));
-  };
+  const navigate = useNavigate();
+
+  // const handleInputChange = (e) => {
+  //   const { name, value } = e.target;
+  //   setOrderDetails((prevDetails) => ({
+  //     ...prevDetails,
+  //     [name]: value,
+  //   }));
+  // };
 
   const handlePaymentChange = (e) => {
     setPaymentMethod(e.target.value);
@@ -33,30 +36,24 @@ const Checkout = () => {
     }
 
     try {
-      const decodedTokenString = localStorage.getItem("decodedToken");
 
-      if (decodedTokenString && decodedTokenString.userId && decodedTokenString.role) {
-        console.log(`User ID: ${decodedTokenString.userId}`);
-        console.log(`Role: ${decodedTokenString.role}`);
-      } else {
-        console.error("Decoded token is invalid or missing required fields.");
-      }
+      const total = parseFloat(localStorage.getItem("cachedTotal"));
 
-      const userId = decodedTokenString.userId; // Replace with the actual user ID from context or state
-      const orderData = {
-        totalAmount: 100.0, // Replace with the actual total amount
-        paymentMethod,
-        ...orderDetails,
-      };
+      const order = parseFloat(localStorage.getItem("orderDetails"));
+      // API call to confirm payment
+      const response = await PaymentService.confirmPayment( order, total);
 
-      // API call to create the order
-      const response = await OrderService.createOrder(userId, orderData);
+      console.log("Payment confirmed successfully:", response);
+      alert("Payment successful! Redirecting to home...");
 
-      console.log("Order created successfully:", response);
+      // Clear the cart after successful order
+      localStorage.removeItem("cart");
+
       alert("Order placed successfully!");
+      navigate("/");
     } catch (error) {
-      console.error("Error during checkout:", error);
-      alert("Failed to place order. Please try again.");
+      console.error("Error during payment confirmation:", error);
+      alert("Failed to confirm payment. Please try again.");
     }
   };
 
@@ -70,7 +67,10 @@ const Checkout = () => {
           <div className="flex items-center justify-between mb-6">
             <h1 className="text-3xl font-semibold">Checkout</h1>
             <div className="mr-2 space-x-8">
-              <button className="w-[3cm] p-2 text-xl bg-black text-white hover:text-white rounded-xl transform transition-transform hover:scale-105 hover:bg-gray-700">
+              <button
+                  className="w-[3cm] p-2 text-xl bg-black text-white hover:text-white rounded-xl transform transition-transform hover:scale-105 hover:bg-gray-700"
+                  onClick={() => navigate(-1)}
+              >
                 Back
               </button>
               <button
@@ -96,7 +96,7 @@ const Checkout = () => {
                       placeholder="First Name"
                       name="firstName"
                       value={orderDetails.firstName}
-                      onChange={handleInputChange}
+                      // onChange={handleInputChange}
                       className="p-2 bg-gray-100 border border-gray-600 rounded-2xl"
                   />
                   <input
@@ -104,7 +104,7 @@ const Checkout = () => {
                       placeholder="Last Name"
                       name="lastName"
                       value={orderDetails.lastName}
-                      onChange={handleInputChange}
+                      // onChange={handleInputChange}
                       className="p-2 bg-gray-100 border border-gray-600 rounded-2xl"
                   />
                 </div>
@@ -114,10 +114,9 @@ const Checkout = () => {
                       placeholder="Email Address"
                       name="email"
                       value={orderDetails.email}
-                      onChange={handleInputChange}
+                      // onChange={handleInputChange}
                       className="p-2 bg-gray-100 border border-gray-600 rounded-2xl"
                   />
-                  <div></div>
                 </div>
               </div>
             </div>
@@ -132,7 +131,7 @@ const Checkout = () => {
                       placeholder="Street Address"
                       name="streetAddress"
                       value={orderDetails.streetAddress}
-                      onChange={handleInputChange}
+                      // onChange={handleInputChange}
                       className="p-2 bg-gray-100 border border-gray-600 rounded-2xl"
                   />
                   <input
@@ -140,7 +139,7 @@ const Checkout = () => {
                       placeholder="City"
                       name="city"
                       value={orderDetails.city}
-                      onChange={handleInputChange}
+                      // onChange={handleInputChange}
                       className="p-2 bg-gray-100 border border-gray-600 rounded-2xl"
                   />
                 </div>
@@ -151,7 +150,7 @@ const Checkout = () => {
                       placeholder="State"
                       name="state"
                       value={orderDetails.state}
-                      onChange={handleInputChange}
+                      // onChange={handleInputChange}
                       className="p-2 bg-gray-100 border border-gray-600 rounded-2xl"
                   />
                   <input
@@ -159,7 +158,7 @@ const Checkout = () => {
                       placeholder="Zip Code"
                       name="zipCode"
                       value={orderDetails.zipCode}
-                      onChange={handleInputChange}
+                      // onChange={handleInputChange}
                       className="p-2 bg-gray-100 border border-gray-600 rounded-2xl"
                   />
                 </div>
@@ -180,14 +179,6 @@ const Checkout = () => {
                   <option value="paypal">PayPal</option>
                   <option value="bank">Bank Transfer</option>
                 </select>
-              </div>
-              <div className="mt-7">
-                <button
-                    type="button"
-                    className="p-3 mt-0 mb-0 mr-2 text-xl text-white bg-black rounded-2xl"
-                >
-                  + Add Payment Method
-                </button>
               </div>
             </div>
           </form>
