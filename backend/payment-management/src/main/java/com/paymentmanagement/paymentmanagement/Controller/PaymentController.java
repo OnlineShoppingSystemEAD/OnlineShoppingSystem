@@ -3,7 +3,6 @@ package com.paymentmanagement.paymentmanagement.Controller;
 import com.paymentmanagement.paymentmanagement.Dto.PaymentRequest;
 import com.paymentmanagement.paymentmanagement.Dto.PaymentResponse;
 import com.paymentmanagement.paymentmanagement.Entity.Payment;
-import com.paymentmanagement.paymentmanagement.Service.PaymentConfirmationException;
 import com.paymentmanagement.paymentmanagement.Service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
