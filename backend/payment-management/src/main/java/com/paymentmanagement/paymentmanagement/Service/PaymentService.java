@@ -38,9 +38,6 @@ public class PaymentService {
 
         // Return a response
         return new PaymentResponse(
-                payment.getOrderId(),
-                payment.getId(),
-                payment.getAmount().doubleValue()
         );
     }
 
@@ -84,4 +81,6 @@ public class PaymentService {
     public List<Payment> getAllPayments() {
         return paymentRepository.findAll();
     }
+
+
 }
