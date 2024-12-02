@@ -77,6 +77,13 @@ jobs:
             # Update package database
             sudo yum update -y || sudo apt-get update -y
 
+            # Export environment variables
+            export AWS_ACCESS=${{ secrets.AWS_ACCESS }}
+            export AWS_SECRET=${{ secrets.AWS_SECRET }}
+            export AWS_ACCOUNT_NO=${{ secrets.AWS_ACCOUNT_NO }}
+            export S3_BUCKET=${{ secrets.S3_BUCKET }}
+            export S3_REGION=${{ secrets.S3_REGION }}
+
             # Pull the latest Docker image and deploy using Docker Compose
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ matrix.service }}:latest
             sudo docker-compose -f /home/ec2-user/docker-compose-deploy.yml up -d
