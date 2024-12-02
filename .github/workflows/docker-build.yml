@@ -65,6 +65,11 @@ jobs:
           echo "${{ secrets.EC2_PEM }}" > ec2-key.pem
           chmod 600 ec2-key.pem
 
+      - name: Upload docker-compose-deploy.yml
+        if: env.changed == 'true'
+        run: |
+          scp -o StrictHostKeyChecking=no -i ec2-key.pem docker-compose-deploy.yml ec2-user@${{ secrets.EC2_PUBLIC_IP }}:/home/ec2-user/docker-compose-deploy.yml
+
       - name: Deploy to AWS EC2
         if: env.changed == 'true'
         run: |
@@ -74,7 +79,7 @@ jobs:
 
             # Pull the latest Docker image and deploy using Docker Compose
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ matrix.service }}:latest
-            sudo docker-compose -f /path/to/your/docker-compose-deploy.yml up -d
+            sudo docker-compose -f /home/ec2-user/docker-compose-deploy.yml up -d
           EOF
 
       - name: Clean up PEM file
