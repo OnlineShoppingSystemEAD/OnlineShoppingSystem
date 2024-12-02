@@ -4,7 +4,7 @@ import Slider from 'react-slick';
 import rightArrow from '../../../assets/right-arrow.png';
 import leftArrow from '../../../assets/left-arrow.png';
 
-const Carousel = ({ images }) => {
+const Carousel = ({ images, isModal }) => {
     const [nav1, setNav1] = useState(null);
     const [nav2, setNav2] = useState(null);
     const navigate = useNavigate(); // Hook for navigation
@@ -49,12 +49,15 @@ const Carousel = ({ images }) => {
                     <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
                         <h1 className="text-4xl md:text-5xl font-bold mb-4">{image.mainText}</h1>
                         <p className="text-lg md:text-xl mb-6">{image.subText}</p>
-                        <button
-                            onClick={() => navigate('/shop')} // Navigate to the shop page
-                            className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-dark transition"
-                        >
-                            {image.buttonText}
-                        </button>
+                        {/* Hide the Quick View button if `isModal` is true */}
+                        {!isModal && (
+                            <button
+                                onClick={() => navigate('/shop')} // Dynamic button navigation
+                                className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-dark transition"
+                            >
+                                {image.buttonText}
+                            </button>
+                        )}
                     </div>
                 </div>
             ))}
