@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import userService from '../../../api/services/UserService';
 
-const AccountDetails = () => {
+const AccountDetails = ({file}) => {
   const [accountData, setAccountData] = useState(null); // Start with null to indicate loading state
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
@@ -58,7 +58,7 @@ const AccountDetails = () => {
       const userId = userService.getUserId();
       const formData = new FormData();
       formData.append('userProfileDetails', JSON.stringify(accountData));
-
+      formData.append('profilePicture', file);
       const response = await userService.updateUserProfile(userId, formData);
 
       if (response) {

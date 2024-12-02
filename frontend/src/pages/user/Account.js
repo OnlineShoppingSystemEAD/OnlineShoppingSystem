@@ -11,6 +11,7 @@ const Account = () => {
   const [userData, setUserData] = useState(null); // Store user data
   const [isLoading, setIsLoading] = useState(true); // Manage loading state
   const [error, setError] = useState(''); // Store error messages
+  const [profileImage, setProfileImage] = useState(null); // Store error messages
   const [profilePicture, setProfilePicture] = useState(
       localStorage.getItem('profilePictureCache') || 'https://cdn-icons-png.flaticon.com/512/3135/3135715.png'
   ); // Default profile picture or cached one
@@ -44,6 +45,7 @@ const Account = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0]; // Get the selected file
     if (file) {
+      setProfileImage(file);
       setProfilePicture(URL.createObjectURL(file));
       // Convert to base64 for caching
       const reader = new FileReader();
@@ -59,7 +61,7 @@ const Account = () => {
   const renderContent = () => {
     switch (activeTab) {
       case 'general':
-        return <AccountDetails />;
+        return <AccountDetails file={profileImage}/>;
       case 'payment':
         return <Payment />;
       case 'ongoing':
@@ -67,7 +69,7 @@ const Account = () => {
       case 'completed':
         return <Completed />;
       default:
-        return <AccountDetails />;
+        return <AccountDetails file={profileImage}/>;
     }
   };
 
