@@ -8,9 +8,8 @@ public class PaymentResponse {
     private int paymentId;
     private double amount;
 
-    public PaymentResponse(int orderId, int paymentId, double amount) {
-        this.orderId = orderId;
-        this.paymentId = paymentId;
-        this.amount = amount;
+    public PaymentResponse() {
+
     }
+
 }
