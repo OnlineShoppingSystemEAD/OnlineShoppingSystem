@@ -92,7 +92,7 @@ jobs:
 
             # Install required libraries
             if [ -x "$(command -v yum)" ]; then
-              sudo yum install -y libcrypt
+              sudo yum install -y compat-openssl11
             elif [ -x "$(command -v apt-get)" ]; then
               sudo apt-get install -y libcrypt1
             fi
