@@ -67,15 +67,17 @@ public class PaymentService {
 
     // Confirm a payment
     public Payment confirmPayment(int id, int orderId, BigDecimal amount) {
+        // Find payment by ID
         Payment payment = paymentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Payment not found"));
+                .orElseThrow(() -> new PaymentNotFoundException("Payment not found"));
 
-        // Validate orderId and amount
-        if (String.valueOf(payment.getOrderId()).equals(String.valueOf(orderId)) && payment.getAmount().compareTo(amount) == 0) {
+        // Validate orderId and amount directly (no need for String conversion)
+        if (payment.getOrderId() == orderId && payment.getAmount().compareTo(amount) == 0) {
             payment.setStatus(Payment.Status.CONFIRMED);
             return paymentRepository.save(payment);
         } else {
-            throw new RuntimeException("Payment confirmation failed due to mismatched data");
+            // Throw a custom exception if validation fails
+            throw new PaymentConfirmationException("Payment confirmation failed due to mismatched data");
         }
     }
 
