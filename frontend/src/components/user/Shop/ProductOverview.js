@@ -151,40 +151,75 @@ const ProductOverview = () => {
                 )}
             </div>
 
-            {/* Modal */}
+            {/* Quick View Modal */}
             {isModalOpen && selectedProduct && (
-                <div className="modal-overlay" onClick={closeQuickView}>
-                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                        <span className="close-modal" onClick={closeQuickView}>&times;</span>
-                        <div className="quick-view-container">
-                            <div className="quick-view-image">
-                                <Carousel images={carouselImages} />
-                            </div>
-                            <div className="quick-view-details">
-                                <h2>{selectedProduct.name}</h2>
-                                <p className="product-price">Price: ${selectedProduct.price}</p>
-                                <div className="quantity-add">
-                                    <button onClick={decreaseQuantity}>-</button>
-                                    <input type="number" value={quantity} readOnly />
-                                    <button onClick={increaseQuantity}>+</button>
-                                    <button
-                                        className="add-cart-btn"
-                                        onClick={() => addToCart(selectedProduct)}
-                                    >
-                                        ADD TO CART
-                                    </button>
-                                    <button
-                                        className="remove-cart-btn"
-                                        onClick={() => removeFromCart(selectedProduct.id)}
-                                    >
-                                        REMOVE FROM CART
-                                    </button>
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white w-1/2 sm:w-[60%] h-[80vh] overflow-y-auto rounded-lg shadow-lg relative p-4 flex flex-col justify-between">
+                        {/* Close Button */}
+                        <button
+                            onClick={closeQuickView}
+                            className="absolute top-4 right-4 text-gray-600 hover:text-black md:top-6 md:right-6"
+                            style={{
+                                fontSize: "1.5rem",
+                                padding: "0.5rem",
+                                lineHeight: "1",
+                            }}
+                        >
+                            &times;
+                        </button>
+
+                        <div className="flex flex-col h-full">
+                            {/* Image Section */}
+                            <div className="w-full flex justify-center items-center p-4">
+                                <div className="w-1/3 h-auto">
+                                    <Carousel images={carouselImages} isModal={true} /> {/* Image Carousel */}
                                 </div>
+                            </div>
+
+                            {/* Details Section */}
+                            <div className="w-full flex flex-col p-4 space-y-4">
+                                <h2 className="text-xl md:text-2xl font-semibold">{selectedProduct.title}</h2>
+                                <p className="text-lg md:text-xl text-gray-700">{selectedProduct.price}</p>
+                                <p className="text-sm md:text-base text-gray-500">Some description about the product.</p>
+
+                                {/* Size and Color Selection */}
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700">Size</label>
+                                        <select className="w-full border-gray-300 rounded-md">
+                                            <option>Choose an option</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700">Color</label>
+                                        <select className="w-full border-gray-300 rounded-md">
+                                            <option>Choose an option</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                {/* Quantity Selector */}
+                                <div className="flex items-center space-x-4">
+                                    <button onClick={decreaseQuantity} className="px-4 py-2 border rounded">-</button>
+                                    <input
+                                        type="number"
+                                        value={quantity}
+                                        readOnly
+                                        className="w-16 text-center border rounded"
+                                    />
+                                    <button onClick={increaseQuantity} className="px-4 py-2 border rounded">+</button>
+                                </div>
+
+                                {/* Add to Cart Button */}
+                                <button className="bg-purple-600 text-white px-6 py-3 rounded hover:bg-black transition-all duration-300">
+                                    ADD TO CART
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
             )}
+
         </div>
     );
 };
