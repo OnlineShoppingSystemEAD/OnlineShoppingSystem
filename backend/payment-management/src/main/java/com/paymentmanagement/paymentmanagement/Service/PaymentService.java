@@ -79,6 +79,7 @@ public class PaymentService {
         }
     }
 
+
     // Retrieve all payments
     public List<Payment> getAllPayments() {
         return paymentRepository.findAll();

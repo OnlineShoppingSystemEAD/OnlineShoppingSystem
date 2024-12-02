@@ -60,4 +60,3 @@ public class Category {
     @JsonManagedReference
     private List<Item> items;
 }
-

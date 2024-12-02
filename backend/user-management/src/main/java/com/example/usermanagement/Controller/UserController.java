@@ -220,5 +220,4 @@ public class UserController {
         return ResponseEntity.status(resp.getStatusCode()).body(resp);
     }
 
-    
 }
