@@ -62,10 +62,12 @@ const CartSidebar = ({ isOpen, onClose }) => {
             <span className="text-lg font-bold">$75.00</span>
           </div>
           <div className="flex space-x-4">
-            <div className="w-full py-3 text-center text-white bg-gray-900 rounded">
+            <div className="w-full py-3 text-center text-white bg-purple-600 rounded-lg hover:bg-dark transition">
+              <Link to="Cart">
               <button>VIEW CART</button>
+              </Link>
             </div>
-            <div className="w-full py-3 text-center text-white bg-purple-600 rounded">
+            <div className="w-full py-3 text-center text-white bg-purple-600 rounded-lg hover:bg-dark transition">
               <Link to="Checkout">
                 <button>CHECK OUT</button>
               </Link>
