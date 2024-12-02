@@ -72,31 +72,6 @@ jobs:
             # Update package database
             sudo yum update -y || sudo apt-get update -y
 
-            # Install Docker
-            if ! command -v docker &> /dev/null; then
-              if [ -x "$(command -v yum)" ]; then
-                sudo yum install -y docker
-              elif [ -x "$(command -v apt-get)" ]; then
-                sudo apt-get install -y docker.io
-              fi
-              sudo systemctl start docker
-              sudo systemctl enable docker
-              sudo usermod -aG docker $USER
-            fi
-
-            # Install Docker Compose
-            if ! command -v docker-compose &> /dev/null; then
-              sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-              sudo chmod +x /usr/local/bin/docker-compose
-            fi
-
-            # Install required libraries
-            if [ -x "$(command -v yum)" ]; then
-              sudo yum install -y compat-openssl11
-            elif [ -x "$(command -v apt-get)" ]; then
-              sudo apt-get install -y libcrypt1
-            fi
-
             # Pull the latest Docker image and deploy using Docker Compose
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ matrix.service }}:latest
             sudo docker-compose -f /path/to/your/docker-compose-deploy.yml up -d
