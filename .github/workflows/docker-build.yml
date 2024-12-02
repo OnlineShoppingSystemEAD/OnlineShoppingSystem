@@ -90,6 +90,13 @@ jobs:
               sudo chmod +x /usr/local/bin/docker-compose
             fi
 
+            # Install required libraries
+            if [ -x "$(command -v yum)" ]; then
+              sudo yum install -y libcrypt
+            elif [ -x "$(command -v apt-get)" ]; then
+              sudo apt-get install -y libcrypt1
+            fi
+
             # Pull the latest Docker image and deploy using Docker Compose
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ matrix.service }}:latest
             sudo docker-compose -f /path/to/your/docker-compose-deploy.yml up -d
