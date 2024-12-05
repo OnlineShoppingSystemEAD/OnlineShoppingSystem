@@ -1,21 +1,20 @@
 package com.example.product_management.repository;
 
+import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.util.List;
-
-import com.example.product_management.model.Category;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-
+import com.example.product_management.model.Category;
 import com.example.product_management.model.Item;
+import com.example.product_management.model.ItemImage;
 
 @DataJpaTest
-public class ItemRepositoryTest {
+public class ItemImageRepositoryTest {
+    @Autowired
+    private ItemImageRepository underTestItemImageRepository;
 
     @Autowired
     private ItemRepository underTestItemRepository;
@@ -27,8 +26,10 @@ public class ItemRepositoryTest {
 
     private Category underTestCategory;
 
+    private ItemImage underTestItemImage;
+
     @BeforeEach
-    public void setUp() {
+    void setup() {
         // Arrange: Set up test data
         underTestItem = new Item();
         underTestItem.setId(1);
@@ -37,6 +38,7 @@ public class ItemRepositoryTest {
         underTestItem.setImageURL("http://www.example.com");
         underTestItem.setQuantity(80);
         underTestItem.setPrice(40.56);
+
         underTestCategory = new Category();
         underTestCategory.setId(1);
         underTestCategory.setDescription("Lorem_Ipsum_2");
@@ -44,19 +46,22 @@ public class ItemRepositoryTest {
         underTestCategory.setImageURL("Example_URL");
         underTestItem.setCategory(underTestCategory);
 
+        underTestItemImage = new ItemImage();
+        underTestItemImage.setId(3);
+        underTestItemImage.setImageUrl("http://www.example.com");
+        underTestItemImage.setItem(underTestItem);
+
         underTestCategoryRepository.save(underTestCategory);
         underTestItemRepository.save(underTestItem);
+        underTestItemImageRepository.save(underTestItemImage);
     }
 
-    // @Disabled
     @Test
-    public void testFindByCategoryId() {
-        // Act: Call the repository method
-        List<Item> foundItems = underTestItemRepository.findByCategoryId(underTestItem.getCategoryId());
+    public void testFindByItemId() {
+        List<ItemImage> foundItemImage = underTestItemImageRepository.findByItemId(underTestItem.getId());
 
-        // Assert: Verify the results
-        assertFalse(foundItems.isEmpty(), "Items were found for the given category ID");
-        assertEquals(1, foundItems.size(), "Only one item should be found");
+        assertFalse(foundItemImage.isEmpty(), "Item Images were found for the given ID");
+        assertEquals(1, foundItemImage.size(), "Only one item Image should be found");
 
     }
 }
