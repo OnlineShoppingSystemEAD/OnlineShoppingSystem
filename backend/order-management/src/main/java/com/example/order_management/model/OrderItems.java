@@ -25,6 +25,7 @@ public class OrderItems {
         this.itemId = itemId;
         this.quantity = quantity;
         this.itemName = itemName;
+        this.itemPrice = itemPrice;
     }
 
     // Getters and Setters
@@ -65,7 +66,7 @@ public class OrderItems {
     }
 
     public double getItemPrice() {
-        return this.getItemPrice();
+        return this.itemPrice;
     }
 
     public void setItemName(String itemName) {
@@ -73,5 +74,6 @@ public class OrderItems {
     }
 
     public void setItemPrice(double itemPrice) {
+        this.itemPrice = itemPrice;
     }
 }
