@@ -17,12 +17,16 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import com.example.product_management.model.Item;
+import com.example.product_management.repository.CategoryRepository;
+import com.example.product_management.repository.ItemImageRepository;
 import com.example.product_management.repository.ItemRepository;
 
 @Disabled
 public class ItemServiceTest {
     @Mock
     private ItemRepository underTestItemRepository;
+    private ItemImageRepository underTestItemImageRepository;
+    private CategoryRepository underTestICategoryRepository;
     private AutoCloseable autoCloseable;
     private ItemService undertTestItemService;
 

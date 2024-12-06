@@ -14,14 +14,17 @@ public class OrderItems {
 
     private int itemId;
     private int quantity;
+    private String itemName;
+    private double itemPrice;
 
     public OrderItems() {
     }
 
-    public OrderItems(Orders order, int itemId, int quantity) {
+    public OrderItems(Orders order, int itemId, int quantity, String itemName, double itemPrice) {
         this.order = order;
         this.itemId = itemId;
         this.quantity = quantity;
+        this.itemName = itemName;
     }
 
     // Getters and Setters
@@ -55,5 +58,20 @@ public class OrderItems {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getItemName() {
+        return this.itemName;
+    }
+
+    public double getItemPrice() {
+        return this.getItemPrice();
+    }
+
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
+
+    public void setItemPrice(double itemPrice) {
     }
 }
