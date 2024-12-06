@@ -6,5 +6,5 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @EnableDiscoveryClient  //added for testing
 public class EurekaClientConfig {
-    // Additional Eureka client configurations can be added here if needed
+    // Additional Eureka client configurations can be added here if neede
 }

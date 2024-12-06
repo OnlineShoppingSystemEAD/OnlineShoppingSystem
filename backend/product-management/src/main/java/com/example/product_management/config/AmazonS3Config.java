@@ -28,7 +28,6 @@ public class AmazonS3Config {
         );
     }
 
-
     @Bean("s3AsyncClient")
     public S3AsyncClient s3AsyncClient(@Qualifier("awsCredentials") AwsCredentialsProvider awsCredentials) {
         return S3AsyncClient

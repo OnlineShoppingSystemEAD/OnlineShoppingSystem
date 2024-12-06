@@ -18,7 +18,6 @@ import java.util.List;
 @Slf4j
 @Service
 public class AmazonS3Service {
-
     private final S3Client s3Client;
     private final AwsProperties awsProperties;
 
