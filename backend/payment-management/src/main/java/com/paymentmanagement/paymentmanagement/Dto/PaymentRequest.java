@@ -13,6 +13,5 @@ public class PaymentRequest {
     }
 
 
-    public void setCurrency(String usd) {
-    }
+
 }
