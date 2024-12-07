@@ -43,7 +43,7 @@ eureka:
     serviceUrl:
       defaultZone: http://service-registry:8761/eureka/
 server:
-  port: 8086
+  port: 8084
 aws:
   access: ${AWS_ACCESS:default_access_key}
   secret: ${AWS_SECRET:default_secret_key}

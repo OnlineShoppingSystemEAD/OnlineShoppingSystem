@@ -13,6 +13,6 @@ COPY src/main ./src/main
 
 RUN ./mvnw package -DskipTests
 
-EXPOSE 8085
+EXPOSE 8083
 
 CMD ["java", "-jar", "target/payment-management-0.0.1-SNAPSHOT.jar"]
