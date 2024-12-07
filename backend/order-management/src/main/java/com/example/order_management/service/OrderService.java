@@ -11,7 +11,6 @@ import com.example.order_management.dto.OrderStatusDto;
 import com.example.order_management.dto.PaymentRequest;
 import com.example.order_management.dto.PaymentResponse;
 import com.example.order_management.dto.ShoppingCartItemDto;
-import com.example.order_management.dto.OrderStatusDto.Status;
 import com.example.order_management.model.Orders;
 import com.example.order_management.repository.OrderRespository;
 import com.example.order_management.model.OrderItems;
