@@ -48,10 +48,10 @@ public class OrderService {
         PaymentRequest paymentRequest = new PaymentRequest();
         PaymentResponse paymentResponse = sendPaymentRequest(paymentRequest);
 
-        if (paymentResponse != null && paymentResponse.getPaymentId() != 0) {
+         if (paymentResponse != null && paymentResponse.getPaymentId() != 0) {
             // Update order status to PAID
-            order.setPaymentId(paymentResponse.getPaymentId());
-            updateOrderStatus(order.getId(), order);
+            newOrder.setPaymentId(paymentResponse.getPaymentId());
+            newOrder = updateOrderStatus(newOrder.getId(), newOrder);
         }
 
         return newOrder;
