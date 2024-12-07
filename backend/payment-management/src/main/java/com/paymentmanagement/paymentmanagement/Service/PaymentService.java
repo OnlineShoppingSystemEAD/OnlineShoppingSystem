@@ -5,6 +5,7 @@ import com.paymentmanagement.paymentmanagement.Dto.PaymentRequest;
 import com.paymentmanagement.paymentmanagement.Dto.PaymentResponse;
 import com.paymentmanagement.paymentmanagement.Entity.Payment;
 import com.paymentmanagement.paymentmanagement.Repository.PaymentRepo;
+import jakarta.transaction.Transactional;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,18 +63,18 @@ public class PaymentService {
         paymentRepository.deleteById(id);
     }
 
-    // Confirm a payment
-    public Payment confirmPayment(int id, int orderId, BigDecimal amount) {
-        Payment payment = paymentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Payment not found"));
+    // Confirm a payment by orderId and amount
+    @Transactional
+    public Payment confirmPayment(int orderId, BigDecimal amount) {
+        Payment payment = (Payment) paymentRepository.findByOrderIdAndAmount(orderId, amount)
+                .orElseThrow(() -> new RuntimeException("Payment not found with matching orderId and amount"));
 
-        // Validate orderId and amount
-        if (String.valueOf(payment.getOrderId()).equals(String.valueOf(orderId)) && payment.getAmount().compareTo(amount) == 0) {
-            payment.setStatus(Payment.Status.CONFIRMED);
-            return paymentRepository.save(payment);
-        } else {
-            throw new RuntimeException("Payment confirmation failed due to mismatched data");
+        if (!payment.getStatus().equals(Payment.Status.PENDING)) {
+            throw new RuntimeException("Payment cannot be confirmed as it is not in PENDING status");
         }
+
+        payment.setStatus(Payment.Status.CONFIRMED);
+        return paymentRepository.save(payment);
     }
 
 

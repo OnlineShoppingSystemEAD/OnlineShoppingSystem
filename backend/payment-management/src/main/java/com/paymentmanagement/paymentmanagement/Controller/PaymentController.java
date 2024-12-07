@@ -63,15 +63,13 @@ public class PaymentController {
         return ResponseEntity.noContent().build();
     }
 
-    // Endpoint to confirm a payment
-    @PostMapping("/{paymentId}/confirm")
+    // Endpoint to confirm a payment by orderId and amount
+    @PostMapping("/confirm")
     public ResponseEntity<?> confirmPayment(
-            @PathVariable int paymentId,
             @RequestParam int orderId,
             @RequestParam double amount) {
-
         try {
-            Payment confirmedPayment = paymentService.confirmPayment(paymentId, orderId, BigDecimal.valueOf(amount));
+            Payment confirmedPayment = paymentService.confirmPayment(orderId, BigDecimal.valueOf(amount));
             return ResponseEntity.ok(confirmedPayment);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
