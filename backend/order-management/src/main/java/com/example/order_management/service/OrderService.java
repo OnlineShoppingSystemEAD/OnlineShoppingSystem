@@ -7,9 +7,11 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
+import com.example.order_management.dto.OrderStatusDto;
 import com.example.order_management.dto.PaymentRequest;
 import com.example.order_management.dto.PaymentResponse;
 import com.example.order_management.dto.ShoppingCartItemDto;
+import com.example.order_management.dto.OrderStatusDto.Status;
 import com.example.order_management.model.Orders;
 import com.example.order_management.repository.OrderRespository;
 import com.example.order_management.model.OrderItems;
@@ -62,6 +64,20 @@ public class OrderService {
                 .orElseThrow(() -> new RuntimeException("Order not found"));
         orderDetails.setPaymentId(order.getPaymentId());
         orderDetails.setStatus(Orders.Status.PAID);
+        return orderRespository.save(orderDetails);
+    }
+
+    // Update order status only
+    public Orders updateOrderStatusOnly(int orderId, OrderStatusDto order) {
+        Orders orderDetails = orderRespository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+        String updatedOrderStatus = order.getOrderStatus();
+        if (updatedOrderStatus == "ONDELIVERY") {
+            orderDetails.setStatus(Orders.Status.ONDELIVERY);
+        } else if (updatedOrderStatus == "COMPLETED") {
+            orderDetails.setStatus(Orders.Status.COMPLETED);
+        }
+
         return orderRespository.save(orderDetails);
     }
 

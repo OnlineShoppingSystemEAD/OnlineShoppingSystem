@@ -34,7 +34,7 @@ public class Orders {
         PENDING,
         PAID,
         ONDELIVERY,
-        COMPLETED
+        COMPLETED, order
     }
 
     public void setId(int id) {
