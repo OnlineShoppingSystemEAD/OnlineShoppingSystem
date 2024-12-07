@@ -58,7 +58,6 @@ jobs:
           context: ./backend/${{ matrix.service }}
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ matrix.service }}:latest
-          platforms: linux/x86_64
 
 
       - name: Create PEM file
