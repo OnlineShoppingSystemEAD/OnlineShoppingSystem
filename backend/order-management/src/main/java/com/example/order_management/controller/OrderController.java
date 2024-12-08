@@ -22,7 +22,7 @@ public class OrderController {
         return orderService.getAllOrders();
     }
 
-    @PostMapping("/createOrder/{userId}")
+    @PostMapping("/createOrder/")
     public Orders createOrder(@RequestBody Orders order, @RequestParam int userId) {
         return orderService.createOrder(userId, order);
     }

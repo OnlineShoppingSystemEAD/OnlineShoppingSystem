@@ -1,6 +1,5 @@
 package com.paymentmanagement.paymentmanagement.Service;
 
-
 import com.paymentmanagement.paymentmanagement.Dto.PaymentRequest;
 import com.paymentmanagement.paymentmanagement.Dto.PaymentResponse;
 import com.paymentmanagement.paymentmanagement.Entity.Payment;
@@ -9,7 +8,6 @@ import jakarta.transaction.Transactional;
 import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -38,8 +36,7 @@ public class PaymentService {
         paymentRepository.save(payment);
 
         // Return a response
-        return new PaymentResponse(
-        );
+        return new PaymentResponse(payment.getOrderId(), payment.getId(), payment.getAmount().doubleValue());
     }
 
     // Method to retrieve a payment by ID
@@ -77,11 +74,9 @@ public class PaymentService {
         return paymentRepository.save(payment);
     }
 
-
     // Retrieve all payments
     public List<Payment> getAllPayments() {
         return paymentRepository.findAll();
     }
-
 
 }

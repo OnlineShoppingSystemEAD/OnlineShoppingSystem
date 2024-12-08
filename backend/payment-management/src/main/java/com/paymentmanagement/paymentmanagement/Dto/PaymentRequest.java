@@ -12,6 +12,4 @@ public class PaymentRequest {
     public void setAmount(BigDecimal bigDecimal) {
     }
 
-
-
 }
