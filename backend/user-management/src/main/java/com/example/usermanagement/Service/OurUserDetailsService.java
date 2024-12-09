@@ -19,11 +19,9 @@ import java.util.Optional;
 
 @Service
 public class OurUserDetailsService implements UserDetailsService {
-
     private final OurUserRepo ourUserRepo;
     private final UserProfileRepo userProfileRepo;
     private final AmazonS3Service amazonS3Service;
-
 
     @Autowired
     public OurUserDetailsService(OurUserRepo ourUserRepo, UserProfileRepo userProfileRepo,  AmazonS3Service amazonS3Service) {

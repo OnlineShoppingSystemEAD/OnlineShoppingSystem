@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   service-registry:
     image: wilbax/service-registry:latest
@@ -39,6 +38,8 @@ services:
       - AWS_ACCOUNT_NO=${AWS_ACCOUNT_NO}
       - S3_BUCKET=${S3_BUCKET}
       - S3_REGION=${S3_REGION}
+    env_file:
+      - .env
     depends_on:
       - service-registry
 
@@ -55,6 +56,8 @@ services:
       - AWS_ACCOUNT_NO=${AWS_ACCOUNT_NO}
       - S3_BUCKET=${S3_BUCKET}
       - S3_REGION=${S3_REGION}
+    env_file:
+      - .env
     depends_on:
       - service-registry
 

@@ -2,6 +2,8 @@ name: Build, Push Docker Images and Deploy to AWS EC2
 
 on:
   push:
+    branches:
+      - main
     paths:
       - 'backend/service-registry/**'
       - 'backend/api-gateway/**'
@@ -94,11 +96,6 @@ jobs:
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ matrix.service }}:latest
             sudo docker-compose --env-file /home/ec2-user/.env -f /home/ec2-user/docker-compose-deploy.yml up -d --pull always
           EOF
-  
-
-
-
-
       - name: Clean up PEM file
         if: env.changed == 'true'
         run: |
