@@ -84,4 +84,18 @@ public class PaymentController {
         PaymentMethod paymentMethod = paymentService.savePaymentMethod(paymentMethodRequest);
         return ResponseEntity.ok(paymentMethod);
     }
+
+    // Endpoint to get delivery order IDs by user ID
+    @GetMapping("/delivery-orders/{userId}")
+    public ResponseEntity<List<Integer>> getDeliveryOrderIdsByUserId(@PathVariable int userId) {
+        try {
+            List<Integer> orderIds = paymentService.getDeliveryOrderIdsByUserId(userId);
+            return ResponseEntity.ok(orderIds);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+
+
 }
