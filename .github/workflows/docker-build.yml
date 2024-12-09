@@ -84,9 +84,15 @@ jobs:
             export S3_BUCKET=${{ secrets.S3_BUCKET }}
             export S3_REGION=${{ secrets.S3_REGION }}
 
+            echo "AWS_ACCESS=${{ secrets.AWS_ACCESS }}" > /home/ec2-user/.env
+            echo "AWS_SECRET=${{ secrets.AWS_SECRET }}" >> /home/ec2-user/.env
+            echo "AWS_ACCOUNT_NO=${{ secrets.AWS_ACCOUNT_NO }}" >> /home/ec2-user/.env
+            echo "S3_BUCKET=${{ secrets.S3_BUCKET }}" >> /home/ec2-user/.env
+            echo "S3_REGION=${{ secrets.S3_REGION }}" >> /home/ec2-user/.env
+
             # Pull the latest Docker image and deploy using Docker Compose
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ matrix.service }}:latest
-            sudo docker-compose -f /home/ec2-user/docker-compose-deploy.yml up -d --pull always
+            sudo docker-compose -f --env-file /home/ec2-user/.env /home/ec2-user/docker-compose-deploy.yml up -d --pull always
           EOF
   
 
