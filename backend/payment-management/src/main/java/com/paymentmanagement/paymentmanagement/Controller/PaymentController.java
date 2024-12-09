@@ -1,8 +1,10 @@
 package com.paymentmanagement.paymentmanagement.Controller;
 
+import com.paymentmanagement.paymentmanagement.Dto.PaymentMethodRequest;
 import com.paymentmanagement.paymentmanagement.Dto.PaymentRequest;
 import com.paymentmanagement.paymentmanagement.Dto.PaymentResponse;
 import com.paymentmanagement.paymentmanagement.Entity.Payment;
+import com.paymentmanagement.paymentmanagement.Entity.PaymentMethod;
 import com.paymentmanagement.paymentmanagement.Service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -74,5 +76,12 @@ public class PaymentController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
+    }
+
+    // Endpoint to save payment method
+    @PostMapping("/methods")
+    public ResponseEntity<PaymentMethod> savePaymentMethod(@RequestBody PaymentMethodRequest paymentMethodRequest) {
+        PaymentMethod paymentMethod = paymentService.savePaymentMethod(paymentMethodRequest);
+        return ResponseEntity.ok(paymentMethod);
     }
 }

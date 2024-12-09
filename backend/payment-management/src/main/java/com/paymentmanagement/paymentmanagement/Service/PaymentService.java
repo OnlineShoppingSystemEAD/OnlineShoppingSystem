@@ -1,8 +1,11 @@
 package com.paymentmanagement.paymentmanagement.Service;
 
+import com.paymentmanagement.paymentmanagement.Dto.PaymentMethodRequest;
 import com.paymentmanagement.paymentmanagement.Dto.PaymentRequest;
 import com.paymentmanagement.paymentmanagement.Dto.PaymentResponse;
 import com.paymentmanagement.paymentmanagement.Entity.Payment;
+import com.paymentmanagement.paymentmanagement.Entity.PaymentMethod;
+import com.paymentmanagement.paymentmanagement.Repository.PaymentMethodRepo;
 import com.paymentmanagement.paymentmanagement.Repository.PaymentRepo;
 import jakarta.transaction.Transactional;
 import lombok.extern.apachecommons.CommonsLog;
@@ -20,6 +23,8 @@ public class PaymentService {
 
     @Autowired
     private PaymentRepo paymentRepository;
+    @Autowired
+    private PaymentMethodRepo paymentMethodRepo;
 
     // Method to handle a new payment request
     public PaymentResponse processPayment(PaymentRequest paymentRequest) {
@@ -77,6 +82,19 @@ public class PaymentService {
     // Retrieve all payments
     public List<Payment> getAllPayments() {
         return paymentRepository.findAll();
+    }
+
+    // Save a payment method for a user
+    public PaymentMethod savePaymentMethod(PaymentMethodRequest paymentMethodRequest) {
+        PaymentMethod paymentMethod = new PaymentMethod();
+        paymentMethod.setUserId(paymentMethodRequest.getUserId());
+        paymentMethod.setCardHolderName(paymentMethodRequest.getCardHolderName());
+        paymentMethod.setCardNumber(paymentMethodRequest.getCardNumber());
+        paymentMethod.setExpirationDate(paymentMethodRequest.getExpirationDate());
+        paymentMethod.setCvv(paymentMethodRequest.getCvv());
+        paymentMethod.setNickname(paymentMethodRequest.getNickname());
+
+        return paymentMethodRepo.save(paymentMethod);
     }
 
 }
