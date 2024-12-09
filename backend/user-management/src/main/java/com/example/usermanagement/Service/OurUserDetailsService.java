@@ -30,6 +30,7 @@ public class OurUserDetailsService implements UserDetailsService {
         this.amazonS3Service = amazonS3Service;
 
     }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return ourUserRepo.findByEmail(username).orElseThrow();
