@@ -66,27 +66,25 @@ jobs:
           echo "${{ secrets.EC2_PEM }}" > ec2-key.pem
           chmod 600 ec2-key.pem
 
-      # - name: Upload docker-compose-deploy.yml
-      #   if: env.changed == 'true'
-      #   run: |
-      #     scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ec2-key.pem ./backend/docker-compose-deploy.yml ec2-user@${{ secrets.EC2_PUBLIC_IP }}:/home/ec2-user/docker-compose-deploy.yml
+      - name: Upload docker-compose-deploy.yml
+        if: env.changed == 'true'
+        run: |
+          scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ec2-key.pem ./backend/docker-compose-deploy.yml ec2-user@${{ secrets.EC2_PUBLIC_IP }}:/home/ec2-user/docker-compose-deploy.yml
 
       - name: Deploy to AWS EC2
         if: env.changed == 'true'
         run: |
-          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ secrets.EC2_PUBLIC_IP }}  << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i ec2-key.pem ec2-user@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
             # Update package database
             sudo yum update -y || sudo apt-get update -y
 
-            # Export environment variables
-            export AWS_ACCESS=${{ secrets.AWS_ACCESS }}
-            export AWS_SECRET=${{ secrets.AWS_SECRET }}
-            export AWS_ACCOUNT_NO=${{ secrets.AWS_ACCOUNT_NO }}
-            export S3_BUCKET=${{ secrets.S3_BUCKET }}
-            export S3_REGION=${{ secrets.S3_REGION }}
-
             # Pull the latest Docker image and deploy using Docker Compose
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ matrix.service }}:latest
+            AWS_ACCESS=${{ secrets.AWS_ACCESS }} \
+            AWS_SECRET=${{ secrets.AWS_SECRET }} \
+            AWS_ACCOUNT_NO=${{ secrets.AWS_ACCOUNT_NO }} \
+            S3_BUCKET=${{ secrets.S3_BUCKET }} \
+            S3_REGION=${{ secrets.S3_REGION }} \
             sudo docker-compose -f /home/ec2-user/docker-compose-deploy.yml up -d --pull always
           EOF
 
