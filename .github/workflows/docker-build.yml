@@ -87,7 +87,7 @@ jobs:
 
             # Pull the latest Docker image and deploy using Docker Compose
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ matrix.service }}:latest
-            sudo docker-compose -f /home/ec2-user/docker-compose-deploy.yml up -d
+            sudo docker-compose -f /home/ec2-user/docker-compose-deploy.yml up -d --pull always
           EOF
 
       - name: Clean up PEM file
