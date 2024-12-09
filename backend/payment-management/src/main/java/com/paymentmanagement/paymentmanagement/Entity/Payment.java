@@ -37,7 +37,7 @@ public class Payment {
     public enum Status {
         PENDING,
         CONFIRMED,
-        FAILED
+        PAID, FAILED
     }
 
     @PrePersist
