@@ -16,7 +16,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @CommonsLog
 @Service
@@ -96,20 +95,6 @@ public class PaymentService {
         paymentMethod.setNickname(paymentMethodRequest.getNickname());
 
         return paymentMethodRepo.save(paymentMethod);
-    }
-
-
-    // Method to get pending and paid delivery orders by user ID
-    public List<Integer> getDeliveryOrderIdsByUserId(int userId) {
-        // Fetch all payments for the given user ID
-        Optional<Payment> payments = paymentRepository.findById(userId);
-
-        // Filter for PENDING or PAID statuses and return the order IDs
-        return payments.stream()
-                .filter(payment -> payment.getStatus() == Payment.Status.PENDING ||
-                        payment.getStatus() == Payment.Status.PAID)
-                .map(Payment::getOrderId)
-                .collect(Collectors.toList());
     }
 
 }
