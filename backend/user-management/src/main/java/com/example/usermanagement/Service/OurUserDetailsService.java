@@ -24,7 +24,6 @@ public class OurUserDetailsService implements UserDetailsService {
     private final UserProfileRepo userProfileRepo;
     private final AmazonS3Service amazonS3Service;
 
-
     @Autowired
     public OurUserDetailsService(OurUserRepo ourUserRepo, UserProfileRepo userProfileRepo,  AmazonS3Service amazonS3Service) {
         this.ourUserRepo = ourUserRepo;
@@ -32,8 +31,6 @@ public class OurUserDetailsService implements UserDetailsService {
         this.amazonS3Service = amazonS3Service;
 
     }
-
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return ourUserRepo.findByEmail(username).orElseThrow();
