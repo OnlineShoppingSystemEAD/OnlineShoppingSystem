@@ -14,8 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @CommonsLog
 @Service
@@ -95,6 +95,26 @@ public class PaymentService {
         paymentMethod.setNickname(paymentMethodRequest.getNickname());
 
         return paymentMethodRepo.save(paymentMethod);
+    }
+
+
+    // Get all order IDs for the given user ID
+    public List<Integer> getAllOrderIdsByUserId(int userId) {
+        List<Payment> payments = paymentRepository.findByUserId(userId);
+        if (payments == null || payments.isEmpty()) {
+            return Collections.emptyList(); // Return an empty list if no payments are found.
+        }
+        return payments.stream().map(Payment::getOrderId).collect(Collectors.toList());
+    }
+
+    // Get pending and paid delivery order IDs for the given user ID
+    public List<Integer> getPendingAndPaidDeliveryOrderIdsByUserId(int userId) {
+        List<Payment> payments = paymentRepository.findByUserIdAndStatusIn(
+                userId, Arrays.asList(Payment.Status.PENDING, Payment.Status.PAID));
+        if (payments == null || payments.isEmpty()) {
+            return Collections.emptyList(); // Return an empty list if no payments are found.
+        }
+        return payments.stream().map(Payment::getOrderId).collect(Collectors.toList());
     }
 
 }
