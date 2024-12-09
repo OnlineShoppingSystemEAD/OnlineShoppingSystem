@@ -24,7 +24,6 @@ public class OurUserDetailsService implements UserDetailsService {
     private final UserProfileRepo userProfileRepo;
     private final AmazonS3Service amazonS3Service;
 
-
     @Autowired
     public OurUserDetailsService(OurUserRepo ourUserRepo, UserProfileRepo userProfileRepo,  AmazonS3Service amazonS3Service) {
         this.ourUserRepo = ourUserRepo;
