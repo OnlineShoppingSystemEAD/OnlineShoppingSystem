@@ -7,9 +7,10 @@ public class PaymentRequest {
     private double amount;
 
     public PaymentRequest(int orderId, double amount, int userId) {
-        this.userId = userId;
+
         this.orderId = orderId;
         this.amount = amount;
+        this.userId = userId;
     }
 
     public PaymentRequest() {

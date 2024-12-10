@@ -10,6 +10,11 @@ public class PaymentRequest {
     private int orderId;
     private double amount;
 
+    public PaymentRequest(int orderId, double amount, int userID) {
+        this.orderId = orderId;
+        this.amount = amount;
+        this.orderId = orderId;
+    }
 
     public PaymentRequest(int i, BigDecimal bigDecimal, String creditCard) {
     }
