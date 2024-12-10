@@ -1,4 +1,4 @@
-package com.example.product_management.controller;
+package com.example.product_management.Controller;
 
 import com.example.product_management.dto.ItemDTO;
 import com.example.product_management.dto.ResponseDTO;
