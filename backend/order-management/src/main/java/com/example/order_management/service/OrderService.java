@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.example.order_management.dto.OrderStatusDto;
 import com.example.order_management.dto.PaymentRequest;
@@ -95,6 +96,10 @@ public class OrderService {
 
         // Return the response body
         return responseEntity.getBody();
+    }
+
+    public Optional<Orders> getOrderByOrderId(int orderId) {
+        return orderRespository.findById(orderId);
     }
 
     public List<Orders> getAllOrders() {

@@ -9,6 +9,7 @@ import com.example.order_management.model.Orders;
 import com.example.order_management.service.OrderService;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/order")
@@ -20,6 +21,11 @@ public class OrderController {
     @GetMapping("/")
     public List<Orders> getAllOrders() {
         return orderService.getAllOrders();
+    }
+
+    @GetMapping("/{orderId}")
+    public Optional<Orders> getOrderByOrderId(@PathVariable int orderId) {
+        return orderService.getOrderByOrderId(orderId);
     }
 
     @PostMapping("/createOrder/")
@@ -39,4 +45,5 @@ public class OrderController {
         return success;
 
     }
+
 }
