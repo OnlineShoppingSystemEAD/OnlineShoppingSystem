@@ -31,32 +31,46 @@ public class OrderService {
     private RestTemplate restTemplate;
 
     public Orders createOrder(int userId, Orders order) {
-        Orders newOrder = orderRespository.save(order);
-
+        // Fetch and validate shopping cart items
         List<ShoppingCartItemDto> cartItems = shoppingCartService.getShoppingCartItemsForOrderItems(userId);
-
-        for (ShoppingCartItemDto cartItem : cartItems) {
-            OrderItems orderItem = new OrderItems();
-            orderItem.setOrder(newOrder);
-            orderItem.setItemId(cartItem.getId());
-            orderItem.setQuantity(cartItem.getItemQuantity());
-            orderItemService.createOrderItem(orderItem);
-
-            deleteItemFromtheShoppingCart(cartItem.getId(), userId);
-
+        if (cartItems == null || cartItems.isEmpty()) {
+            throw new IllegalArgumentException("Shopping cart is empty. Cannot proceed with the order.");
         }
-        // Send a request to the payment-management
+
+        // Save the initial order
+        Orders newOrder = orderRespository.save(order);
+        if (newOrder == null) {
+            throw new IllegalStateException("Failed to save the order.");
+        }
+
+        // Process order items
+        for (ShoppingCartItemDto cartItem : cartItems) {
+            createAndSaveOrderItem(cartItem, newOrder);
+            deleteItemFromtheShoppingCart(cartItem.getId(), userId);
+        }
+
+        // Process payment
         PaymentRequest paymentRequest = new PaymentRequest(newOrder.getId(), newOrder.getTotalAmount());
         PaymentResponse paymentResponse = sendPaymentRequest(paymentRequest);
-        System.out.println(paymentResponse.getPaymentId());
 
-        if (paymentResponse != null && paymentResponse.getPaymentId() != 0) {
-            // Update order status to PAID
+        if (paymentResponse != null && paymentResponse.getPaymentId() > 0) {
             newOrder.setPaymentId(paymentResponse.getPaymentId());
             newOrder = updateOrderStatus(newOrder.getId(), newOrder);
+        } else {
+            throw new IllegalStateException("Payment failed. Order remains in pending state.");
         }
 
         return newOrder;
+    }
+
+    private void createAndSaveOrderItem(ShoppingCartItemDto cartItem, Orders order) {
+        OrderItems orderItem = new OrderItems();
+        orderItem.setOrder(order);
+        orderItem.setItemId(cartItem.getId());
+        orderItem.setQuantity(cartItem.getItemQuantity());
+        orderItem.setItemName(cartItem.getItemName());
+        orderItem.setItemPrice(cartItem.getItemPrice());
+        orderItemService.createOrderItem(orderItem);
     }
 
     // Update Payment Id and Status after payment
@@ -99,16 +113,33 @@ public class OrderService {
     }
 
     public Optional<Orders> getOrderByOrderId(int orderId) {
-        return orderRespository.findById(orderId);
+        try {
+            return orderRespository.findById(orderId);
+        } catch (Exception e) {
+            throw new RuntimeException("Error retrieving order with Id " + orderId, e);
+        }
+
     }
 
     public List<Orders> getAllOrders() {
-        List<Orders> orders = orderRespository.findAll();
-        return orders;
+        try {
+            return orderRespository.findAll();
+        } catch (Exception e) {
+            throw new RuntimeException("Error retrieving all orders", e);
+        }
     }
 
     public String deleteOrder(int orderId) {
-        orderRespository.deleteById(orderId);
-        return "Successfully Deleted";
+        try {
+            if (orderRespository.findById(orderId) == null) {
+                throw new RuntimeException("Order with ID: " + orderId + " does not exist.");
+            }
+            orderRespository.deleteById(orderId);
+            return "Successfully Deleted";
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        } catch (Exception e) {
+            throw new RuntimeException("Error deleting order with ID: " + orderId, e);
+        }
     }
 }
