@@ -13,7 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.math.BigDecimal;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +40,7 @@ class PaymentServiceTest {
     @Test
     void testProcessPayment() {
         PaymentRequest paymentRequest = new PaymentRequest(1, 100.0, "CREDIT_CARD");
-        Payment mockPayment = new Payment(1, BigDecimal.valueOf(100.0), "PENDING", 2);
+        Payment mockPayment = new Payment(1, 100.0, "PENDING", 2);
         mockPayment.setId(1);
         mockPayment.setOrderId(paymentRequest.getOrderId());
         when(paymentRepository.save(any(Payment.class))).thenReturn(mockPayment);
@@ -55,7 +55,7 @@ class PaymentServiceTest {
 
     @Test
     void testGetPaymentById_Found() {
-        Payment mockPayment = new Payment(1, BigDecimal.valueOf(100.0), "PAID", 2);
+        Payment mockPayment = new Payment(1, 100.0, "PAID", 2);
         when(paymentRepository.findById(1)).thenReturn(Optional.of(mockPayment));
 
         Optional<Payment> payment = paymentService.getPaymentById(1);
@@ -77,8 +77,8 @@ class PaymentServiceTest {
 
     @Test
     void testUpdatePayment() {
-        Payment existingPayment = new Payment(1, BigDecimal.valueOf(100.0), "PENDING", 2);
-        Payment updatedPayment = new Payment(1, BigDecimal.valueOf(200.0), "PAID", 2);
+        Payment existingPayment = new Payment(1, 100.0, "PENDING", 2);
+        Payment updatedPayment = new Payment(1, 200.0, "PAID", 2);
         when(paymentRepository.findById(1)).thenReturn(Optional.of(existingPayment));
         when(paymentRepository.save(existingPayment)).thenReturn(updatedPayment);
 
@@ -101,22 +101,22 @@ class PaymentServiceTest {
 
     @Test
     void testConfirmPayment() {
-        Payment mockPayment = new Payment(1, BigDecimal.valueOf(100.0), "PENDING", 2);
-        when(paymentRepository.findByOrderIdAndAmount(1, BigDecimal.valueOf(100.0))).thenReturn(Optional.of(mockPayment));
+        Payment mockPayment = new Payment(1, 100.0, "PENDING", 2);
+        when(paymentRepository.findByOrderIdAndAmount(1, 100.0)).thenReturn(Optional.of(mockPayment));
         when(paymentRepository.save(mockPayment)).thenReturn(mockPayment);
 
-        Payment result = paymentService.confirmPayment(1, BigDecimal.valueOf(100.0));
+        Payment result = paymentService.confirmPayment(1, 100.0);
 
         assertEquals(Payment.Status.CONFIRMED, result.getStatus());
-        verify(paymentRepository, times(1)).findByOrderIdAndAmount(1, BigDecimal.valueOf(100.0));
+        verify(paymentRepository, times(1)).findByOrderIdAndAmount(1, 100.0);
         verify(paymentRepository, times(1)).save(mockPayment);
     }
 
     @Test
     void testGetAllPayments() {
         List<Payment> mockPayments = Arrays.asList(
-                new Payment(1, BigDecimal.valueOf(100.0), "PAID", 2),
-                new Payment(2, BigDecimal.valueOf(200.0), "PENDING", 2)
+                new Payment(1, 100.0, "PAID", 2),
+                new Payment(2, 200.0, "PENDING", 2)
         );
         when(paymentRepository.findAll()).thenReturn(mockPayments);
 
@@ -143,8 +143,8 @@ class PaymentServiceTest {
     @Test
     void testGetAllOrderIdsByUserId() {
         List<Payment> mockPayments = Arrays.asList(
-                new Payment(1, BigDecimal.valueOf(100.0), "PAID", 1),
-                new Payment(2, BigDecimal.valueOf(200.0), "PENDING", 2)
+                new Payment(1, 100.0, "PAID", 1),
+                new Payment(2, 200.0, "PENDING", 2)
         );
         when(paymentRepository.findByUserId(1)).thenReturn(mockPayments);
 
@@ -157,8 +157,8 @@ class PaymentServiceTest {
     @Test
     void testGetPendingAndPaidDeliveryOrderIdsByUserId() {
         List<Payment> mockPayments = Arrays.asList(
-                new Payment(1, BigDecimal.valueOf(100.0), "PENDING", 1),
-                new Payment(2, BigDecimal.valueOf(200.0), "PAID", 2)
+                new Payment(1, 100.0, "PENDING", 1),
+                new Payment(2, 200.0, "PAID", 2)
         );
         when(paymentRepository.findByUserIdAndStatusIn(1, Arrays.asList(Payment.Status.PENDING, Payment.Status.PAID))).thenReturn(mockPayments);
 

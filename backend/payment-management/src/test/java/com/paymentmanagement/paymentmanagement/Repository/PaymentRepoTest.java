@@ -24,7 +24,7 @@ class PaymentRepoTest {
         // Arrange
         Payment payment = new Payment();
         payment.setOrderId(1001);
-        payment.setAmount(BigDecimal.valueOf(500.00));
+        payment.setAmount(500.0);
         payment.setCurrency("USD");
         payment.setStatus(Payment.Status.PENDING);
         payment.setCreatedAt(LocalDateTime.now());
@@ -44,7 +44,7 @@ class PaymentRepoTest {
         // Arrange
         Payment payment = new Payment();
         payment.setOrderId(1002);
-        payment.setAmount(BigDecimal.valueOf(250.00));
+        payment.setAmount(250.0);
         payment.setCurrency("USD");
         payment.setStatus(Payment.Status.PENDING);
         payment.setCreatedAt(LocalDateTime.now());
@@ -65,7 +65,7 @@ class PaymentRepoTest {
         // Arrange
         Payment payment = new Payment();
         payment.setOrderId(1003);
-        payment.setAmount(BigDecimal.valueOf(300.00));
+        payment.setAmount(300.0);
         payment.setCurrency("USD");
         payment.setStatus(Payment.Status.PENDING);
         payment.setCreatedAt(LocalDateTime.now());
@@ -73,7 +73,7 @@ class PaymentRepoTest {
         paymentRepo.save(payment);
 
         // Act
-        Optional<Payment> retrievedPayment = paymentRepo.findByOrderIdAndAmount(1003, BigDecimal.valueOf(300.00));
+        Optional<Payment> retrievedPayment = paymentRepo.findByOrderIdAndAmount(1003, 300.0);
 
         // Assert
         assertThat(retrievedPayment).isPresent();
@@ -86,7 +86,7 @@ class PaymentRepoTest {
         Payment payment1 = new Payment();
         payment1.setUserId(1);
         payment1.setOrderId(1004);
-        payment1.setAmount(BigDecimal.valueOf(400.00));
+        payment1.setAmount(400.0);
         payment1.setCurrency("USD");
         payment1.setStatus(Payment.Status.PAID);
         payment1.setCreatedAt(LocalDateTime.now());
@@ -94,7 +94,7 @@ class PaymentRepoTest {
         Payment payment2 = new Payment();
         payment2.setUserId(1);
         payment2.setOrderId(1005);
-        payment2.setAmount(BigDecimal.valueOf(150.00));
+        payment2.setAmount(150.0);
         payment2.setCurrency("USD");
         payment2.setStatus(Payment.Status.PENDING);
         payment2.setCreatedAt(LocalDateTime.now());
@@ -107,7 +107,7 @@ class PaymentRepoTest {
 
         // Assert
         assertThat(payments).hasSize(2);
-        assertThat(payments.get(0).getUserId()).isEqualTo(1);
+        assertThat(payments.getFirst().getUserId()).isEqualTo(1);
     }
 
     @Test
@@ -116,7 +116,7 @@ class PaymentRepoTest {
         Payment payment1 = new Payment();
         payment1.setUserId(2);
         payment1.setOrderId(1006);
-        payment1.setAmount(BigDecimal.valueOf(600.00));
+        payment1.setAmount(600.0);
         payment1.setCurrency("USD");
         payment1.setStatus(Payment.Status.PAID);
         payment1.setCreatedAt(LocalDateTime.now());
@@ -124,7 +124,7 @@ class PaymentRepoTest {
         Payment payment2 = new Payment();
         payment2.setUserId(2);
         payment2.setOrderId(1007);
-        payment2.setAmount(BigDecimal.valueOf(350.00));
+        payment2.setAmount(350.0);
         payment2.setCurrency("USD");
         payment2.setStatus(Payment.Status.PENDING);
         payment2.setCreatedAt(LocalDateTime.now());
@@ -132,7 +132,7 @@ class PaymentRepoTest {
         Payment payment3 = new Payment();
         payment3.setUserId(2);
         payment3.setOrderId(1008);
-        payment3.setAmount(BigDecimal.valueOf(200.00));
+        payment3.setAmount(200.0);
         payment3.setCurrency("USD");
         payment3.setStatus(Payment.Status.FAILED);
         payment3.setCreatedAt(LocalDateTime.now());

@@ -37,14 +37,14 @@ class PaymentControllerTest {
     @Test
     void testListAllPayments() {
         List<Payment> mockPayments = Arrays.asList(
-                new Payment(1, BigDecimal.valueOf(100.0), "PAID", 2),
-                new Payment(2, BigDecimal.valueOf(200.0), "PENDING", 2)
+                new Payment(1, 100.0, "PAID", 2),
+                new Payment(2, 100.0, "PENDING", 2)
         );
     }
 
     @Test
     void testProcessPayment() {
-        PaymentRequest paymentRequest = new PaymentRequest(1, BigDecimal.valueOf(100.0), "CREDIT_CARD");
+        PaymentRequest paymentRequest = new PaymentRequest(1, 100.0, "CREDIT_CARD");
         PaymentResponse mockResponse = new PaymentResponse(1, "PAID");
 
         when(paymentService.processPayment(paymentRequest)).thenReturn(mockResponse);
@@ -58,7 +58,7 @@ class PaymentControllerTest {
 
     @Test
     void testGetPaymentById_Found() {
-        Payment mockPayment = new Payment(1, BigDecimal.valueOf(100.0), "PAID", 2);
+        Payment mockPayment = new Payment(1, 100.0, "PAID", 2);
         when(paymentService.getPaymentById(1)).thenReturn(Optional.of(mockPayment));
 
         ResponseEntity<Payment> response = paymentController.getPaymentById(1);
@@ -80,7 +80,7 @@ class PaymentControllerTest {
 
     @Test
     void testUpdatePayment() {
-        Payment updatedPayment = new Payment(1, BigDecimal.valueOf(150.0), "PAID", 2);
+        Payment updatedPayment = new Payment(1, 150.0, "PAID", 2);
         when(paymentService.updatePayment(1, updatedPayment)).thenReturn(updatedPayment);
 
         ResponseEntity<Payment> response = paymentController.updatePayment(1, updatedPayment);
@@ -102,14 +102,14 @@ class PaymentControllerTest {
 
     @Test
     void testConfirmPayment() {
-        Payment mockPayment = new Payment(1, BigDecimal.valueOf(100.0), "PAID", 2);
-        when(paymentService.confirmPayment(1, BigDecimal.valueOf(100.0))).thenReturn(mockPayment);
+        Payment mockPayment = new Payment(1, 100.0, "PAID", 2);
+        when(paymentService.confirmPayment(1, 100.0)).thenReturn(mockPayment);
 
         ResponseEntity<?> response = paymentController.confirmPayment(1, 100.0);
 
         assertEquals(200, response.getStatusCodeValue());
         assertEquals(mockPayment, response.getBody());
-        verify(paymentService, times(1)).confirmPayment(1, BigDecimal.valueOf(100.0));
+        verify(paymentService, times(1)).confirmPayment(1, 100.0);
     }
 
     @Test

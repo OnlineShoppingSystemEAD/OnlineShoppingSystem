@@ -3,7 +3,6 @@ package com.paymentmanagement.paymentmanagement.Entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -37,7 +36,7 @@ public class Payment {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    public Payment(int i, BigDecimal amount, String status, int i1) {
+    public Payment(int i, double amount, String status, int i1) {
     }
 
     public Payment() {
