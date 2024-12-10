@@ -25,9 +25,8 @@ public class GatewayConfig {
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
-                .route("PRODUCT-MANAGEMENT-SERVICE", r -> r.path("/api/admin/**", "/api/items/**", "/api/categories/**","/api/categories")
+                .route("PRODUCT-MANAGEMENT-SERVICE", r -> r.path("/api/items", "/api/categories")
                         .filters(f -> f.filter(loggingFilter.apply(new LoggingFilter.Config()))
-                                       .filter(tokenVerificationFilter.apply(new TokenVerificationFilter.Config())))
                         .uri("lb://PRODUCT-MANAGEMENT-SERVICE"))
                 .route("ORDER-MANAGEMENT-SERVICE", r -> r.path("/api/order/**", "/api/orderItems/**", "/api/shoppingCart/**", "/api/order")
                         .filters(f -> f.filter(loggingFilter.apply(new LoggingFilter.Config()))
@@ -40,6 +39,10 @@ public class GatewayConfig {
                         .filters(f -> f.filter(loggingFilter.apply(new LoggingFilter.Config()))
                                        .filter(tokenVerificationFilter.apply(new TokenVerificationFilter.Config())))
                         .uri("lb://USER-MANAGEMENT-SERVICE"))
+                .route("PRODUCT-MANAGEMENT-SERVICE-SECURE", r -> r.path("/api/admin/**", "/api/items/**", "/api/categories/**")
+                        .filters(f -> f.filter(loggingFilter.apply(new LoggingFilter.Config()))
+                                       .filter(tokenVerificationFilter.apply(new TokenVerificationFilter.Config())))
+                        .uri("lb://PRODUCT-MANAGEMENT-SERVICE"))
                 //route for the payment management service
                 .route("PAYMENT-MANAGEMENT-SERVICE", r -> r.path("/payments/**")
                         .filters(f -> f.filter(loggingFilter.apply(new LoggingFilter.Config()))
