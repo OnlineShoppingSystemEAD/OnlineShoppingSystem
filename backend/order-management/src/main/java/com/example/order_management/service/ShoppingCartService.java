@@ -46,6 +46,7 @@ public class ShoppingCartService {
                 .collect(Collectors.toList());
     }
 
+    
     // Updating shopping cart quantity
     public ShoppingCartItem updateShoppingCart(int id, ShoppingCartItem shoppingCartItemDetails) {
         ShoppingCartItem shoppingCartItem = shoppingCartRepository.findById(id)
