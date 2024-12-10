@@ -12,6 +12,9 @@ on:
       - 'backend/order-management/**'
       - 'backend/payment-management/**'
       # Add paths for other services as needed
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build-and-push:
