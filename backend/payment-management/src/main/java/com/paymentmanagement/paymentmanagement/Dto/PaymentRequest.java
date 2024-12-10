@@ -13,7 +13,7 @@ public class PaymentRequest {
     public PaymentRequest(int orderId, double amount, int userID) {
         this.orderId = orderId;
         this.amount = amount;
-        this.orderId = orderId;
+        this.userID = userID;
     }
 
     public PaymentRequest(int i, BigDecimal bigDecimal, String creditCard) {
