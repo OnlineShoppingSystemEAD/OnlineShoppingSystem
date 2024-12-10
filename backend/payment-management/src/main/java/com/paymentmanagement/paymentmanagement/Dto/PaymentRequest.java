@@ -6,10 +6,14 @@ import java.math.BigDecimal;
 
 @Data
 public class PaymentRequest {
+    private int userID;
     private int orderId;
     private double amount;
 
-    public void setAmount(BigDecimal bigDecimal) {
+
+    public PaymentRequest(int i, BigDecimal bigDecimal, String creditCard) {
     }
 
+    public PaymentRequest(int i, double v, String creditCard) {
+    }
 }

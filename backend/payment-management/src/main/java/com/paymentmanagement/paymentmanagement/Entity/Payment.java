@@ -2,7 +2,6 @@ package com.paymentmanagement.paymentmanagement.Entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.apache.catalina.User;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -37,6 +36,13 @@ public class Payment {
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    public Payment(int i, BigDecimal amount, String status, int i1) {
+    }
+
+    public Payment() {
+
+    }
 
     public enum Status {
         PENDING,
