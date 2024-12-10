@@ -50,7 +50,8 @@ public class OrderService {
         }
 
         // Process payment
-        PaymentRequest paymentRequest = new PaymentRequest(newOrder.getId(), newOrder.getTotalAmount());
+        PaymentRequest paymentRequest = new PaymentRequest(newOrder.getId(), newOrder.getTotalAmount(),
+                newOrder.getUserId());
         PaymentResponse paymentResponse = sendPaymentRequest(paymentRequest);
 
         if (paymentResponse != null && paymentResponse.getPaymentId() > 0) {

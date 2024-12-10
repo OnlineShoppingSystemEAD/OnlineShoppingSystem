@@ -2,10 +2,12 @@ package com.example.order_management.dto;
 
 @Data
 public class PaymentRequest {
+    private int userId;
     private int orderId;
     private double amount;
 
-    public PaymentRequest(int orderId, double amount) {
+    public PaymentRequest(int orderId, double amount, int userId) {
+        this.userId = userId;
         this.orderId = orderId;
         this.amount = amount;
     }
@@ -27,6 +29,14 @@ public class PaymentRequest {
 
     public double getaAmount() {
         return this.amount;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    public int getUserId() {
+        return this.userId;
     }
 
 }
