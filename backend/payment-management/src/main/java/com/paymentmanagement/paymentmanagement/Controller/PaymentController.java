@@ -1,8 +1,10 @@
 package com.paymentmanagement.paymentmanagement.Controller;
 
+import com.paymentmanagement.paymentmanagement.Dto.PaymentMethodRequest;
 import com.paymentmanagement.paymentmanagement.Dto.PaymentRequest;
 import com.paymentmanagement.paymentmanagement.Dto.PaymentResponse;
 import com.paymentmanagement.paymentmanagement.Entity.Payment;
+import com.paymentmanagement.paymentmanagement.Entity.PaymentMethod;
 import com.paymentmanagement.paymentmanagement.Service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,6 +76,38 @@ public class PaymentController {
             return ResponseEntity.ok(confirmedPayment);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    // Endpoint to save payment method
+    @PostMapping("/methods")
+    public ResponseEntity<PaymentMethod> savePaymentMethod(@RequestBody PaymentMethodRequest paymentMethodRequest) {
+        PaymentMethod paymentMethod = paymentService.savePaymentMethod(paymentMethodRequest);
+        return ResponseEntity.ok(paymentMethod);
+    }
+
+
+    // Endpoint to get all order IDs by user ID
+    @GetMapping("/orders/{userId}")
+    public ResponseEntity<List<Integer>> getAllOrderIdsByUserId(@PathVariable int userId) {
+        try {
+            List<Integer> orderIds = paymentService.getAllOrderIdsByUserId(userId);
+            return ResponseEntity.ok(orderIds);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.emptyList());
+        }
+    }
+
+   // Endpoint to get pending and paid delivery order IDs by user ID
+    @GetMapping("/delivery-orders/{userId}")
+    public ResponseEntity<List<Integer>> getPendingAndPaidDeliveryOrderIdsByUserId(@PathVariable int userId) {
+        try {
+            List<Integer> orderIds = paymentService.getPendingAndPaidDeliveryOrderIdsByUserId(userId);
+            return ResponseEntity.ok(orderIds);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.emptyList());
         }
     }
 }
