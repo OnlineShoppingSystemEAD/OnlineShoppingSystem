@@ -45,6 +45,8 @@ public class OrderItemsServiceTest {
         underTestOrderItems.setItemId(3);
         underTestOrderItems.setOrder(order);
         underTestOrderItems.setQuantity(3);
+        underTestOrderItems.setItemName("T-shirt");
+        underTestOrderItems.setItemPrice(30.00);
 
         when(underTestOrderItemRepository.save(underTestOrderItems)).thenReturn(underTestOrderItems);
 
