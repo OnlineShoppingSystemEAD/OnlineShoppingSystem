@@ -13,7 +13,7 @@ public interface PaymentRepo extends JpaRepository<Payment, Integer> {
 
     void deleteById(int id);
     // Find a payment by order ID and amount
-    Optional<Payment> findByOrderIdAndAmount(int orderId, BigDecimal amount);
+    Optional<Payment> findByOrderIdAndAmount(int orderId, double amount);
 
     // Find all payments for a given user ID
     List<Payment> findByUserId(int userId);

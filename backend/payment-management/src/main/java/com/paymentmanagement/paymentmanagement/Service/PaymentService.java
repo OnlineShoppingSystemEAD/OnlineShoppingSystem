@@ -32,7 +32,7 @@ public class PaymentService {
         // Create a new Payment entity
         Payment payment = new Payment();
         payment.setOrderId(paymentRequest.getOrderId());
-        payment.setAmount(BigDecimal.valueOf(paymentRequest.getAmount()));
+        payment.setAmount(paymentRequest.getAmount());
         payment.setCurrency("USD");
         payment.setStatus(Payment.Status.PENDING);
         payment.setCreatedAt(LocalDate.now().atStartOfDay());
@@ -41,7 +41,7 @@ public class PaymentService {
         paymentRepository.save(payment);
 
         // Return a response
-        return new PaymentResponse(payment.getOrderId(), payment.getId(), payment.getAmount().doubleValue());
+        return new PaymentResponse(payment.getOrderId(), payment.getId(), payment.getAmount());
     }
 
     // Method to retrieve a payment by ID
@@ -67,7 +67,7 @@ public class PaymentService {
 
     // Confirm a payment by orderId and amount
     @Transactional
-    public Payment confirmPayment(int orderId, BigDecimal amount) {
+    public Payment confirmPayment(int orderId, double amount) {
         Payment payment = (Payment) paymentRepository.findByOrderIdAndAmount(orderId, amount)
                 .orElseThrow(() -> new RuntimeException("Payment not found with matching orderId and amount"));
 

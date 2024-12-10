@@ -72,7 +72,7 @@ public class PaymentController {
             @RequestParam int orderId,
             @RequestParam double amount) {
         try {
-            Payment confirmedPayment = paymentService.confirmPayment(orderId, BigDecimal.valueOf(amount));
+            Payment confirmedPayment = paymentService.confirmPayment(orderId, amount);
             return ResponseEntity.ok(confirmedPayment);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
