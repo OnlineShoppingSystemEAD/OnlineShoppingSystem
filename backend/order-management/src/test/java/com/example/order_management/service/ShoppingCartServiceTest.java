@@ -3,6 +3,7 @@ package com.example.order_management.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -53,23 +54,34 @@ public class ShoppingCartServiceTest {
 
     @Test
     void testDeleteItemFromtheShoppingCart() {
-        int itemId = 13;
-        int userId = 1;
-        underTestShoppingCartService.deleteItemFromtheShoppingCart(itemId, userId);
-        verify(underTestShoppingCartRepository, times(1)).deleteById(itemId);
+        ShoppingCartItem mockItem = new ShoppingCartItem(2, 3, 6);
+        int cartItemId = mockItem.getId();
 
+        // Mocking behavior
+        when(underTestShoppingCartRepository.findById(cartItemId))
+                .thenReturn(Optional.of(mockItem));
+
+        // Call the method under test
+        Optional<ShoppingCartItem> result = underTestShoppingCartService.deleteItemFromtheShoppingCart(cartItemId);
+
+        // Assertions
+        assertTrue(result.isPresent());
+        assertEquals(mockItem, result.get());
+
+        // Verify that deleteById was called
+        verify(underTestShoppingCartRepository).deleteById(cartItemId);
     }
 
     @Test
     void testUpdateShoppingCart() {
         int itemId = 999;
-        ShoppingCartItem updatedItemDetails = new ShoppingCartItem();
-        updatedItemDetails.setQuantity(10);
+        int updatedQuantity = 10;
+        // ShoppingCartItem updatedItemDetails = new ShoppingCartItem();
 
         when(underTestShoppingCartRepository.findById(itemId)).thenReturn(Optional.empty());
 
         RuntimeException exception = assertThrows(RuntimeException.class, () -> {
-            underTestShoppingCartService.updateShoppingCart(itemId, updatedItemDetails);
+            underTestShoppingCartService.updateShoppingCart(itemId, updatedQuantity);
         });
         assertEquals("Shopping Cart Item Not Found", exception.getMessage());
         verify(underTestShoppingCartRepository, times(1)).findById(itemId);
