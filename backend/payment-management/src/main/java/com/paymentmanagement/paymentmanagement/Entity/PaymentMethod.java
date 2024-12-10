@@ -29,4 +29,15 @@ public class PaymentMethod {
 
     @Column(nullable = false)
     private String nickname;
+
+    public PaymentMethod(int i, String creditCard) {
+    }
+
+    public PaymentMethod(int i, String johnDoe, String number, String s, int i1, String personalCard) {
+
+    }
+
+    public PaymentMethod() {
+
+    }
 }
