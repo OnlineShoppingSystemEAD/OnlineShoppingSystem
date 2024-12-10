@@ -26,7 +26,7 @@ public class GatewayConfig {
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
         return builder.routes()
                 .route("PRODUCT-MANAGEMENT-SERVICE", r -> r.path("/api/items", "/api/categories")
-                        .filters(f -> f.filter(loggingFilter.apply(new LoggingFilter.Config()))
+                        .filters(f -> f.filter(loggingFilter.apply(new LoggingFilter.Config())))
                         .uri("lb://PRODUCT-MANAGEMENT-SERVICE"))
                 .route("ORDER-MANAGEMENT-SERVICE", r -> r.path("/api/order/**", "/api/orderItems/**", "/api/shoppingCart/**", "/api/order")
                         .filters(f -> f.filter(loggingFilter.apply(new LoggingFilter.Config()))
