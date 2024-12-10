@@ -144,6 +144,17 @@ public class UserController {
         return ResponseEntity.status(resp.getStatusCode()).body(resp);
     }
 
+    // for octet-stream
+    @PutMapping(value = "/{id}/profile", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<ReqRes> updateUserProfileOctet(@PathVariable Integer id, @RequestParam Integer userId, @RequestParam String role, @RequestPart("userProfileDetails") UserProfile userProfileDetails, @RequestPart("profilePicture") MultipartFile profilePicture) {
+        ResponseEntity<ReqRes> validationResp = validateAndRespond(id, userId, role);
+        if (validationResp != null) {
+            return validationResp;
+        }
+        ReqRes resp = ourUserDetailsService.updateUserProfile(id, userProfileDetails, profilePicture);
+        return ResponseEntity.status(resp.getStatusCode()).body(resp);
+    }
+
     /**
      * Deletes a user profile.
      *

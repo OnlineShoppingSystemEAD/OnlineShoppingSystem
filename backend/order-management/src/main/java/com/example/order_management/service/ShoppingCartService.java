@@ -46,6 +46,7 @@ public class ShoppingCartService {
                 .collect(Collectors.toList());
     }
 
+    
     // Updating shopping cart quantity
     public ShoppingCartItem updateShoppingCart(int id, ShoppingCartItem shoppingCartItemDetails) {
         ShoppingCartItem shoppingCartItem = shoppingCartRepository.findById(id)
@@ -59,7 +60,7 @@ public class ShoppingCartService {
     // @Transactional
     public Optional<ShoppingCartItem> deleteItemFromtheShoppingCart(int id) {
         Optional<ShoppingCartItem> deletingItem = shoppingCartRepository.findById(id);
-        if (deletingItem == null) {
+        if (deletingItem.isPresent()) {
             shoppingCartRepository.deleteById(id);
         }
         return deletingItem;
