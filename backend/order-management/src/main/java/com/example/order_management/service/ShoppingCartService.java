@@ -41,9 +41,18 @@ public class ShoppingCartService {
     // Get Shopping Cart Items to create order items
     public List<ShoppingCartItemDto> getShoppingCartItemsForOrderItems(int userId) {
         List<ShoppingCartItem> items = shoppingCartRepository.findByUserId(userId);
-        return items.stream()
-                .map(item -> new ShoppingCartItemDto(item.getItemId(), item.getQuantity()))
-                .collect(Collectors.toList());
+        List<ShoppingCartItemDto> itemDTOs = items.stream().map(item -> {
+            ItemDetailsDto itemDetails = getItem(item.getItemId());
+            ShoppingCartItemDto dto = new ShoppingCartItemDto();
+            dto.setId(itemDetails.getId());
+            dto.setItemQuantity(itemDetails.getQuantity());
+            dto.setItemName(itemDetails.getName());
+            dto.setItemPrice(itemDetails.getPrice());
+            dto.setImageURL(itemDetails.getImageURL());
+            return dto;
+        }).collect(Collectors.toList());
+
+        return itemDTOs;
     }
 
     // Updating shopping cart quantity
