@@ -34,7 +34,7 @@ public class PaymentService {
         payment.setOrderId(paymentRequest.getOrderId());
         payment.setAmount(BigDecimal.valueOf(paymentRequest.getAmount()));
         payment.setCurrency("USD");
-        payment.setStatus(Payment.Status.PAID);
+        payment.setStatus(Payment.Status.PENDING);
         payment.setCreatedAt(LocalDate.now().atStartOfDay());
 
         // Save to the database
