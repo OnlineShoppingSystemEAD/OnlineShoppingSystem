@@ -60,7 +60,7 @@ public class ShoppingCartService {
     // @Transactional
     public Optional<ShoppingCartItem> deleteItemFromtheShoppingCart(int id) {
         Optional<ShoppingCartItem> deletingItem = shoppingCartRepository.findById(id);
-        if (deletingItem == null) {
+        if (deletingItem.isPresent()) {
             shoppingCartRepository.deleteById(id);
         }
         return deletingItem;
