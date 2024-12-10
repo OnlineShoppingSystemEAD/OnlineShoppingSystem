@@ -11,7 +11,7 @@ import com.example.order_management.service.ShoppingCartService;
 import com.example.order_management.model.ShoppingCartItem;
 import com.example.order_management.dto.ShoppingCartItemDto;
 import java.util.List;
-
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/shoppingCart")
@@ -39,9 +39,8 @@ public class ShoppingCartController {
 
     // Delete Item from the Shopping Cart
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteItemFromtheShoppingCart(@PathVariable int id, @RequestParam int userId) {
-        shoppingCartService.deleteItemFromtheShoppingCart(id,userId);
-        return ResponseEntity.noContent().build();
+    public Optional<ShoppingCartItem> deleteItemFromtheShoppingCart(@PathVariable int id) {
+        return shoppingCartService.deleteItemFromtheShoppingCart(id);
     }
 
     @PostMapping("/addItem")

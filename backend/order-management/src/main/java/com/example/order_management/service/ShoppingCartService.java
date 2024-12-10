@@ -56,9 +56,14 @@ public class ShoppingCartService {
     }
 
     // Remove item from the shopping cart
-    @Transactional
-    public void deleteItemFromtheShoppingCart(int id, int userId) {
-        shoppingCartRepository.deleteById(id, userId);
+    // @Transactional
+    public Optional<ShoppingCartItem> deleteItemFromtheShoppingCart(int id) {
+        Optional<ShoppingCartItem> deletingItem = shoppingCartRepository.findById(id);
+        if (deletingItem == null) {
+            shoppingCartRepository.deleteById(id);
+        }
+        return deletingItem;
+
     }
 
     // Add a new item to the shopping cart
@@ -67,12 +72,12 @@ public class ShoppingCartService {
     }
 
     // Get Item Details
-//    public ItemDetailsDto getItem(int itemId) {
-//        RestTemplate restTemplate = new RestTemplate();
-//        ItemDetailsDto responseItemDetails = restTemplate.getForObject(
-//                "http://localhost:8083/api/items/{itemId}", ItemDetailsDto.class, itemId);
-//        return responseItemDetails;
-//    }
+    // public ItemDetailsDto getItem(int itemId) {
+    // RestTemplate restTemplate = new RestTemplate();
+    // ItemDetailsDto responseItemDetails = restTemplate.getForObject(
+    // "http://localhost:8083/api/items/{itemId}", ItemDetailsDto.class, itemId);
+    // return responseItemDetails;
+    // }
 
     public ItemDetailsDto getItem(int itemId) {
         ItemDetailsDto responseItemDetails = restTemplate.getForObject(

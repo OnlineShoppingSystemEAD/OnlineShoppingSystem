@@ -57,6 +57,6 @@ public class ItemRepositoryTest {
         // Assert: Verify the results
         assertFalse(foundItems.isEmpty(), "Items were found for the given category ID");
         assertEquals(1, foundItems.size(), "Only one item should be found");
-
+        // assertEquals(0, foundItems.size(), "No Items found for given category Id");
     }
 }

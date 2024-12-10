@@ -1,76 +1,89 @@
 package com.example.product_management.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import java.util.List;
-import org.junit.jupiter.api.AfterEach;
+
+import java.util.Optional;
+
+// import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
+// import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
+import com.example.product_management.dto.ItemDTO;
+import com.example.product_management.dto.ResponseDTO;
 import com.example.product_management.model.Item;
-import com.example.product_management.repository.CategoryRepository;
-import com.example.product_management.repository.ItemImageRepository;
 import com.example.product_management.repository.ItemRepository;
 
-@Disabled
+// @Disabled
 public class ItemServiceTest {
     @Mock
     private ItemRepository underTestItemRepository;
-    private ItemImageRepository underTestItemImageRepository;
-    private CategoryRepository underTestICategoryRepository;
-    private AutoCloseable autoCloseable;
-    private ItemService undertTestItemService;
+    // private AutoCloseable autoCloseable;
+    @InjectMocks
+    private ItemService underTestItemService;
 
     @BeforeEach
     void setUp() {
-        autoCloseable = MockitoAnnotations.openMocks(this);
-        undertTestItemService = new ItemService();
-
-    }
-
-    @AfterEach
-    void tearDown() throws Exception {
-        if (autoCloseable != null) {
-            autoCloseable.close();
-        }
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    void testGetItembyId() {
-        undertTestItemService.getItemById(1);
-        verify(underTestItemRepository).findById(1);
+    void testGetItemById() {
+        Optional<Item> foundItem = underTestItemRepository.findById(1);
+
+        ResponseDTO<ItemDTO> testResponse = underTestItemService.getItemById(1);
+
+        if (foundItem.isEmpty()) {
+            assertEquals(500, testResponse.getStatus());
+        } else {
+            assertEquals(200, testResponse.getStatus());
+        }
+
+    }
+
+    @Test
+    void testDeleteItem() {
+        Optional<Item> foundItem = underTestItemRepository.findById(1);
+        ResponseDTO<ItemDTO> testResponse = underTestItemService.deleteItem(1);
+        if (foundItem.isEmpty()) {
+            assertEquals(500, testResponse.getStatus());
+        } else {
+            assertEquals(200, testResponse.getStatus());
+        }
+
     }
 
     @Test
     void testGetItems() {
-        Pageable pageable = PageRequest.of(0, 10);
-        Page<Item> mockPage = new PageImpl<>(List.of(new Item(), new Item()));
-        when(underTestItemRepository.findAll(pageable)).thenReturn(mockPage);
-        Page<Item> result = (Page<Item>) undertTestItemService.getItems(0, 10);
-        verify(underTestItemRepository).findAll(pageable);
-        assertNotNull(result);
-        assertEquals(2, result.getContent().size());
+        Pageable testPageable = PageRequest.of(0, 2);
+        Page<Item> foundItems = underTestItemRepository.findAll(testPageable);
+        ResponseDTO<ItemDTO> testResponse = underTestItemService.getItems(0, 2);
+
+        if (foundItems == null) {
+            assertEquals(500, testResponse.getStatus());
+        } else {
+            assertEquals(200, testResponse.getStatus());
+        }
+
     }
 
     @Test
-    void testGetItemsByCategory() {
-        int categoryId = 2;
-        Pageable pageable = PageRequest.of(0, 10);
-        Page<Item> mockPage = new PageImpl<>(List.of(new Item(), new Item()));
-        when(underTestItemRepository.findAll(pageable)).thenReturn(mockPage);
-        Page<Item> result = (Page<Item>) undertTestItemService.getItemsByCategory(categoryId, 0, 10);
-        verify(underTestItemRepository).findAll(pageable);
-        assertNotNull(result);
-        assertEquals(2, result.getContent().size());
-    }
+    void testGetItemByCategory() {
+        Pageable testPageable = PageRequest.of(0, 2);
+        Page<Item> foundItems = underTestItemRepository.findByCategoryId(1, testPageable);
+        ResponseDTO<ItemDTO> testResponse = underTestItemService.getItemsByCategory(1, 0, 2);
 
+        if (foundItems == null) {
+            assertEquals(500, testResponse.getStatus());
+        } else {
+            assertEquals(200, testResponse.getStatus());
+        }
+
+    }
 }

@@ -46,7 +46,7 @@ public class OrderService {
         // Process order items
         for (ShoppingCartItemDto cartItem : cartItems) {
             createAndSaveOrderItem(cartItem, newOrder);
-            deleteItemFromtheShoppingCart(cartItem.getId(), userId);
+            deleteItemFromtheShoppingCart(cartItem.getId());
         }
 
         // Process payment
@@ -98,8 +98,8 @@ public class OrderService {
     }
 
     // Delete item from the shopping cart after creating the orderItem
-    public void deleteItemFromtheShoppingCart(int id, int userId) {
-        shoppingCartService.deleteItemFromtheShoppingCart(id, userId);
+    public void deleteItemFromtheShoppingCart(int id) {
+        shoppingCartService.deleteItemFromtheShoppingCart(id);
     }
 
     public PaymentResponse sendPaymentRequest(PaymentRequest paymentRequest) {

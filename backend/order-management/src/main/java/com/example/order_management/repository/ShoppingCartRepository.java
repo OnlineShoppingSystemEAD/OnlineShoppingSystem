@@ -13,7 +13,8 @@ public interface ShoppingCartRepository extends JpaRepository<ShoppingCartItem, 
     @Query(nativeQuery = true, value = "SELECT * FROM shopping_cart_item WHERE user_id = :userId;")
     List<ShoppingCartItem> findByUserId(@Param("userId") int userId);
 
-    @Modifying
-    @Query(nativeQuery = true, value = "DELETE FROM shopping_cart_item WHERE user_id = :userId AND item_id = :id")
-    void deleteById(@Param("userId") int userId, @Param("id") int id);
+    // @Modifying
+    // @Query(nativeQuery = true, value = "DELETE FROM shopping_cart_item WHERE
+    // user_id = :userId AND item_id = :id")
+    // void deleteById(@Param("userId") int userId, @Param("id") int id);
 }
