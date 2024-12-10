@@ -46,13 +46,12 @@ public class ShoppingCartService {
                 .collect(Collectors.toList());
     }
 
-    
     // Updating shopping cart quantity
-    public ShoppingCartItem updateShoppingCart(int id, ShoppingCartItem shoppingCartItemDetails) {
+    public ShoppingCartItem updateShoppingCart(int id, int updatedQuantity) {
         ShoppingCartItem shoppingCartItem = shoppingCartRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Shopping Cart Item Not Found"));
         // Logic for updating the quantity
-        shoppingCartItem.setQuantity(shoppingCartItemDetails.getQuantity());
+        shoppingCartItem.setQuantity(updatedQuantity);
         return shoppingCartRepository.save(shoppingCartItem);
     }
 
