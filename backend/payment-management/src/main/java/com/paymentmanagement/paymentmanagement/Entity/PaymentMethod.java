@@ -31,13 +31,24 @@ public class PaymentMethod {
     private String nickname;
 
     public PaymentMethod(int i, String creditCard) {
+
     }
 
-    public PaymentMethod(int i, String johnDoe, String number, String s, int i1, String personalCard) {
-
+    public PaymentMethod(int userId, String cardHolderName, String cardNumber, String expirationDate, String cvv, String nickname) {
+        this.userId = userId;
+        this.cardHolderName = cardHolderName;
+        this.cardNumber = cardNumber;
+        this.expirationDate = expirationDate;
+        this.cvv = cvv;
+        this.nickname = nickname;
     }
 
     public PaymentMethod() {
 
+    }
+
+    public boolean getMethodName() {
+
+        return false;
     }
 }

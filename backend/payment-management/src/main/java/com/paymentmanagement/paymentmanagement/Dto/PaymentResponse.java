@@ -14,6 +14,4 @@ public class PaymentResponse {
         this.amount = amount;
     }
 
-    public PaymentResponse(int orderId, String paid) {
-    }
 }
