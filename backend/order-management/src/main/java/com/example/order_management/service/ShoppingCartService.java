@@ -27,7 +27,7 @@ public class ShoppingCartService {
         List<ShoppingCartItemDto> itemDTOs = items.stream().map(item -> {
             ItemDetailsDto itemDetails = getItem(item.getItemId());
             ShoppingCartItemDto dto = new ShoppingCartItemDto();
-            dto.setId(itemDetails.getId());
+            dto.setId(item.getId());
             dto.setItemQuantity(itemDetails.getQuantity());
             dto.setItemName(itemDetails.getName());
             dto.setItemPrice(itemDetails.getPrice());
