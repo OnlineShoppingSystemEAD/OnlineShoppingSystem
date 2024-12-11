@@ -5,6 +5,8 @@ import com.paymentmanagement.paymentmanagement.Dto.PaymentRequest;
 import com.paymentmanagement.paymentmanagement.Dto.PaymentResponse;
 import com.paymentmanagement.paymentmanagement.Entity.Payment;
 import com.paymentmanagement.paymentmanagement.Entity.PaymentMethod;
+import com.paymentmanagement.paymentmanagement.Exception.InvalidPaymentStatusException;
+import com.paymentmanagement.paymentmanagement.Exception.PaymentNotFoundException;
 import com.paymentmanagement.paymentmanagement.Service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -68,14 +70,20 @@ public class PaymentController {
 
     // Endpoint to confirm a payment by orderId and amount
     @PostMapping("/confirm")
-    public ResponseEntity<?> confirmPayment(
+    public ResponseEntity<Payment> confirmPayment(
             @RequestParam int orderId,
             @RequestParam double amount) {
         try {
+            // Call service to confirm payment
             Payment confirmedPayment = paymentService.confirmPayment(orderId, amount);
             return ResponseEntity.ok(confirmedPayment);
-        } catch (RuntimeException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (PaymentNotFoundException | InvalidPaymentStatusException e) {
+            // Return a meaningful error response
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // Optionally add error details to the body
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // Same as above for input validation errors
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null); // Generic server error response
         }
     }
 

@@ -5,6 +5,8 @@ import com.paymentmanagement.paymentmanagement.Dto.PaymentRequest;
 import com.paymentmanagement.paymentmanagement.Dto.PaymentResponse;
 import com.paymentmanagement.paymentmanagement.Entity.Payment;
 import com.paymentmanagement.paymentmanagement.Entity.PaymentMethod;
+import com.paymentmanagement.paymentmanagement.Exception.InvalidPaymentStatusException;
+import com.paymentmanagement.paymentmanagement.Exception.PaymentNotFoundException;
 import com.paymentmanagement.paymentmanagement.Repository.PaymentMethodRepo;
 import com.paymentmanagement.paymentmanagement.Repository.PaymentRepo;
 import jakarta.transaction.Transactional;
@@ -68,13 +70,21 @@ public class PaymentService {
     // Confirm a payment by orderId and amount
     @Transactional
     public Payment confirmPayment(int orderId, double amount) {
-        Payment payment = (Payment) paymentRepository.findByOrderIdAndAmount(orderId, amount)
-                .orElseThrow(() -> new RuntimeException("Payment not found with matching orderId and amount"));
-
-        if (!payment.getStatus().equals(Payment.Status.PENDING)) {
-            throw new RuntimeException("Payment cannot be confirmed as it is not in PENDING status");
+        // Validate input
+        if (orderId <= 0 || amount <= 0) {
+            throw new IllegalArgumentException("Order ID and amount must be greater than 0");
         }
 
+        // Find the payment
+        Payment payment = paymentRepository.findByOrderIdAndAmount(orderId, amount)
+                .orElseThrow(() -> new PaymentNotFoundException("Payment not found with matching orderId and amount"));
+
+        // Check the payment status
+        if (!Payment.Status.PENDING.equals(payment.getStatus())) {
+            throw new InvalidPaymentStatusException("Payment cannot be confirmed as it is not in PENDING status");
+        }
+
+        // Update and save the payment status
         payment.setStatus(Payment.Status.CONFIRMED);
         return paymentRepository.save(payment);
     }
