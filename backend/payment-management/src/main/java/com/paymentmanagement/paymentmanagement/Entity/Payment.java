@@ -36,7 +36,9 @@ public class Payment {
     @Column(nullable = false)
     private LocalDateTime updatedAt;
 
-    public Payment(int i, double amount, String status, int i1) {
+
+    public Payment(int i, int i1, double v) {
+
     }
 
     public Payment() {

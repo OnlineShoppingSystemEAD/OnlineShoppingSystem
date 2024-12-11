@@ -14,7 +14,6 @@ import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,7 +31,7 @@ public class PaymentService {
     public PaymentResponse processPayment(PaymentRequest paymentRequest) {
 
         // Create a new Payment entity
-        Payment payment = new Payment();
+        Payment payment = new Payment(1, 1, 150.0);
         payment.setOrderId(paymentRequest.getOrderId());
         payment.setAmount(paymentRequest.getAmount());
         payment.setCurrency("USD");
@@ -96,8 +95,7 @@ public class PaymentService {
 
     // Save a payment method for a user
     public PaymentMethod savePaymentMethod(PaymentMethodRequest paymentMethodRequest) {
-        PaymentMethod paymentMethod = new PaymentMethod(1, "John Doe", "1234567812345678", "12/26", 123,
-                "Personal Card");
+        PaymentMethod paymentMethod = new PaymentMethod(1, "John Doe", "1234567812345678", "12/26", "123", "Personal Card");
         paymentMethod.setUserId(paymentMethodRequest.getUserId());
         paymentMethod.setCardHolderName(paymentMethodRequest.getCardHolderName());
         paymentMethod.setCardNumber(paymentMethodRequest.getCardNumber());

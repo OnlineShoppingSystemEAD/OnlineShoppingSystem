@@ -10,9 +10,7 @@ public class PaymentMethodRequest {
     private String cvv;
     private String nickname;
 
-    public PaymentMethodRequest(String creditCard) {
-    }
 
-    public PaymentMethodRequest(int i, String johnDoe, String number, String s, int i1, String personalCard) {
+    public PaymentMethodRequest(int userId, String cardHolderName, String cardNumber, String expirationDate, String cvv, String nickname) {
     }
 }

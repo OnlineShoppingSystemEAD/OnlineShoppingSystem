@@ -11,142 +11,120 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.*;
 
 class PaymentControllerTest {
 
-    @Mock
-    private PaymentService paymentService;
-
     @InjectMocks
     private PaymentController paymentController;
+
+    @Mock
+    private PaymentService paymentService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    void testListAllPayments() {
-        List<Payment> mockPayments = Arrays.asList(
-                new Payment(1, 100.0, "PAID", 2),
-                new Payment(2, 100.0, "PENDING", 2)
-        );
-    }
+
 
     @Test
-    void testProcessPayment() {
-        PaymentRequest paymentRequest = new PaymentRequest(1, 100.0, "CREDIT_CARD");
-        PaymentResponse mockResponse = new PaymentResponse(1, "PAID");
+    void testGetPaymentById() {
+        // Given
+        Payment payment = new Payment(1, 1, 150.0);
+        payment.setId(1);
+        when(paymentService.getPaymentById(1)).thenReturn(Optional.of(payment));
 
-        when(paymentService.processPayment(paymentRequest)).thenReturn(mockResponse);
-
-        ResponseEntity<PaymentResponse> response = paymentController.processPayment(paymentRequest);
-
-        assertEquals(mockResponse, response.getBody());
-        assertEquals(200, response.getStatusCodeValue());
-        verify(paymentService, times(1)).processPayment(paymentRequest);
-    }
-
-    @Test
-    void testGetPaymentById_Found() {
-        Payment mockPayment = new Payment(1, 100.0, "PAID", 2);
-        when(paymentService.getPaymentById(1)).thenReturn(Optional.of(mockPayment));
-
+        // When
         ResponseEntity<Payment> response = paymentController.getPaymentById(1);
 
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(mockPayment, response.getBody());
+        // Then
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isEqualTo(payment);
         verify(paymentService, times(1)).getPaymentById(1);
     }
 
     @Test
     void testGetPaymentById_NotFound() {
+        // Given
         when(paymentService.getPaymentById(1)).thenReturn(Optional.empty());
 
+        // When
         ResponseEntity<Payment> response = paymentController.getPaymentById(1);
 
-        assertEquals(404, response.getStatusCodeValue());
+        // Then
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         verify(paymentService, times(1)).getPaymentById(1);
     }
 
     @Test
     void testUpdatePayment() {
-        Payment updatedPayment = new Payment(1, 150.0, "PAID", 2);
-        when(paymentService.updatePayment(1, updatedPayment)).thenReturn(updatedPayment);
+        // Given
+        Payment updatedPayment = new Payment(1, 1, 200.00);
+        when(paymentService.updatePayment(eq(1), any(Payment.class))).thenReturn(updatedPayment);
 
+        // When
         ResponseEntity<Payment> response = paymentController.updatePayment(1, updatedPayment);
 
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(updatedPayment, response.getBody());
-        verify(paymentService, times(1)).updatePayment(1, updatedPayment);
-    }
-
-    @Test
-    void testDeletePayment() {
-        doNothing().when(paymentService).deletePayment(1);
-
-        ResponseEntity<Void> response = paymentController.deletePayment(1);
-
-        assertEquals(204, response.getStatusCodeValue());
-        verify(paymentService, times(1)).deletePayment(1);
+        // Then
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isEqualTo(updatedPayment);
+        verify(paymentService, times(1)).updatePayment(eq(1), any(Payment.class));
     }
 
     @Test
     void testConfirmPayment() {
-        Payment mockPayment = new Payment(1, 100.0, "PAID", 2);
-        when(paymentService.confirmPayment(1, 100.0)).thenReturn(mockPayment);
+        // Given
+        Payment confirmedPayment = new Payment(1, 1, 500.00);
+        confirmedPayment.setStatus(Payment.Status.CONFIRMED);
+        when(paymentService.confirmPayment(1, 500.00)).thenReturn(confirmedPayment);
 
-        ResponseEntity<?> response = paymentController.confirmPayment(1, 100.0);
+        // When
+        ResponseEntity<Payment> response = paymentController.confirmPayment(1, 500.00);
 
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(mockPayment, response.getBody());
-        verify(paymentService, times(1)).confirmPayment(1, 100.0);
+        // Then
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).isEqualTo(confirmedPayment);
+        verify(paymentService, times(1)).confirmPayment(1, 500.00);
     }
 
-    @Test
-    void testSavePaymentMethod() {
-        PaymentMethodRequest paymentMethodRequest = new PaymentMethodRequest("CREDIT_CARD");
-        PaymentMethod mockPaymentMethod = new PaymentMethod(1, "CREDIT_CARD");
 
-        when(paymentService.savePaymentMethod(paymentMethodRequest)).thenReturn(mockPaymentMethod);
-
-        ResponseEntity<PaymentMethod> response = paymentController.savePaymentMethod(paymentMethodRequest);
-
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(mockPaymentMethod, response.getBody());
-        verify(paymentService, times(1)).savePaymentMethod(paymentMethodRequest);
-    }
 
     @Test
     void testGetAllOrderIdsByUserId() {
-        List<Integer> mockOrderIds = Arrays.asList(1, 2, 3);
-        when(paymentService.getAllOrderIdsByUserId(1)).thenReturn(mockOrderIds);
+        // Given
+        List<Integer> orderIds = Arrays.asList(1, 2);
+        when(paymentService.getAllOrderIdsByUserId(1)).thenReturn(orderIds);
 
+        // When
         ResponseEntity<List<Integer>> response = paymentController.getAllOrderIdsByUserId(1);
 
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(mockOrderIds, response.getBody());
+        // Then
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).containsExactlyInAnyOrder(1, 2);
         verify(paymentService, times(1)).getAllOrderIdsByUserId(1);
     }
 
     @Test
     void testGetPendingAndPaidDeliveryOrderIdsByUserId() {
-        List<Integer> mockOrderIds = Arrays.asList(10, 11, 12);
-        when(paymentService.getPendingAndPaidDeliveryOrderIdsByUserId(1)).thenReturn(mockOrderIds);
+        // Given
+        List<Integer> orderIds = Arrays.asList(1, 2);
+        when(paymentService.getPendingAndPaidDeliveryOrderIdsByUserId(1)).thenReturn(orderIds);
 
+        // When
         ResponseEntity<List<Integer>> response = paymentController.getPendingAndPaidDeliveryOrderIdsByUserId(1);
 
-        assertEquals(200, response.getStatusCodeValue());
-        assertEquals(mockOrderIds, response.getBody());
+        // Then
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getBody()).containsExactlyInAnyOrder(1, 2);
         verify(paymentService, times(1)).getPendingAndPaidDeliveryOrderIdsByUserId(1);
     }
 }

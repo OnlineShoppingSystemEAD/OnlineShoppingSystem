@@ -1,15 +1,15 @@
 package com.paymentmanagement.paymentmanagement.Dto;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
 
 @Data
 public class PaymentRequest {
     private int userId;
     private int orderId;
     private double amount;
+
+    public PaymentRequest(int userId, int orderId, double amount) {
+    }
 
 //    public PaymentRequest(int orderId, double amount, int userId) {
 //        this.orderId = orderId;
