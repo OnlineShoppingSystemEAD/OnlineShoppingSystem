@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import com.example.order_management.dto.OrderStatusDto;
@@ -92,9 +93,9 @@ public class OrderService {
         Orders orderDetails = orderRespository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
         String updatedOrderStatus = order.getOrderStatus();
-        if (updatedOrderStatus == "ONDELIVERY") {
+        if (Objects.equals(updatedOrderStatus, "ONDELIVERY")) {
             orderDetails.setStatus(Orders.Status.ONDELIVERY);
-        } else if (updatedOrderStatus == "COMPLETED") {
+        } else if (Objects.equals(updatedOrderStatus, "COMPLETED")) {
             orderDetails.setStatus(Orders.Status.COMPLETED);
         }
 
