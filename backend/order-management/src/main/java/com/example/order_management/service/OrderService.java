@@ -50,8 +50,12 @@ public class OrderService {
         }
 
         // Process payment
-        PaymentRequest paymentRequest = new PaymentRequest(newOrder.getId(), newOrder.getTotalAmount(),
-                newOrder.getUserId());
+        PaymentRequest paymentRequest = new PaymentRequest(
+                newOrder.getId(),
+                newOrder.getTotalAmount(),
+                newOrder.getUserId()
+        );
+//        System.out.println(paymentRequest.getaAmount());
         PaymentResponse paymentResponse = sendPaymentRequest(paymentRequest);
 
         if (paymentResponse != null && paymentResponse.getPaymentId() > 0) {
@@ -106,8 +110,7 @@ public class OrderService {
         String url = "lb://PAYMENT-MANAGEMENT-SERVICE/payments"; // Replace with actual URL
 
         // Send POST request
-        ResponseEntity<PaymentResponse> responseEntity = restTemplate.postForEntity(url, paymentRequest,
-                PaymentResponse.class);
+        ResponseEntity<PaymentResponse> responseEntity = restTemplate.postForEntity(url, paymentRequest, PaymentResponse.class);
 
         // Return the response body
         return responseEntity.getBody();

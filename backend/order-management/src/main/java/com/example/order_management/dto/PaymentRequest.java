@@ -1,5 +1,5 @@
 package com.example.order_management.dto;
-
+import lombok.Data;
 @Data
 public class PaymentRequest {
     private int userId;
@@ -13,31 +13,31 @@ public class PaymentRequest {
         this.userId = userId;
     }
 
-    public PaymentRequest() {
-    }
-
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public int getOrderId() {
-        return this.orderId;
-    }
-
-    public double getaAmount() {
-        return this.amount;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public int getUserId() {
-        return this.userId;
-    }
+//    public PaymentRequest() {
+//    }
+//
+//    public void setOrderId(int orderId) {
+//        this.orderId = orderId;
+//    }
+//
+//    public void setAmount(double amount) {
+//        this.amount = amount;
+//    }
+//
+//    public int getOrderId() {
+//        return this.orderId;
+//    }
+//
+//    public double getAmount() {
+//        return this.amount;
+//    }
+//
+//    public void setUserId(int userId) {
+//        this.userId = userId;
+//    }
+//
+//    public int getUserId() {
+//        return this.userId;
+//    }
 
 }

@@ -35,6 +35,7 @@ public class PaymentController {
     // Endpoint to process a new payment
     @PostMapping
     public ResponseEntity<PaymentResponse> processPayment(@RequestBody PaymentRequest paymentRequest) {
+        System.out.println(paymentRequest);
         // Call service to process payment
         PaymentResponse response = paymentService.processPayment(paymentRequest);
 
